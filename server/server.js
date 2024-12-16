@@ -1,12 +1,33 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const knex = require('knex');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken'); // Added jwt module
+
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
+// Authentication middleware
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) {
+      return res.status(403).json({ message: 'Invalid token' });
+    }
+    req.user = user;
+    next();
+  });
+};
 // Database Configuration
 const db = knex({
     client: 'pg',
@@ -18,34 +39,122 @@ const db = knex({
         port: 5432
     },
 });
+// async function hashExistingPasswords() {
+//     try {
+//       const users = await db('account').select('acc_id', 'acc_password');
+  
+//       for (const user of users) {
+//         const hashedPassword = await bcrypt.hash(user.acc_password, 10);
+//         await db('account')
+//           .where({ acc_id: user.acc_id })
+//           .update({ acc_password: hashedPassword });
+//       }
+  
+//       console.log('Passwords hashed successfully!');
+//     } catch (error) {
+//       console.error('Error hashing passwords:', error);
+//     } finally {
+//       // db.destroy();
+//     }
+//   }
+  
+//   hashExistingPasswords();
 
-app.post('/login', (req, res) => {
-    const { username, password } = req.body;
+app.post('/login', async (req, res) => {
+  const { username, password } = req.body;
 
-    db('users')
-        .where({ username, password })
-        .then((user) => {
-            if (user.length > 0) {
-                res.json({ message: 'Login successful' });
-            } else {
-                res.status(401).json({ message: 'Invalid credentials' });
-            }
-        })
-        .catch((err) => {
-            console.error('Database error:', err);
-            res.status(500).json({ message: 'Database error' });
-        });
+  try {
+    // Find the user by username
+    const user = await db('account')
+      .where({ acc_username: username })
+      .first();
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Since passwords are stored as plain text, directly compare them
+    const isPasswordValid = password === user.acc_password;
+
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    // Generate JWT token
+    const token = jwt.sign(
+      {
+        userId: user.acc_id,
+        username: user.acc_username,
+        role: user.acc_name
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+
+    // Send response with token and user info
+    res.json({
+      message: 'Login successful',
+      token,
+      username: user.acc_username,
+      role: user.acc_name,
+      name: user.acc_name
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
 });
 
-// // Test database connection
-// db.raw('SELECT 1')
-//     .then(() => { 
-//         console.log('Database connected successfully');
-//     })
-//     .catch((err) => { 
-//         console.error('Database connection failed:', err);
-//     });
+//   app.post('/change-password', async (req, res) => {
+//     const { userId, currentPassword, newPassword } = req.body;
+  
+//     try {
+//       // Fetch the user by ID
+//       const user = await db('account').where({ acc_id: userId }).first();
+  
+//       if (!user) {
+//         return res.status(404).json({ message: 'User not found' });
+//       }
+  
+//       // Verify the current password
+//       const isPasswordValid = await bcrypt.compare(currentPassword, user.acc_password);
+  
+//       if (!isPasswordValid) {
+//         return res.status(401).json({ message: 'Current password is incorrect' });
+//       }
+  
+//       // Hash the new password
+//       const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+  
+//       // Update the password in the database
+//       await db('account').where({ acc_id: userId }).update({ acc_password: hashedNewPassword });
+  
+//       res.json({ message: 'Password changed successfully!' });
+//     } catch (error) {
+//       console.error(error);
+//       res.status(500).json({ message: 'Internal server error' });
+//     }
+//   });
+  
 
+// // Protected dashboard metrics endpoint
+// app.get('/api/dashboard/metrics', authenticateToken, async (req, res) => {
+//   try {
+//     const metrics = await db
+//       .select(
+//         db.raw('COUNT(*) FILTER (WHERE status = \'pending\') as pendingRequests'),
+//         db.raw('COUNT(*) FILTER (WHERE quantity <= reorder_point) as lowStockItems'),
+//         db.raw('COUNT(*) as totalRequests'),
+//         db.raw('COUNT(*) FILTER (WHERE status = \'received\') as receivedRequests')
+//       )
+//       .from('requests');
+
+//     res.json(metrics[0]);
+//   } catch (error) {
+//     console.error('Error fetching metrics:', error);
+//     res.status(500).json({ message: 'Error fetching dashboard metrics' });
+//   }
+// });
 
 // Start Server
 const port = 3000;

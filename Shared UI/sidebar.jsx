@@ -1,116 +1,104 @@
 import React, { useState } from "react";
-import logo from "../src/assets/NUAT THAI LOGO.svg"
+import logo from "../src/assets/NUAT THAI LOGO.svg";
+import { 
+  MdDashboard, 
+  MdAssignment, 
+  MdInventory, 
+  MdDescription,
+  MdArchive, 
+  MdLogout,
+  MdKeyboardArrowDown,
+  MdKeyboardArrowUp 
+} from "react-icons/md";
+
 const Sidebar = ({ role }) => {
-    const [activeMenu, setActiveMenu] = useState(null);
+  const [activeMenu, setActiveMenu] = useState(null);
 
-    const toggleDropdown = (menuName) => {
-        setActiveMenu(activeMenu === menuName ? null : menuName);
-    };
+  const toggleDropdown = (menuName) => {
+    setActiveMenu(activeMenu === menuName ? null : menuName);
+  };
 
-    // Centralized menu structure
-    const menuItems = {
-        admin: [
-            { name: "Dashboard", url: "/dashboard" },
-            { name: "Request", url: "/request" },
-            { name: "Inventory", url: "/inventory" },
-            {
-                name: "Reports",
-                isDropdown: true,
-                subItems: [
-                    { name: "Delivery Instruction Form", route: "/reports/dif" },
-                    { name: "Warehouse Stock Receiving Report", route: "/reports/wsrr" },
-                    { name: "Purchase Order", route: "/reports/po" },
-                ],
-            },
-            { name: "Archive", url: "/archive" },
-            { name: "Sign Out", url: "/signout" },
+  const menuItems = {
+    admin: [
+      { name: "Dashboard", url: "/dashboard", icon: MdDashboard},
+      { name: "Request", url: "/request", icon: MdAssignment},
+      { name: "Inventory", url: "/inventory", icon: MdInventory},
+      {
+        name: "Reports",
+        icon: MdDescription,
+        isDropdown: true,
+        subItems: [
+          { name: "Delivery Instruction Form", route: "/reports/dif"},
+          { name: "Stock Receiving Report", route: "/reports/wsrr"},
+          { name: "Purchase Order", route: "/reports/po"},
         ],
-        accounting: [
-            { name: "Dashboard", url: "/dashboard" },
-            { name: "Request", url: "/request" },
-            { name: "Inventory", url: "/inventory" },
-            {
-                name: "Reports",
-                isDropdown: true,
-                subItems: [
-                    { name: "Delivery Instruction Form", route: "/reports/dif" },
-                    { name: "Warehouse Stock Receiving Report", route: "/reports/wsrr" },
-                    { name: "Purchase Order", route: "/reports/po" },
-                ],
-            },
-            { name: "Archive", url: "/archive" },
-            { name: "Sign Out", url: "/signout" },
-        ],
-        warehouse: [
-            { name: "Dashboard", url: "/dashboard" },
-            { name: "Inventory", url: "/inventory" },
-            { name: "Archive", url: "/archive" },
-            { name: "Sign Out", url: "/signout" },
-        ],
-        branch: [
-            { name: "Dashboard", url: "/dashboard" },
-            { name: "Request", url: "/request" },
-            { name: "Archive", url: "/archive" },
-            { name: "Sign Out", url: "/signout" },
-        ],
-    };
+      },
+      { name: "Archive", url: "/archive", icon: MdArchive},
+    ],
+  };
 
-    // Function to render menu
-    const renderMenu = (items) => (
-        items.map((item, index) => (
-            <div key={index}>
-                {item.isDropdown ? (
-                    <div>
-                        <button
-                            onClick={() => toggleDropdown(item.name)}
-                            className="w-full text-left px-4 py-2 hover:bg-[#001302] transition-colors flex justify-between items-center text-white font-poppins"
-                        >
-                            <span>{item.name}</span>
-                            <span>{activeMenu === item.name ? "▲" : "▼"}</span>
-                        </button>
-                        {activeMenu === item.name && (
-                            <div className="bg-[#133517]">
-                                {item.subItems.map((subItem, subIndex) => (
-                                    <a
-                                        key={subIndex}
-                                        href={subItem.route}
-                                        className="block px-6 py-2 hover:bg-[#001302] text-white"
-                                    >
-                                        {subItem.name}
-                                    </a>
-                                ))}
-                            </div>
-                        )}
-                    </div>
-                ) : (
-                    <a
-                        href={item.url}
-                        className="block px-4 py-2 hover:bg-[#001302] transition-colors text-white font-poppins"
-                    >
-                        {item.name}
+  const renderMenu = (items) =>
+    items.map((item, index) => (
+      <div key={index} className="mb-2">
+        {item.isDropdown ? (
+          <div>
+            <button
+              onClick={() => toggleDropdown(item.name)}
+              className="ml-1 w-full justify-between items-center px-6 py-4 hover:bg-[#003d1a] transition duration-300 text-white font-medium text-lg flex gap-8"
+            >
+              <div className="flex items-center gap-10 w-full ml-1">
+                <item.icon className="w-6 h-6" />
+                <span>{item.name}</span>
+              </div>
+              {activeMenu === item.name ? (
+                <MdKeyboardArrowUp className="w-6 h-6" />
+              ) : (
+                <MdKeyboardArrowDown className="w-6 h-6" />
+              )}
+            </button>
+            {activeMenu === item.name && (
+              <ul className="bg-[#224430] py-2 ml-1">
+                {item.subItems.map((subItem, subIndex) => (
+                  <li key={subIndex} className="pl-16 py-3 hover:bg-[#003d1a]">
+                    <a href={subItem.route} className="text-white text-base">
+                      {subItem.name}
                     </a>
-                )}
-            </div>
-        ))
-    );
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        ) : (
+          <a
+            href={item.url}
+            className="flex items-center px-6 py-4 hover:bg-[#003d1a] transition duration-300 text-white font-medium text-lg gap-10"
+          >
+            <item.icon className="w-6 h-6" />
+            <span>{item.name}</span>
+          </a>
+        )}
+      </div>
+    ));
 
-    return (
-        <div className="h-screen bg-[#26582D] w-64 flex flex-col justify-between text-white font-poppins">
-            <div className="p-4">
-                <img
-                    className="w-[80px] sm:w-[120px] lg:w-[150px] h-auto object-contain"
-                    alt="Logo"
-                    src={logo}
-                />
-            </div>
+  return (
+    <div className="h-screen bg-[#105D2B] w-72 flex flex-col justify-between text-white">
+      {/* <img src={logo} alt="Logo" className="inline-flex float-left w-2 h-3" /> */}
 
-            {/* Menu Items */}
-            <nav className="space-y-2">
-                {renderMenu(menuItems[role] || [])}
-            </nav>
-        </div>
-       
-    );
+      <nav className="flex-1">
+        {renderMenu(menuItems[role] || [])}
+      </nav>
+
+      <div className="mb-6">
+        <a 
+          href="/signout"
+          className="flex items-center px-6 py-4 hover:bg-[#003d1a] transition duration-300 text-white font-medium text-lg gap-10"
+        >
+          <MdLogout className="w-6 h-6" />
+          <span>Sign Out</span>
+        </a>
+      </div>
+    </div>
+  );
 };
 
 export default Sidebar;
