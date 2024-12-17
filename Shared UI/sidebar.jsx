@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import logo from "../src/assets/NUAT THAI LOGO.svg";
+import logo from "../src/assets/NUAT THAI LOGO2.png";
 import {
   MdDashboard,
   MdAssignment,
@@ -10,79 +10,96 @@ import {
   MdKeyboardArrowDown,
   MdKeyboardArrowUp,
 } from "react-icons/md";
+import { useNavigate } from 'react-router-dom';  // Import useNavigate hook
+
+const menuItems = {
+  admin: [
+    { name: "Dashboard", url: "/dashboard", icon: MdDashboard },
+    { name: "Request", url: "/request", icon: MdAssignment },
+    { name: "Inventory", url: "/inventory", icon: MdInventory },
+    {
+      name: "Reports",
+      icon: MdDescription,
+      isDropdown: true,
+      subItems: [
+        { name: "Delivery Instruction Form", route: "/reports/dif" },
+        { name: "Stock Receiving Report", route: "/reports/wsrr" },
+        { name: "Purchase Order", route: "/reports/po" },
+      ],
+    },
+    // { name: "Archive", url: "/archive", icon: MdArchive },
+  ],
+  accounting: [
+    { name: "Dashboard", url: "/dashboard", icon: MdDashboard },
+    { name: "Request", url: "/request", icon: MdAssignment },
+    {
+      name: "Inventory",
+      url: "/inventory",
+      icon: MdInventory,
+      spacing: true,
+    },
+    {
+      name: "Reports",
+      icon: MdDescription,
+      isDropdown: true,
+      spacing: true,
+      subItems: [
+        {
+          name: "Delivery Instruction Form",
+          route: "/reports/dif",
+          spacing: true,
+        },
+        { name: "Stock Receiving Report", route: "/reports/wsrr" },
+        { name: "Purchase Order", route: "/reports/po" },
+      ],
+    },
+    // { name: "Archive", url: "/archive", icon: MdArchive },
+  ],
+  warehouse: [
+    { name: "Dashboard", url: "/dashboard", icon: MdDashboard },
+    { name: "Inventory", url: "/inventory", icon: MdInventory },
+    // { name: "Archive", url: "/archive", icon: MdArchive },
+  ],
+  branch: [
+    { name: "Dashboard", url: "/dashboard", icon: MdDashboard },
+    { name: "Request", url: "/request", icon: MdAssignment },
+    // { name: "Archive", url: "/archive", icon: MdArchive },
+  ],
+};
 
 const Sidebar = ({ role }) => {
   const [activeMenu, setActiveMenu] = useState(null);
+  const navigate = useNavigate();  // Initialize useNavigate hook for navigation
 
   const toggleDropdown = (menuName) => {
     setActiveMenu(activeMenu === menuName ? null : menuName);
   };
 
-  const menuItems = {
-    admin: [
-      { name: "Dashboard", url: "/dashboard", icon: MdDashboard },
-      { name: "Request", url: "/request", icon: MdAssignment },
-      { name: "Inventory", url: "/inventory", icon: MdInventory },
-      {
-        name: "Reports",
-        icon: MdDescription,
-        isDropdown: true,
-        subItems: [
-          { name: "Delivery Instruction Form", route: "/reports/dif" },
-          { name: "Stock Receiving Report", route: "/reports/wsrr" },
-          { name: "Purchase Order", route: "/reports/po" },
-        ],
-      },
-      { name: "Archive", url: "/archive", icon: MdArchive },
-    ],
-    accounting: [
-      { name: "Dashboard", url: "/dashboard", icon: MdDashboard },
-      { name: "Request", url: "/request", icon: MdAssignment },
-      {
-        name: "Inventory",
-        url: "/inventory",
-        icon: MdInventory,
-        spacing: true,
-      },
-      {
-        name: "Reports",
-        icon: MdDescription,
-        isDropdown: true,
-        spacing: true,
-        subItems: [
-          {
-            name: "Delivery Instruction Form",
-            route: "/reports/dif",
-            spacing: true,
-          },
-          { name: "Stock Receiving Report", route: "/reports/wsrr" },
-          { name: "Purchase Order", route: "/reports/po" },
-        ],
-      },
-      { name: "Archive", url: "/archive", icon: MdArchive },
-    ],
-    warehouse: [
-      { name: "Dashboard", url: "/dashboard", icon: MdDashboard },
-      { name: "Inventory", url: "/inventory", icon: MdInventory },
-      { name: "Archive", url: "/archive", icon: MdArchive },
-    ],
-    branch: [
-      { name: "Dashboard", url: "/dashboard", icon: MdDashboard },
-      { name: "Request", url: "/request", icon: MdAssignment },
-      { name: "Archive", url: "/archive", icon: MdArchive },
-    ],
+  const handleLogout = () => {
+    // Show confirmation prompt
+    const confirmLogout = window.confirm("Are you sure you want to log out?");
+    
+    if (confirmLogout) {
+      // Remove user data and token from localStorage
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+      
+      // Redirect to login page
+      navigate('/');
+    }
   };
 
   const renderMenu = (items) =>
     items.map((item, index) => (
-      <div key={index} className="mb-2">
+      <div key={index} className="mb-4">
+        {/* dropdown menu */}
         {item.isDropdown ? (
           <div>
             <button
               onClick={() => toggleDropdown(item.name)}
-              className="ml-1 w-full justify-between items-center px-6 py-4 hover:bg-[#003d1a] transition duration-300 text-white font-medium text-lg flex gap-8"
+              className="w-full flex items-center justify-center px-6 py-3 hover:bg-[#003d1a] transition duration-300 text-white font-poppins text-lg"
             >
-              <div className="flex items-center gap-10 w-full ml-1">
+              <div className="flex items-center justify-center gap-4">
                 <item.icon className="w-6 h-6" />
                 <span>{item.name}</span>
               </div>
@@ -93,10 +110,10 @@ const Sidebar = ({ role }) => {
               )}
             </button>
             {activeMenu === item.name && (
-              <ul className="bg-[#224430] py-2 ml-1">
+              <ul className="bg-[#224430] py-6">
                 {item.subItems.map((subItem, subIndex) => (
-                  <li key={subIndex} className="pl-16 py-3 hover:bg-[#003d1a]">
-                    <a href={subItem.route} className="text-white text-base">
+                  <li key={subIndex} className="pl-16 py-2 hover:bg-[#003d1a] flex items-center justify-center mb-4 mt-1">
+                    <a href={subItem.route} className="text-white text-base font-poppins ">
                       {subItem.name}
                     </a>
                   </li>
@@ -105,33 +122,52 @@ const Sidebar = ({ role }) => {
             )}
           </div>
         ) : (
+          // Regular menu 
           <a
             href={item.url}
-            className="flex items-center px-6 py-4 hover:bg-[#003d1a] transition duration-300 text-white font-medium text-lg gap-10"
+            className="group flex items-center justify-center px-10 py-10 hover:bg-[#003d1a] transition duration-300 text-white font-poppins text-lg mb-6 mt-4"
           >
-            <item.icon className="w-6 h-6" />
-            <span>{item.name}</span>
+            <item.icon className=" w-6 h-6 group-hover:scale-110 transition-transform" />
+            <span className="group-hover:scale-110 transition-transform">{item.name}</span>
           </a>
         )}
       </div>
     ));
 
   return (
-    <div className="h-screen bg-[#105D2B] w-72 flex flex-col justify-between text-white">
-      {/* <img src={logo} alt="Logo" className="inline-flex float-left w-2 h-3" /> */}
+    <>
+      {/* Sidebar Container */}
+      <div
+        className="space-x-6fixed top-0 left-0 h-screen bg-[#105D2B] shadow-2xl z-50 transition-transform duration-500"
+        style={{
+          width: "250px",
+        }}
+      >
+         {/* Logo Section */}
+         <div className="flex justify-center items-center py-6 bg-[#003d1a] mb-6">
+          <img
+            src={logo}
+            alt="Logo"
+            // className="w-10 h-10 object-fit"
+          />
+        </div>
+        
+        {/* Navigation */}
+        <nav className="flex-1 mt-4">{renderMenu(menuItems[role] || [])}</nav>
 
-      <nav className="flex-1">{renderMenu(menuItems[role] || [])}</nav>
-
-      <div className="mb-6">
-        <a
-          href="/signout"
-          className="flex items-center px-6 py-4 hover:bg-[#003d1a] transition duration-300 text-white font-medium text-lg gap-10"
+        <div className="mt-auto flex justify-start px-6 py-4">
+        <button
+          onClick={handleLogout}  // Attach the handleLogout to the button
+          className="flex flex-col justify-center items-center hover:bg-[#003d1a] transition duration-300 text-white text-lg font-poppins w-full mt-6"
         >
-          <MdLogout className="w-6 h-6" />
-          <span>Sign Out</span>
-        </a>
+          <div className="flex items-center gap-6 justify-center space-y-10">
+            <MdLogout className="w-6 h-6 group-hover:scale-110 transition-transform ml-10" />
+            <span className="text-center group-hover:scale-110 transition-transform">Sign Out</span>
+          </div>
+        </button>
       </div>
-    </div>
+      </div>
+    </>
   );
 };
 

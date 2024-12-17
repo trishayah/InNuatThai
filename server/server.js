@@ -70,14 +70,14 @@ app.post('/login', async (req, res) => {
       .first();
 
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: 'Invalid username or password' });
     }
 
     // Since passwords are stored as plain text, directly compare them
     const isPasswordValid = password === user.acc_password;
 
     if (!isPasswordValid) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+      return res.status(401).json({ message: 'Invalid username or password' });
     }
 
     // Generate JWT token

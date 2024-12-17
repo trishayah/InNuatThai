@@ -156,27 +156,28 @@ const Dashboard = () => {
   if (!user) return null;
 
   return (
-    <div className="flex min-h-screen w-full bg-gray-100">
-      {/* Sidebar */}
-      <Sidebar role={user?.role?.toLowerCase()} />
-      {/* Main Content */}
-      <div className="flex-1 ml-64">
-        <div className="p-8">
-          <div className="flex justify-between items-center mb-10">
-            <h2 className="text-2xl font-bold text-gray-800">Welcome, {user?.name || 'User'}</h2>
-           
-          </div>
-          
-          {loading ? (
-            <div className="flex justify-center items-center h-64">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#26582D]"></div>
-            </div>
-          ) : (
-            renderDashboard()
-          )}
-        </div>
+    <div className="flex flex-row min-h-screen w-full overflow-hidden bg-gray-100">
+
+  {/* Sidebar */}
+  {/* <Sidebar role={user?.role?.toLowerCase()} /> */}
+
+  {/* Main Content */}
+  <div className="flex-1">
+    <div className="p-8">
+      <div className="flex justify-between items-center mb-10">
+        <h2 className="text-2xl font-bold text-gray-800">Welcome, {user?.name || 'User'}</h2>
       </div>
+      
+      {loading ? (
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#26582D]"></div>
+        </div>
+      ) : (
+        renderDashboard()
+      )}
     </div>
+  </div>
+</div>
   );
 };
 

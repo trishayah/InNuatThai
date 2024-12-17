@@ -28,7 +28,7 @@ import axios from "axios";
         // Navigate to dashboard after successful login
         window.location.href = '/dashboard';
       } catch (error) {
-        setErrorMessage(error.response?.data?.message || 'Login failed');
+        setErrorMessage(error.response?.data?.message || 'Login failed. Please check your credentials.');
       }
     };
 
@@ -59,7 +59,7 @@ import axios from "axios";
 
             {/* Error Message */}
             {errorMessage && (
-              <div className="text-red-500 text-sm mb-4">{errorMessage}</div>
+              <div className="text-red-500 text-sm mb-4 font-poppins">{errorMessage}</div>
             )}
 
             {/* Username Input */}
