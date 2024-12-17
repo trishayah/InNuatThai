@@ -67,9 +67,20 @@ const menuItems = {
   ],
 };
 
-const Sidebar = ({ role }) => {
+const Sidebar = () => {
   const [activeMenu, setActiveMenu] = useState(null);
-  const navigate = useNavigate();  // Initialize useNavigate hook for navigation
+  const navigate = useNavigate();
+  
+  const user = JSON.parse(localStorage.getItem("user")); // Get user details
+  const role = user?.role;
+
+  // Ensure role exists in menuItems
+  const userMenu = menuItems[role];
+
+  if (!userMenu) {
+    console.error("Invalid role or menu configuration:", role);
+    return <div className="text-white p-4">No menu available for this role.</div>;
+  }
 
   const toggleDropdown = (menuName) => {
     setActiveMenu(activeMenu === menuName ? null : menuName);

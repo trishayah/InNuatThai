@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
-import Sidebar from "./sidebar";
 import { useNavigate } from 'react-router-dom';
+import { MdAccountCircle } from 'react-icons/md';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -59,11 +59,6 @@ const Dashboard = () => {
     return () => clearInterval(intervalId);
   }, [navigate]);
 
-  const handleLogout = () => {
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
-    navigate('/');
-  };
 
   const BranchView = () => (
     <div className="grid grid-cols-2 md:grid-cols-2 gap-6">
@@ -71,10 +66,10 @@ const Dashboard = () => {
         <h3 className="text-lg font-medium mb-4 font-poppins">Pending Requests</h3>
         <p className="text-4xl font-bold text-green-800  font-poppins">{metrics.pendingRequests}</p>
       </div>
-      <div className="border-2 rounded-lg p-6 bg-white">
+      {/* <div className="border-2 rounded-lg p-6 bg-white">
         <h3 className="text-lg font-medium mb-4 font-poppins">No. of Item in low stock</h3>
         <p className="text-4xl font-bold text-green-800 font-poppins">{metrics.lowStockItems}</p>
-      </div>
+      </div> */}
       <div className="border-2 rounded-lg p-6 md:col-span-2 bg-white">
         <h3 className="text-lg font-medium mb-4 font-poppins">Total Requests Made</h3>
         <p className="text-4xl font-bold text-green-800 font-poppins">{metrics.totalRequests}</p>
@@ -84,7 +79,7 @@ const Dashboard = () => {
 
   const WarehouseView = () => (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div className="border-2 rounded-lg p-6 bg-white">
+      <div className="border-2 border-color rounded-lg p-6 bg-white">
         <h3 className="text-lg font-medium mb-4 font-poppins">Pending Requests</h3>
         <p className="text-4xl font-bold text-green-800 font-poppins">{metrics.pendingRequests}</p>
       </div>
@@ -135,11 +130,11 @@ const Dashboard = () => {
 
   const renderDashboard = () => {
     if (!user) return null;
-    
+
     // Convert role to lowercase for consistent comparison
     const userRole = user.role?.toLowerCase();
-    
-    switch(userRole) {
+
+    switch (userRole) {
       case 'accounting':
         return <AccountingView />;
       case 'admin':
@@ -156,28 +151,28 @@ const Dashboard = () => {
   if (!user) return null;
 
   return (
-    <div className="flex flex-row min-h-screen w-full overflow-hidden bg-gray-100">
-
-  {/* Sidebar */}
-  {/* <Sidebar role={user?.role?.toLowerCase()} /> */}
-
-  {/* Main Content */}
-  <div className="flex-1">
-    <div className="p-8">
-      <div className="flex justify-between items-center mb-10">
-        <h2 className="text-2xl font-bold text-gray-800">Welcome, {user?.name || 'User'}</h2>
-      </div>
-      
-      {loading ? (
-        <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#26582D]"></div>
+    <div className="flex flex-col min-h-screen w-full overflow-hidden bg-gray-100">
+      {/* Main Content */}
+      <div className="flex-1 font-poppins relative">
+        <div className="flex justify-between items-center p-4">
+          <h2 className="text-2xl font-semibold text-[#105D2B]">Dashboard</h2>
+          <div className="flex items-center space-x-4 justify-items-end relative">
+            <MdAccountCircle className="w-5 h-5 text-[#105D2B]" />
+            <p className="text-base font-medium text-[#105D2B] ml-2">{user?.name || 'User'}</p>
+          </div>
         </div>
-      ) : (
-        renderDashboard()
-      )}
+  
+        <div className="p-8">
+          {loading ? (
+            <div className="flex justify-center items-center h-64">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#26582D]"></div>
+            </div>
+          ) : (
+            renderDashboard()
+          )}
+        </div>
+      </div>
     </div>
-  </div>
-</div>
   );
 };
 
