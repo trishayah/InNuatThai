@@ -1,40 +1,52 @@
 import React, { useState } from "react";
 import logo from "./assets/NUAT THAI LOGO.svg";
-import { Link } from 'react-router-dom';
-import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
+import { Link } from "react-router-dom";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import axios from "axios";
 
-  function LogIn() {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
-    const [showPassword, setShowPassword] = useState(false); // sets the default value to false
+// Set Axios Base URL
+axios.defaults.baseURL = 'http://localhost:3000';
 
-    const handleLogin = async () => {
-      try {
-        const response = await axios.post('http://localhost:3000/login', {
-          username,
-          password,
-        });
+function LogIn() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
-        // Store user data and token
-        localStorage.setItem('token', response.data.token);
-        localStorage.setItem('user', JSON.stringify({
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post("http://localhost:3000/login", {
+        username,
+        password,
+      });
+  
+      console.log("Login response:", response.data); // Log response to debug
+  
+      // Store user data and token
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
           username: response.data.username,
           role: response.data.role.toLowerCase(),
-          name: response.data.name
-        }));
+          name: response.data.name,
+        })
+      );
+  
+      // Navigate to dashboard
+      window.location.href = "/dashboard";
+    } catch (error) {
+      console.error("Login error:", error.response?.data || error.message);
+      setErrorMessage(
+        error.response?.data?.message || "Login failed. Please try again."
+      );
+    }
+  };
 
-        // Navigate to dashboard after successful login
-        window.location.href = '/dashboard';
-      } catch (error) {
-        setErrorMessage(error.response?.data?.message || 'Login failed. Please check your credentials.');
-      }
-    };
+  const viewPassword = () => {
+    setShowPassword((prev) => !prev);
+  };
 
-    const viewPassword = () => { // function helps to hide/show the password
-      setShowPassword((showNewPassword) => !showNewPassword);
-    };
 
 
     return (

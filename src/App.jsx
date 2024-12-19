@@ -17,9 +17,10 @@ const isAuthenticated = () => !!localStorage.getItem("token");
 
 // Layout with Sidebar
 const ProtectedLayout = () => {
+  const user = JSON.parse(localStorage.getItem("user")); // Fetch user data
   return isAuthenticated() ? (
     <div className="flex h-screen">
-      <Sidebar role="admin" /> {/* Pass role dynamically here */}
+      <Sidebar role={user?.role} /> {/* Pass role dynamically */}
       <div className="flex-1 p-6 bg-gray-100 overflow-auto">
         <Outlet />
       </div>

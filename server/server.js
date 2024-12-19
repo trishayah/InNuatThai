@@ -8,8 +8,10 @@ const jwt = require('jsonwebtoken'); // Added jwt module
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({ origin: '*' }));
+
 app.use(express.json());
+
 
 // Authentication middleware
 const authenticateToken = (req, res, next) => {
@@ -30,13 +32,13 @@ const authenticateToken = (req, res, next) => {
 };
 // Database Configuration
 const db = knex({
-    client: 'pg',
+    client: 'mysql2',
     connection: { 
-        host: 'localhost', 
-        user: 'postgres', 
-        password: '1234', 
-        database: 'InNuatThai', 
-        port: 5432
+      host: process.env.DB_HOST || 'localhost', // Database host
+      user: process.env.DB_USER || 'root',     // Database username
+      password: process.env.DB_PASSWORD || '12345', // Database password
+      database: process.env.DB_NAME || 'db', // Database name
+      port: process.env.DB_PORT || 3306        // Database port
     },
 });
 // async function hashExistingPasswords() {
@@ -60,50 +62,95 @@ const db = knex({
   
 //   hashExistingPasswords();
 
-app.post('/login', async (req, res) => {
+// Login Endpoint
+app.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
+  console.log("Request body received:", req.body); // Debugging input
+
   try {
-    // Find the user by username
-    const user = await db('account')
-      .where({ acc_username: username })
-      .first();
+    if (!username || !password) {
+      console.error("Missing username or password");
+      return res.status(400).json({ message: "Username and password are required." });
+    }
+
+    const user = await db("account").where({ acc_username: username }).first();
+    console.log("User fetched from database:", user); // Debugging user data
 
     if (!user) {
-      return res.status(404).json({ message: 'Invalid username or password' });
+      console.error("User not found");
+      return res.status(404).json({ message: "Invalid username or password." });
     }
 
-    // Since passwords are stored as plain text, directly compare them
-    const isPasswordValid = password === user.acc_password;
-
+    const isPasswordValid = password.trim() === user.acc_password.trim();
     if (!isPasswordValid) {
-      return res.status(401).json({ message: 'Invalid username or password' });
+      console.error("Password mismatch");
+      return res.status(401).json({ message: "Invalid username or password." });
     }
 
-    // Generate JWT token
     const token = jwt.sign(
-      {
-        userId: user.acc_id,
-        username: user.acc_username,
-        role: user.acc_name
-      },
+      { userId: user.acc_id, username: user.acc_username, role: user.acc_name },
       process.env.JWT_SECRET,
-      { expiresIn: '24h' }
+      { expiresIn: "24h" }
     );
 
-    // Send response with token and user info
-    res.json({
-      message: 'Login successful',
+    res.status(200).json({
+      message: "Login successful",
       token,
       username: user.acc_username,
       role: user.acc_name,
-      name: user.acc_name
+      name: user.acc_name,
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Internal server error' });
+    console.error("Server error:", error.message);
+    res.status(500).json({ message: "Internal server error." });
   }
 });
+
+// app.post('/login', async (req, res) => {
+//   const { username, password } = req.body;
+
+//   try {
+//     // Find the user by username
+//     const user = await db('account')
+//       .where({ acc_username: username })
+//       .first();
+
+//     if (!user) {
+//       return res.status(404).json({ message: 'Invalid username or password' });
+//     }
+
+//     // Since passwords are stored as plain text, directly compare them
+//     const isPasswordValid = password === user.acc_password;
+
+//     if (!isPasswordValid) {
+//       return res.status(401).json({ message: 'Invalid username or password' });
+//     }
+
+//     // Generate JWT token
+//     const token = jwt.sign(
+//       {
+//         userId: user.acc_id,
+//         username: user.acc_username,
+//         role: user.acc_name
+//       },
+//       process.env.JWT_SECRET,
+//       { expiresIn: '24h' }
+//     );
+
+//     // Send response with token and user info
+//     res.json({
+//       message: 'Login successful',
+//       token,
+//       username: user.acc_username,
+//       role: user.acc_name,
+//       name: user.acc_name
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: 'Internal server error' });
+//   }
+// });
 
 //   app.post('/change-password', async (req, res) => {
 //     const { userId, currentPassword, newPassword } = req.body;
@@ -157,7 +204,7 @@ app.post('/login', async (req, res) => {
 // });
 
 // Start Server
-const port = 3000;
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
+  console.log(`Server running on port ${port}`);
 });
