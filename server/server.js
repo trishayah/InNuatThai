@@ -2,7 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const knex = require('knex');
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken'); // Added jwt module
 
 const app = express();

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { MdAccountCircle } from 'react-icons/md';
-
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import AccInfo from "./accInfo";
 const Dashboard = () => {
   const navigate = useNavigate();
   const [metrics, setMetrics] = useState({
@@ -11,7 +10,7 @@ const Dashboard = () => {
     totalRequests: 0,
     receivedRequests: 0,
     pendingBranchRequests: 0,
-    pendingInventoryRequests: 0
+    pendingInventoryRequests: 0,
   });
 
   const [loading, setLoading] = useState(true);
@@ -19,11 +18,11 @@ const Dashboard = () => {
 
   useEffect(() => {
     // Check if user is logged in
-    const userData = localStorage.getItem('user');
-    const token = localStorage.getItem('token');
+    const userData = localStorage.getItem("user");
+    const token = localStorage.getItem("token");
 
     if (!userData || !token) {
-      navigate('/');
+      navigate("/");
       return;
     }
 
@@ -33,19 +32,19 @@ const Dashboard = () => {
     const fetchMetrics = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('/api/dashboard/metrics', {
+        const response = await axios.get("/api/dashboard/metrics", {
           headers: {
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
         setMetrics(response.data);
       } catch (error) {
-        console.error('Error fetching metrics:', error);
+        console.error("Error fetching metrics:", error);
         if (error.response?.status === 401) {
           // Token expired or invalid
-          localStorage.removeItem('user');
-          localStorage.removeItem('token');
-          navigate('/');
+          localStorage.removeItem("user");
+          localStorage.removeItem("token");
+          navigate("/");
         }
       } finally {
         setLoading(false);
@@ -59,20 +58,24 @@ const Dashboard = () => {
     return () => clearInterval(intervalId);
   }, [navigate]);
 
-
   const BranchView = () => (
     <div className="grid grid-cols-2 md:grid-cols-2 gap-6">
       <div className="border-2 rounded-lg p-6 bg-white">
-        <h3 className="text-lg font-medium mb-4 font-poppins">Pending Requests</h3>
-        <p className="text-4xl font-bold text-green-800  font-poppins">{metrics.pendingRequests}</p>
+        <h3 className="text-lg font-medium mb-4 font-poppins">
+          Pending Requests
+        </h3>
+        <p className="text-4xl font-bold text-green-800  font-poppins">
+          {metrics.pendingRequests}
+        </p>
       </div>
-      {/* <div className="border-2 rounded-lg p-6 bg-white">
-        <h3 className="text-lg font-medium mb-4 font-poppins">No. of Item in low stock</h3>
-        <p className="text-4xl font-bold text-green-800 font-poppins">{metrics.lowStockItems}</p>
-      </div> */}
+    
       <div className="border-2 rounded-lg p-6 md:col-span-2 bg-white">
-        <h3 className="text-lg font-medium mb-4 font-poppins">Total Requests Made</h3>
-        <p className="text-4xl font-bold text-green-800 font-poppins">{metrics.totalRequests}</p>
+        <h3 className="text-lg font-medium mb-4 font-poppins">
+          Total Requests Made
+        </h3>
+        <p className="text-4xl font-bold text-green-800 font-poppins">
+          {metrics.totalRequests}
+        </p>
       </div>
     </div>
   );
@@ -80,16 +83,28 @@ const Dashboard = () => {
   const WarehouseView = () => (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div className="border-2 border-color rounded-lg p-6 bg-white">
-        <h3 className="text-lg font-medium mb-4 font-poppins">Pending Requests</h3>
-        <p className="text-4xl font-bold text-green-800 font-poppins">{metrics.pendingRequests}</p>
+        <h3 className="text-lg font-medium mb-4 font-poppins">
+          Pending Requests
+        </h3>
+        <p className="text-4xl font-bold text-green-800 font-poppins">
+          {metrics.pendingRequests}
+        </p>
       </div>
       <div className="border-2 rounded-lg p-6 bg-white">
-        <h3 className="text-lg font-medium mb-4 font-poppins">No. of Item in low stock</h3>
-        <p className="text-4xl font-bold text-green-800 font-poppins">{metrics.lowStockItems}</p>
+        <h3 className="text-lg font-medium mb-4 font-poppins">
+          No. of Item in low stock
+        </h3>
+        <p className="text-4xl font-bold text-green-800 font-poppins">
+          {metrics.lowStockItems}
+        </p>
       </div>
       <div className="border-2 rounded-lg p-6 md:col-span-2 bg-white">
-        <h3 className="text-lg font-medium mb-4 font-poppins">Total Requests Made</h3>
-        <p className="text-4xl font-bold text-green-800 font-poppins">{metrics.totalRequests}</p>
+        <h3 className="text-lg font-medium mb-4 font-poppins">
+          Total Requests Made
+        </h3>
+        <p className="text-4xl font-bold text-green-800 font-poppins">
+          {metrics.totalRequests}
+        </p>
       </div>
     </div>
   );
@@ -97,51 +112,82 @@ const Dashboard = () => {
   const AccountingView = () => (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div className="border-2 rounded-lg p-6 bg-white">
-        <h3 className="text-lg font-medium mb-4 font-poppins">Received Requests</h3>
-        <p className="text-4xl font-bold text-green-800 font-poppins">{metrics.receivedRequests}</p>
+        <h3 className="text-lg font-medium mb-4 font-poppins">
+          Received Requests
+        </h3>
+        <p className="text-4xl font-bold text-green-800 font-poppins">
+          {metrics.receivedRequests}
+        </p>
       </div>
       <div className="border-2 rounded-lg p-6 bg-white">
-        <h3 className="text-lg font-medium mb-4 font-poppins">No. of Item in low stock</h3>
-        <p className="text-4xl font-bold text-green-800 font-poppins">{metrics.lowStockItems}</p>
+        <h3 className="text-lg font-medium mb-4 font-poppins">
+          No. of Item in low stock
+        </h3>
+        <p className="text-4xl font-bold text-green-800 font-poppins">
+          {metrics.lowStockItems}
+        </p>
       </div>
     </div>
   );
 
   const AdminView = () => (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div className="border-2 rounded-lg p-6 bg-white">
-        <h3 className="text-lg font-medium mb-4 font-poppins">Total Branch Requests</h3>
-        <p className="text-4xl font-bold text-green-800 font-poppins">{metrics.pendingBranchRequests}</p>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 place-items-center">
+      {/* Pending Branch Requests */}
+      <div className="border rounded-lg p-4 w-[300px] h-[150px] bg-white shadow-md">
+        <h3 className="text-md font-medium font-poppins text-center mb-2">
+          Pending Branch Requests
+        </h3>
+        <p className="text-4xl font-bold text-green-800 font-poppins text-center">
+          {metrics.pendingBranchRequests}
+        </p>
       </div>
-      <div className="border-2 rounded-lg p-6 bg-white">
-        <h3 className="text-lg font-medium mb-4 font-poppins">Total Inventory Requests</h3>
-        <p className="text-4xl font-bold text-green-800 font-poppins">{metrics.pendingInventoryRequests}</p>
+  
+      {/* Pending Inventory Requests */}
+      <div className="border rounded-lg p-4 w-[300px] h-[150px] bg-white shadow-md">
+        <h3 className="text-md font-medium font-poppins text-center mb-2">
+          Pending Inventory Requests
+        </h3>
+        <p className="text-4xl font-bold text-green-800 font-poppins text-center">
+          {metrics.pendingInventoryRequests}
+        </p>
       </div>
-      <div className="border-2 rounded-lg p-6 bg-white">
-        <h3 className="text-lg font-medium mb-4 font-poppins">Total Received Requests</h3>
-        <p className="text-4xl font-bold text-green-800 font-poppins">{metrics.receivedRequests}</p>
+  
+      {/* Received Requests */}
+      <div className="border rounded-lg p-4 w-[300px] h-[150px] bg-white shadow-md">
+        <h3 className="text-md font-medium font-poppins text-center mb-2">
+          Received Requests
+        </h3>
+        <p className="text-4xl font-bold text-green-800 font-poppins text-center">
+          {metrics.receivedRequests}
+        </p>
       </div>
-      <div className="border-2 rounded-lg p-6 bg-white">
-        <h3 className="text-lg font-medium mb-4 font-poppins">Low Stock Items</h3>
-        <p className="text-4xl font-bold text-green-800 font-poppins">{metrics.lowStockItems}</p>
+  
+      {/* Low Stock Items */}
+      <div className="border rounded-lg p-4 w-[300px] h-[150px] bg-white shadow-md">
+        <h3 className="text-md font-medium font-poppins text-center mb-2">
+          Low Stock Items
+        </h3>
+        <p className="text-4xl font-bold text-green-800 font-poppins text-center">
+          {metrics.lowStockItems}
+        </p>
       </div>
     </div>
   );
+  
 
   const renderDashboard = () => {
     if (!user) return null;
-
     // Convert role to lowercase for consistent comparison
     const userRole = user.role?.toLowerCase();
 
     switch (userRole) {
-      case 'accounting':
+      case "accounting":
         return <AccountingView />;
-      case 'admin':
+      case "admin":
         return <AdminView />;
-      case 'branch':
+      case "branch":
         return <BranchView />;
-      case 'warehouse':
+      case "warehouse":
         return <WarehouseView />;
       default:
         return <div>Invalid user role</div>;
@@ -150,19 +196,16 @@ const Dashboard = () => {
 
   if (!user) return null;
 
-  return (
-    <div className="flex flex-col min-h-screen w-full overflow-hidden bg-gray-100">
-      {/* Main Content */}
-      <div className="flex-1 font-poppins relative">
-        <div className="flex justify-between items-center p-4">
-          <h2 className="text-2xl font-semibold text-[#105D2B]">Dashboard</h2>
-          <div className="flex items-center space-x-4 justify-items-end relative">
-            <MdAccountCircle className="w-5 h-5 text-[#105D2B]" />
-            <p className="text-base font-medium text-[#105D2B] ml-2">{user?.name || 'User'}</p>
-          </div>
-        </div>
   
-        <div className="p-8">
+  return (
+    <div className = "flex flex-col items-end mr-[4rem] h-full font-poppins bg-[#D9D9D9]">
+        <div className="flex justify-between items-center p-4">
+          <h2 className="text-2xl font-semibold text-[#133517] mt-4">Dashboard</h2>
+        </div>
+        <div className="absolute top-0 left-0">
+          <AccInfo user={user} /> {/* Use the reusable component here */} 
+          </div>
+          <div className="p-8">
           {loading ? (
             <div className="flex justify-center items-center h-64">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#26582D]"></div>
@@ -171,9 +214,10 @@ const Dashboard = () => {
             renderDashboard()
           )}
         </div>
-      </div>
-    </div>
+  </div>
   );
 };
+
+
 
 export default Dashboard;

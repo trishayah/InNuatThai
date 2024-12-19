@@ -14,55 +14,46 @@ import { useNavigate } from 'react-router-dom';  // Import useNavigate hook
 
 const menuItems = {
   admin: [
-    { name: "Dashboard", url: "/dashboard", icon: MdDashboard },
-    { name: "Request", url: "/request", icon: MdAssignment },
-    { name: "Inventory", url: "/inventory", icon: MdInventory },
+    { name: "Dashboard", url: "admin/dashboard", icon: MdDashboard },
+    { name: "Request", url: "admin/request", icon: MdAssignment },
+    { name: "Inventory", url: "admin/inventory", icon: MdInventory },
     {
       name: "Reports",
       icon: MdDescription,
       isDropdown: true,
       subItems: [
-        { name: "Delivery Instruction Form", route: "/reports/dif" },
-        { name: "Stock Receiving Report", route: "/reports/wsrr" },
-        { name: "Purchase Order", route: "/reports/po" },
+        { name: "Delivery Instruction Form", route: "admin/reports/dif" },
+        { name: "Stock Receiving Report", route: "admin/reports/wsrr" },
+        { name: "Purchase Order", route: "admin/reports/po" },
       ],
     },
     // { name: "Archive", url: "/archive", icon: MdArchive },
   ],
   accounting: [
-    { name: "Dashboard", url: "/dashboard", icon: MdDashboard },
-    { name: "Request", url: "/request", icon: MdAssignment },
-    {
-      name: "Inventory",
-      url: "/inventory",
-      icon: MdInventory,
-      spacing: true,
-    },
+    { name: "Dashboard", url: "accounting/dashboard", icon: MdDashboard },
+    { name: "Request", url: "accounting/request", icon: MdAssignment },
+    {name: "Inventory", url: "accounting/inventory", icon: MdInventory,},
     {
       name: "Reports",
       icon: MdDescription,
       isDropdown: true,
       spacing: true,
       subItems: [
-        {
-          name: "Delivery Instruction Form",
-          route: "/reports/dif",
-          spacing: true,
-        },
-        { name: "Stock Receiving Report", route: "/reports/wsrr" },
-        { name: "Purchase Order", route: "/reports/po" },
+        {name: "Delivery Instruction Form", route: "accounting/reports/dif",},
+        { name: "Stock Receiving Report", route: "accounting/reports/wsrr" },
+        { name: "Purchase Order", route: "accounting/reports/po" },
       ],
     },
     // { name: "Archive", url: "/archive", icon: MdArchive },
   ],
   warehouse: [
-    { name: "Dashboard", url: "/dashboard", icon: MdDashboard },
-    { name: "Inventory", url: "/inventory", icon: MdInventory },
+    { name: "Dashboard", url: "warehouse/dashboard", icon: MdDashboard },
+    { name: "Inventory", url: "warehouse/inventory", icon: MdInventory },
     // { name: "Archive", url: "/archive", icon: MdArchive },
   ],
   branch: [
-    { name: "Dashboard", url: "/dashboard", icon: MdDashboard },
-    { name: "Request", url: "/request", icon: MdAssignment },
+    { name: "Dashboard", url: "branch/dashboard", icon: MdDashboard },
+    { name: "Request", url: "branch/request", icon: MdAssignment },
     // { name: "Archive", url: "/archive", icon: MdArchive },
   ],
 };
@@ -166,7 +157,8 @@ const Sidebar = () => {
         {/* Navigation */}
         <nav className="flex-1 mt-4">{renderMenu(menuItems[role] || [])}</nav>
 
-        <div className="mt-auto flex justify-start px-6 py-4">
+        <div className="logout mt-auto4
+         flex justify-start px-6 py-4">
         <button
           onClick={handleLogout}  // Attach the handleLogout to the button
           className="flex flex-col justify-center items-center hover:bg-[#003d1a] transition duration-300 text-white text-lg font-poppins w-full mt-6"

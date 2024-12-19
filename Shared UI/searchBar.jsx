@@ -1,0 +1,23 @@
+import React from "react";
+import { MdSearch } from "react-icons/md";
+
+const SearchBar = () => {
+  return (
+    <div className="flex items-left justify-left ml-4 mt-4">
+      <div className="flex items-center w-full sm:w-[400px] h-[40px] bg-white rounded-[10px] mb-4 pl-3 font-poppins hover:ring-2 hover:ring-[#105D2B] shadow-md border border-[#105D2B]">
+        {/* Input */}
+        <input
+          type="text"
+          placeholder="Search"
+          className="w-full h-full bg-transparent text-black text-sm sm:text-base focus:outline-none pl-2"
+        />
+        {/* Search Button */}
+        <button className="flex items-center text-[#105D2B]">
+          <MdSearch className="px-4 pl-1" size={24} />
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default SearchBar;
