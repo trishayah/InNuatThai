@@ -113,6 +113,13 @@
     margin-right: 20px;
   }
 
+  .request {
+    display: flex; 
+    justify-content: flex-start; 
+    gap: 10px; 
+    margin-right: 20px;
+  }
+
   .sorting{
     border-radius: 7px;
     margin-top: 20px;
@@ -122,11 +129,31 @@
   .option{
     height: 30px;
     display: flex;
-    margin-left: 1180px; 
+    margin-top: 20px;
+    margin-left: 650px; 
     border-radius: 7px;
   }
 
+  /* .sorting1{
+    border-radius: 7px;
+    margin-top: 20px;
+    height: 30px;
+  }
+
+  .option1{
+    height: 30px;
+    display: flex;
+    margin-top: 20px;
+    margin-left: 650px; 
+    border-radius: 7px;
+  } */
+
   .inventoryTable{
+    margin-right: 20px; /* Add space from the right edge */
+    margin-left: 20px; /* Add space from the right edge */
+  }
+
+  .requestTable{
     margin-right: 20px; /* Add space from the right edge */
     margin-left: 20px; /* Add space from the right edge */
   }

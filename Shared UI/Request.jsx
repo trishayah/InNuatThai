@@ -76,9 +76,17 @@ function Request() {
     <div className="flex flex-col w-full min-w-screen h-full min-h-screen bg-[#D9D9D9]">
       <h1 className="text-2xl font-500 text-[#133517] mt-4 font-poppins mr-4 p-4">Request</h1>
       <div className="requestTable">
-        <div className="mt-8">
+        <div className="request">
           <SearchBar />
           <accInfo />
+          <select style={{ backgroundColor: "#133517", color: "#FFFFFF"}} className="sorting">
+              <option value="">Sort by</option>
+              <option value="asc">A-Z</option>
+              <option value="desc">Z-A</option>
+              <option value="branch">Branch</option>
+              <option value="reqdate">Request Date</option>
+              <option value="status">Status</option>
+            </select>  
           </div>        
         <table className="table-fixed border-spacing-2 w-full border-collapse border border-gray-300 font-poppins font-semibold">
           <thead>
