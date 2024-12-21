@@ -65,12 +65,25 @@ function Inventory() {
   return (
     <div className="flex flex-col w-full min-w-screen h-full min-h-screen bg-[#D9D9D9]">
       <h1 className="text-2xl font-500 text-[#133517] font-poppins mt-4 mr-4 p-4">Inventory</h1>
-      <div className="inventoryTable ml-2 mr-2">
-        <div className="mt-8">
+      <div className="inventoryTable ml-2 mr-2">           
+              <select style={{ backgroundColor: "#133517", color: "#FFFFFF" }} className="option">
+              <option value="update">Update Request</option>
+              <option value="add">Add Request</option>
+              <option value="remove">Remove Request</option>
+              <option value="view">View Inventory</option>
+            </select>
+        <div className="search">
           <SearchBar />
-          <accInfo />
-          </div>        
-        <table className="table-fixed border-spacing-2 w-full border-collapse border border-gray-300 font-poppins font-semibold">
+          <accInfo />         
+          <select style={{ backgroundColor: "#133517", color: "#FFFFFF"}} className="sorting">
+              <option value="">Sort by</option>
+              <option value="asc">A-Z</option>
+              <option value="desc">Z-A</option>
+              <option value="category">Category</option>
+            </select>  
+          </div>
+
+        <table className="inventoryTabletable-fixed border-spacing-2 w-full border-collapse border border-gray-300 font-poppins font-semibold">
           <thead>
             <tr style={{ backgroundColor: "#133517", color: "#FFFFFF" }} className="border border-gray-300">
               <th className="px-4 py-2 text-center">Inventory No.</th>

@@ -37,7 +37,7 @@ const ProtectedLayout = () => {
 };
 
 const router = createBrowserRouter([
-  {path: "/", element: <StockReceivingReport />},
+  {path: "/", element: <Inventory />},
   // { path: "/", element: <LogIn /> },
   // { path: "/VerifyEmail", element: <VerifyEmail /> },
   // { path: "/VerifyCode", element: <VerifyCode /> },
