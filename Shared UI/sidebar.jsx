@@ -99,9 +99,9 @@ const Sidebar = () => {
           <div>
             <button
               onClick={() => toggleDropdown(item.name)}
-              className="w-full flex items-center justify-center px-6 py-3 hover:bg-[#003d1a] transition duration-300 text-white font-poppins text-lg"
+              className="w-full flex items-center justify-between px-6 py-3 hover:bg-[#003d1a] transition duration-300 text-white font-poppins text-lg"
             >
-              <div className="flex items-center justify-center gap-4">
+              <div className="flex items-center gap-4">
                 <item.icon className="w-6 h-6" />
                 <span>{item.name}</span>
               </div>
@@ -112,10 +112,10 @@ const Sidebar = () => {
               )}
             </button>
             {activeMenu === item.name && (
-              <ul className="bg-[#224430] py-6">
+              <ul className="bg-[#224430] py-2">
                 {item.subItems.map((subItem, subIndex) => (
-                  <li key={subIndex} className="pl-16 py-2 hover:bg-[#003d1a] flex items-center justify-center mb-4 mt-1">
-                    <a href={subItem.route} className="text-white text-base font-poppins ">
+                  <li key={subIndex} className="pl-16 py-2 hover:bg-[#003d1a]">
+                    <a href={subItem.route} className="text-white text-base font-poppins">
                       {subItem.name}
                     </a>
                   </li>
@@ -127,10 +127,10 @@ const Sidebar = () => {
           // Regular menu 
           <a
             href={item.url}
-            className="group flex items-center justify-center px-10 py-10 hover:bg-[#003d1a] transition duration-300 text-white font-poppins text-lg mb-6 mt-4"
+            className="group flex items-center px-6 py-3 hover:bg-[#003d1a] transition duration-300 text-white font-poppins text-lg"
           >
-            <item.icon className=" w-6 h-6 group-hover:scale-110 transition-transform" />
-            <span className="group-hover:scale-110 transition-transform">{item.name}</span>
+            <item.icon className="w-6 h-6 group-hover:scale-110 transition-transform" />
+            <span className="ml-4 group-hover:scale-110 transition-transform">{item.name}</span>
           </a>
         )}
       </div>
@@ -140,35 +140,33 @@ const Sidebar = () => {
     <>
       {/* Sidebar Container */}
       <div
-        className="space-x-6fixed top-0 left-0 h-screen bg-[#105D2B] shadow-2xl z-50 transition-transform duration-500"
+        className="fixed top-0 left-0 h-screen bg-[#105D2B] shadow-2xl z-50 transition-transform duration-500"
         style={{
           width: "250px",
         }}
       >
-         {/* Logo Section */}
-         <div className="flex justify-center items-center py-6 bg-[#003d1a] mb-6">
+        {/* Logo Section */}
+        <div className="flex justify-center items-center py-6 bg-[#003d1a] mb-6">
           <img
             src={logo}
             alt="Logo"
-            // className="w-10 h-10 object-fit"
+            className="w-10 h-10 object-contain"
           />
         </div>
         
         {/* Navigation */}
         <nav className="flex-1 mt-4">{renderMenu(menuItems[role] || [])}</nav>
 
-        <div className="logout mt-auto4
-         flex justify-start px-6 py-4">
-        <button
-          onClick={handleLogout}  // Attach the handleLogout to the button
-          className="flex flex-col justify-center items-center hover:bg-[#003d1a] transition duration-300 text-white text-lg font-poppins w-full mt-6"
-        >
-          <div className="flex items-center gap-6 justify-center space-y-10">
-            <MdLogout className="w-6 h-6 group-hover:scale-110 transition-transform ml-10" />
-            <span className="text-center group-hover:scale-110 transition-transform">Sign Out</span>
-          </div>
-        </button>
-      </div>
+        {/* Logout Button */}
+        <div className="mt-auto flex justify-center px-6 py-4">
+          <button
+            onClick={handleLogout}  // Attach the handleLogout to the button
+            className="flex items-center gap-4 px-6 py-3 hover:bg-[#003d1a] transition duration-300 text-white text-lg font-poppins w-full"
+          >
+            <MdLogout className="w-6 h-6 group-hover:scale-110 transition-transform" />
+            <span className="group-hover:scale-110 transition-transform">Sign Out</span>
+          </button>
+        </div>
       </div>
     </>
   );

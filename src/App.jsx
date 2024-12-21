@@ -12,7 +12,7 @@ import ChangePassword from "./ChangePassword.jsx";
 import Sidebar from "../Shared UI/sidebar.jsx";
 import Dashboard from "../Shared UI/dashboard.jsx";
 // import AccountingMain from "./Accounting/accountingMain.jsx";
-import Request from "../Shared UI/request.jsx";
+import Request from "../Shared UI/Request.jsx";
 import RequestDetails from "../Shared UI/RequestDetails.jsx";
 import Inventory from "../Shared UI/Inventory.jsx";
 import DeliveryInstructionForm from "../Shared UI/DIF.jsx";
