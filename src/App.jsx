@@ -19,6 +19,9 @@ import DeliveryInstructionForm from "../Shared UI/DIF.jsx";
 import AccInfo from "../Shared UI/accInfo.jsx";
 import PurchaseOrder from "../Shared UI/PurchaseOrder.jsx";
 import StockReceivingReport from "../Shared UI/WSRR.jsx";
+import ApprovalRequest from "../Shared UI/ApprovalRequest.jsx";
+import NextApprovalRequest from "../Shared UI/NextApprovalRequest.jsx";
+
 // Auth Wrapper
 const isAuthenticated = () => !!localStorage.getItem("token");
 
@@ -37,7 +40,7 @@ const ProtectedLayout = () => {
 };
 
 const router = createBrowserRouter([
-  {path: "/", element: <Request />},
+  {path: "/", element: <NextApprovalRequest />},
   // { path: "/", element: <LogIn /> },
   // { path: "/VerifyEmail", element: <VerifyEmail /> },
   // { path: "/VerifyCode", element: <VerifyCode /> },

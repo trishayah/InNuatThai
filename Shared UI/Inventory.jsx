@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 // import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "./searchBar";
-import accInfo from "./accInfo";
+import AccInfo from "./accInfo";
 
 function Inventory() {
   const navigate = useNavigate();
@@ -66,10 +66,9 @@ function Inventory() {
     <div className="flex flex-col w-full min-w-screen h-full min-h-screen bg-[#D9D9D9]">
       <h1 className="text-2xl font-500 text-[#133517] font-poppins mt-4 mr-4 p-4">Inventory</h1>
       <div className="inventoryTable ml-2 mr-2">           
-              
+      <AccInfo />      
         <div className="search">
-          <SearchBar />
-          <accInfo />         
+          <SearchBar />       
           <select style={{ backgroundColor: "#133517", color: "#FFFFFF"}} className="sorting">
               <option value="">Sort by</option>
               <option value="asc">A-Z</option>
