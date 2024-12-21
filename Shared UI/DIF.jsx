@@ -3,7 +3,7 @@ import SearchBar from './searchBar';
 // import accInfo from './accInfo';
 import UploadForm from "../src/Modal/uploadForm";
 import DocumentCard from '../src/Modal/DocumentCard';
-import DisplayImage from "../src/Modal/displayImage";
+import ViewImage from "../src/Modal/ViewImage";
 // import Sidebar from './sidebar';
 
 const DeliveryInstructionForm = () => {
@@ -44,7 +44,7 @@ const DeliveryInstructionForm = () => {
         </div>
         {showModal && <UploadForm setShowModal={setShowModal} setDocuments={setDocuments} />}
         {selectedImage && (
-          <DisplayImage imageUrl={selectedImage} onClose={() => setSelectedImage(null)} />
+          <ViewImage imageUrl={selectedImage} onClose={() => setSelectedImage(null)} />
         )}
       </div>
     </div>
