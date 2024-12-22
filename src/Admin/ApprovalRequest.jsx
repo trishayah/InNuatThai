@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import SearchBar from "./searchBar";
-import AccInfo from "./accInfo";
+// import SearchBar from "./searchBar";
+import AccInfo from "../../Shared UI/accInfo";
 
 function ApprovalRequest() {
   const navigate = useNavigate();

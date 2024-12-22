@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 // import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import SearchBar from "./searchBar";
-import AccInfo from "./accInfo";
+import SearchBar from "../../Shared UI/searchBar";
+import AccInfo from "../../Shared UI/accInfo";
 
-function Inventory() {
+function AddInventory() {
   const navigate = useNavigate();
   const [inventory, setInventory] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -64,7 +64,9 @@ function Inventory() {
 
   return (
     <div className="flex flex-col w-full min-w-screen h-full min-h-screen bg-[#D9D9D9]">
-      <h1 className="text-2xl font-500 text-[#133517] font-poppins mt-4 mr-4 p-4">Inventory</h1>
+      <div className="title-container">
+      <h1 className="text-2xl font-500 text-[#133517] font-poppins mt-4 mr-4 p-4">Inventory&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp; Add Inventory</h1>
+      </div>
       <div className="inventoryTable ml-2 mr-2">           
       <AccInfo />      
         <div className="search">
@@ -123,4 +125,4 @@ function Inventory() {
   );
 }
 
-export default Inventory;
+export default AddInventory;
