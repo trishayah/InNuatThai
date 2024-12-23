@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "./searchBar";
-import accInfo from "./accInfo";
+import AccInfo from './accInfo'; // Import AccInfo component
 
 function Request() {
   const navigate = useNavigate();
@@ -72,14 +72,18 @@ function Request() {
     navigate(`/request/${request.requestNo}`);
   };
 
+  const user = JSON.parse(localStorage.getItem("user")); // Get user details
+
   return (
-    <div className="flex flex-col w-full min-w-screen h-full min-h-screen bg-[#D9D9D9]">
-      <h1 className="text-2xl font-500 text-[#133517] mt-4 font-poppins mr-4 p-4">Request</h1>
+    <div className="flex flex-col w-full min-w-screen h-screen min-h-screen bg-[#D9D9D9]">
+      <div className="flex justify-between items-center p-4">
+        <h2 className="text-2xl font-semibold text-[#133517] mt-4 ml-6">Request</h2>
+        <AccInfo user={user} /> {/* Display AccInfo component */}
+      </div>
       <div className="requestTable">
-        <div className="mt-8">
+        <div className="mt-8 ml-4">
           <SearchBar />
-          <accInfo />
-          </div>        
+        </div>        
         <table className="table-fixed border-spacing-2 w-full border-collapse border border-gray-300 font-poppins font-semibold">
           <thead>
             <tr style={{ backgroundColor: "#133517", color: "#FFFFFF" }} className="border border-gray-300">

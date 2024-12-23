@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import AccInfo from "./accInfo";
+
 const Dashboard = () => {
   const navigate = useNavigate();
   const [metrics, setMetrics] = useState({
@@ -198,13 +199,11 @@ const Dashboard = () => {
 
   
   return (
-    <div className = "flex flex-col items-end mr-[4rem] h-full font-poppins bg-[#D9D9D9]">
+    <div className = "flex flex-col flex-1 items-end h-full font-poppins bg-[#D9D9D9]">
         <div className="flex justify-between items-center p-4">
-          <h2 className="text-2xl font-semibold text-[#133517] mt-4">Dashboard</h2>
+          <h2 className="text-2xl font-semibold text-[#133517] mt-4 ml-6">Dashboard</h2>
+          <AccInfo user={user} />
         </div>
-        <div className="absolute top-0 left-0">
-          <AccInfo user={user} /> {/* Use the reusable component here */} 
-          </div>
           <div className="p-8">
           {loading ? (
             <div className="flex justify-center items-center h-64">
@@ -217,7 +216,5 @@ const Dashboard = () => {
   </div>
   );
 };
-
-
 
 export default Dashboard;

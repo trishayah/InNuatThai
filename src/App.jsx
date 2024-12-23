@@ -11,13 +11,12 @@ import VerifyCode from "./VerficationCode.jsx";
 import ChangePassword from "./ChangePassword.jsx";
 import Sidebar from "../Shared UI/sidebar.jsx";
 import Dashboard from "../Shared UI/dashboard.jsx";
-// import AccountingMain from "./Accounting/accountingMain.jsx";
 import Request from "../Shared UI/Request.jsx";
-import RequestDetails from "../Shared UI/RequestDetails.jsx";
 import Inventory from "../Shared UI/Inventory.jsx";
 import DeliveryInstructionForm from "../Shared UI/DIF.jsx";
 import StockReceivingReport from "../Shared UI/WSRR.jsx";
 import PurchaseOrder from "../Shared UI/PO.jsx";
+
 // Auth Wrapper
 const isAuthenticated = () => !!localStorage.getItem("token");
 
@@ -26,7 +25,7 @@ const ProtectedLayout = () => {
   return isAuthenticated() ? (
     <div className="flex h-screen">
       <Sidebar role={JSON.parse(localStorage.getItem("user"))?.role || "guest"} />
-      <div className="flex-1 p-6 bg-gray-100 overflow-auto">
+      <div className="flex-1 ml-60 w-full overflow-auto">
         <Outlet />
       </div>
     </div>
@@ -35,62 +34,24 @@ const ProtectedLayout = () => {
   );
 };
 
+
 const router = createBrowserRouter([
-  {path: "/", element: <StockReceivingReport />},
-  {path:"/request/:requestNo", element:<RequestDetails />},
-
-  // { path: "/", element: <LogIn /> },
-  // { path: "/VerifyEmail", element: <VerifyEmail /> },
-  // { path: "/VerifyCode", element: <VerifyCode /> },
-  // { path: "/ChangePassword", element: <ChangePassword /> },
-  // {
-  //   path: "/accounting/*",
-  //   element: <ProtectedLayout />,
-  //   children: [{ index: true, element: <AccountingMain /> }],
-  // },
-  // { path: "/dashboard", element: <ProtectedLayout />, 
-  //   children: [ 
-  //     { index: true, element: <Dashboard /> }
-  //   ]
-  //   }, 
-  // {
-  //   path: "admin/dashboard",
-  //   element: <ProtectedLayout />,
-  //   children: [
-  //     { index: true, element: <Dashboard /> },
-      // { path: "admin/request", element: <Request /> },
-      // { path: "admin/inventory", element: <Inventory /> },
-      // { path: "admin/reports/dif", element: <DeliveryInstructionForm /> },
-      // { path: "admin/reports/wsrr", element: <StockReceivingReport /> },
-      // { path: "admin/reports/po", element: <PurchaseOrder /> },
-  //   ],
-  // },
-  // {
-  //   path: "/accounting/dashboard", element: <ProtectedLayout />,
-  //   children: [
-  //     { index: true, element: <Dashboard /> },
-  //     { path: "accounting/request", element: <Request /> },
-      // { path: "accounting/inventory", element: <Inventory /> },
-      // { path: "accounting/reports/dif", element: <DeliveryInstructionForm /> },
-      // { path: "accounting/reports/wsrr", element: <StockReceivingReport /> },
-      // { path: "accounting/reports/po", element: <PurchaseOrder /> },
-  //   ],
-  // },
-  // {
-  //   path: "/warehouse/dashboard", element: <ProtectedLayout />,
-  //   children: [
-  //     { index: true, element: <Dashboard /> },
-  //     { path: "warehouse/inventory", element: <Inventory /> },
-  //   ],
-  // },
-  // {
-  //   path: "/branch/dashboard", element: <ProtectedLayout />,
-  //   children: [
-  //     { index: true, element: <Dashboard /> },
-  //     { path: "branch/request", element: <Request /> },
-
-  //   ],
-  // },
+  { path: "/", element: <LogIn /> },
+  { path: "/VerifyEmail", element: <VerifyEmail /> },
+  { path: "/VerifyCode", element: <VerifyCode /> },
+  { path: "/ChangePassword", element: <ChangePassword /> },
+  {
+    path: "/",
+    element: <ProtectedLayout />,
+    children: [
+      { path: "dashboard", element: <Dashboard /> },
+      { path: "request", element: <Request /> },
+      { path: "inventory", element: <Inventory /> },
+      { path: "dif", element: <DeliveryInstructionForm /> },
+      { path: "wsrr", element: <StockReceivingReport /> },
+      { path: "po", element: <PurchaseOrder /> },
+    ],
+  },
 ]);
 
 const App = () => <RouterProvider router={router} />;

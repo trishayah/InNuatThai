@@ -14,46 +14,46 @@ import { useNavigate } from 'react-router-dom';  // Import useNavigate hook
 
 const menuItems = {
   admin: [
-    { name: "Dashboard", url: "admin/dashboard", icon: MdDashboard },
-    { name: "Request", url: "admin/request", icon: MdAssignment },
-    { name: "Inventory", url: "admin/inventory", icon: MdInventory },
+    { name: "Dashboard", url: "/dashboard", icon: MdDashboard },
+    { name: "Request", url: "/request", icon: MdAssignment },
+    { name: "Inventory", url: "/inventory", icon: MdInventory },
     {
       name: "Reports",
       icon: MdDescription,
       isDropdown: true,
       subItems: [
-        { name: "Delivery Instruction Form", route: "admin/reports/dif" },
-        { name: "Stock Receiving Report", route: "admin/reports/wsrr" },
-        { name: "Purchase Order", route: "admin/reports/po" },
+        { name: "Delivery Instruction Form", route: "/dif" },
+        { name: "Stock Receiving Report", route: "/wsrr" },
+        { name: "Purchase Order", route: "/po" },
       ],
     },
     // { name: "Archive", url: "/archive", icon: MdArchive },
   ],
   accounting: [
-    { name: "Dashboard", url: "accounting/dashboard", icon: MdDashboard },
-    { name: "Request", url: "accounting/request", icon: MdAssignment },
-    {name: "Inventory", url: "accounting/inventory", icon: MdInventory,},
+    { name: "Dashboard", url: "/dashboard", icon: MdDashboard },
+    { name: "Request", url: "/request", icon: MdAssignment },
+    {name: "Inventory", url: "/inventory", icon: MdInventory,},
     {
       name: "Reports",
       icon: MdDescription,
       isDropdown: true,
       spacing: true,
       subItems: [
-        {name: "Delivery Instruction Form", route: "accounting/reports/dif",},
-        { name: "Stock Receiving Report", route: "accounting/reports/wsrr" },
-        { name: "Purchase Order", route: "accounting/reports/po" },
+        {name: "Delivery Instruction Form", route: "/dif",},
+        { name: "Stock Receiving Report", route: "/wsrr" },
+        { name: "Purchase Order", route: "/po" },
       ],
     },
     // { name: "Archive", url: "/archive", icon: MdArchive },
   ],
   warehouse: [
-    { name: "Dashboard", url: "warehouse/dashboard", icon: MdDashboard },
-    { name: "Inventory", url: "warehouse/inventory", icon: MdInventory },
+    { name: "Dashboard", url: "/dashboard", icon: MdDashboard },
+    { name: "Inventory", url: "/inventory", icon: MdInventory },
     // { name: "Archive", url: "/archive", icon: MdArchive },
   ],
   branch: [
-    { name: "Dashboard", url: "branch/dashboard", icon: MdDashboard },
-    { name: "Request", url: "branch/request", icon: MdAssignment },
+    { name: "Dashboard", url: "/dashboard", icon: MdDashboard },
+    { name: "Request", url: "/request", icon: MdAssignment },
     // { name: "Archive", url: "/archive", icon: MdArchive },
   ],
 };
@@ -91,6 +91,7 @@ const Sidebar = () => {
     }
   };
 
+  
   const renderMenu = (items) =>
     items.map((item, index) => (
       <div key={index} className="mb-4">
@@ -171,5 +172,4 @@ const Sidebar = () => {
     </>
   );
 };
-
 export default Sidebar;
