@@ -5,6 +5,7 @@ import UploadForm from "../src/Modal/uploadForm";
 import DocumentCard from '../src/Modal/DocumentCard';
 import ViewImage from "../src/Modal/ViewImage";
 // import Sidebar from './sidebar';
+import WSRRDownload from './WSRRDownload';
 
 const PurchaseOrder = () => {
   const [documents, setDocuments] = useState([]);
@@ -34,6 +35,7 @@ const PurchaseOrder = () => {
           >
             Add Purchase Order
           </button>
+          <WSRRDownload/>
         </div>
         <div className="grid grid-cols-4 gap-4">
           {documents.map((doc, index) => (

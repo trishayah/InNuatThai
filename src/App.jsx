@@ -30,6 +30,7 @@ import ApprovalRemoveInventory from "./Admin/ApprovalRemoveInventory.jsx";
 import DIFDownload from "../Shared UI/DIFDownloadButton.jsx";
 import PODownload from "../Shared UI/PODownloadButton.jsx";
 import SelectAndDelete from "../Shared UI/SelectDelete.jsx";
+import WSRRDownload from "../Shared UI/WSRRDownload.jsx";
 
 // Auth Wrapper
 const isAuthenticated = () => !!localStorage.getItem("token");
@@ -49,7 +50,7 @@ const ProtectedLayout = () => {
 };
 
 const router = createBrowserRouter([
-  {path: "/", element: <Request/>},
+  {path: "/", element: <PurchaseOrder/>},
   // { path: "/", element: <LogIn /> },
   // { path: "/VerifyEmail", element: <VerifyEmail /> },
   // { path: "/VerifyCode", element: <VerifyCode /> },
