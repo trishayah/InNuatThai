@@ -36,7 +36,6 @@ const PurchaseOrder = () => {
           >
             Add Purchase Order
           </button>
-          <WSRRDownload/>
         </div>
         <div className="grid grid-cols-4 gap-4">
           {documents.map((doc, index) => (
