@@ -6,7 +6,7 @@ import DocumentCard from '../src/Modal/DocumentCard';
 import ViewImage from "../src/Modal/ViewImage";
 // import Sidebar from './sidebar';
 
-const DeliveryInstructionForm = () => {
+const StockReceivingReport = () => {
   const [documents, setDocuments] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -22,7 +22,7 @@ const DeliveryInstructionForm = () => {
   return (
     <div className="flex h-screen font-poppins bg-white">
       <div className="flex flex-col w-screen h-screen min-w-screen  min-h-screen p-4 md:p-8">
-        <h1 className="text-2xl font-semibold mb-6 text-[#133517]">Delivery Instruction Form</h1>
+        <h1 className="text-2xl font-semibold mb-6 text-[#133517]">Warehouse Stock Receiving Report</h1>
         <accInfo/>
         <div className="mb-4 relative mx-4 md:mx-8">
           <SearchBar />
@@ -32,7 +32,7 @@ const DeliveryInstructionForm = () => {
             className="w-[40px] sm:w-[200px] h-[40px] bg-[#105D2B] rounded-[15px] shadow-m3-elevation-light-4 text-white text-base sm:text-lg font-medium hover:bg-[#003d1a] transition duration-300"
             onClick={handleUploadForm}
           >
-            Add DIF
+            Add WSRR
           </button>
         </div>
         <div className="displayImage">
@@ -51,4 +51,4 @@ const DeliveryInstructionForm = () => {
   );
 };
 
-export default DeliveryInstructionForm;
+export default StockReceivingReport;

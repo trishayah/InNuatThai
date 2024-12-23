@@ -16,6 +16,8 @@ import Request from "../Shared UI/Request.jsx";
 import RequestDetails from "../Shared UI/RequestDetails.jsx";
 import Inventory from "../Shared UI/Inventory.jsx";
 import DeliveryInstructionForm from "../Shared UI/DIF.jsx";
+import StockReceivingReport from "../Shared UI/WSRR.jsx";
+import PurchaseOrder from "../Shared UI/PO.jsx";
 // Auth Wrapper
 const isAuthenticated = () => !!localStorage.getItem("token");
 
@@ -34,7 +36,7 @@ const ProtectedLayout = () => {
 };
 
 const router = createBrowserRouter([
-  {path: "/", element: <DeliveryInstructionForm />},
+  {path: "/", element: <StockReceivingReport />},
   {path:"/request/:requestNo", element:<RequestDetails />},
 
   // { path: "/", element: <LogIn /> },

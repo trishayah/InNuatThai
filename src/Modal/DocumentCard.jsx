@@ -3,7 +3,7 @@ import React from "react";
 const DocumentCard = ({ doc, onImageClick }) => {
     return (
         <div className="imageBox">
-            <div className="relative max-w-xs overflow-hidden rounded-lg shadow-lg group">
+            <div className="relative max-w-xs max-h-xs overflow-hidden rounded-sm shadow-xl group">
                 <img
                     src={doc.imageUrl}
                     alt={doc.name}
