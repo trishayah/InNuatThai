@@ -172,6 +172,21 @@
     /* margin-bottom: 20px; */
   }
   
+  .downloadbutton {
+    padding: 1em 3em;
+    font-size: 12px;
+    letter-spacing: 2.5px;
+    font-weight: 500;
+    color: #e8d9d9;
+    background-color: #1E7239;
+    border: none;
+    border-radius: 45px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+
 .button1 {
     padding: 1em 3em;
     font-size: 12px;
@@ -184,9 +199,7 @@
     box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease 0s;
     cursor: pointer;
-    /* margin-bottom: 20px; */
     margin-left: 20px;
-    /* margin-right: 250px; */
   }
   .button2 {
     padding: 1em 3em;
@@ -307,3 +320,18 @@
   .form-input:focus {
     outline: 2px solid #23c483;
   }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  li {
+    margin: 5px 0;
+  }
+  
+  button {
+    margin-top: 10px;
+    padding: 5px 10px;
+  }
+  

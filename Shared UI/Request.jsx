@@ -3,6 +3,9 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "./searchBar";
 import AccInfo from "./accInfo";
+import DIFDownload from "./DIFDownloadButton.jsx";
+import PODownload from "./PODownloadButton.jsx";
+import SelectAndDelete from "./SelectDelete.jsx";
 
 function Request() {
   const navigate = useNavigate();
@@ -85,7 +88,9 @@ function Request() {
               <option value="desc">Z-A</option>
               <option value="reqdate">Request Date</option>
               <option value="status">Status</option>
-            </select>  
+            </select>
+            <PODownload />  
+            {/* <SelectAndDelete /> */}
           </div>        
         <table className="table-fixed border-spacing-2 w-full border-collapse border border-gray-300 font-poppins font-semibold">
           <thead>

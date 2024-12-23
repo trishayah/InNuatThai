@@ -27,6 +27,9 @@ import RemoveInventory from "../src/Admin/RemoveInventory.jsx";
 import ApprovalAddInventory from "./Admin/ApprovalAddInventory.jsx";
 import ApprovalUpdateInventory from "./Admin/ApprovalUpdateInventory.jsx";
 import ApprovalRemoveInventory from "./Admin/ApprovalRemoveInventory.jsx";
+import DIFDownload from "../Shared UI/DIFDownloadButton.jsx";
+import PODownload from "../Shared UI/PODownloadButton.jsx";
+import SelectAndDelete from "../Shared UI/SelectDelete.jsx";
 
 // Auth Wrapper
 const isAuthenticated = () => !!localStorage.getItem("token");
@@ -46,7 +49,7 @@ const ProtectedLayout = () => {
 };
 
 const router = createBrowserRouter([
-  {path: "/", element: <StockReceivingReport />},
+  {path: "/", element: <Request/>},
   // { path: "/", element: <LogIn /> },
   // { path: "/VerifyEmail", element: <VerifyEmail /> },
   // { path: "/VerifyCode", element: <VerifyCode /> },
