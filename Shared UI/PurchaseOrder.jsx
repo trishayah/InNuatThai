@@ -6,6 +6,7 @@ import DocumentCard from '../src/Modal/DocumentCard';
 import ViewImage from "../src/Modal/ViewImage";
 // import Sidebar from './sidebar';
 import WSRRDownload from './WSRRDownload';
+import SelectAndDelete from './SelectDelete';
 
 const PurchaseOrder = () => {
   const [documents, setDocuments] = useState([]);
