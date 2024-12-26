@@ -203,6 +203,34 @@ app.post("/login", async (req, res) => {
 //   }
 // });
 
+// Get user profile
+app.get('/profile', authenticateToken, async (req, res) => {
+  try {
+    const user = await db('account')
+      .where({ acc_id: req.user.userId })
+      .select('acc_name as firstname', 'acc_lastname as lastname', 'acc_username as username', 'acc_password as password')
+      .first();
+    if (!user) return res.status(404).json({ message: 'User not found.' });
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to fetch profile.' });
+  }
+});
+
+// Update user profile
+app.put('/profile', authenticateToken, async (req, res) => {
+  const { firstname, lastname, username, password } = req.body;
+  try {
+    await db('account')
+      .where({ acc_id: req.user.userId })
+      .update({ acc_name: firstname, acc_lastname: lastname, acc_username: username, acc_password: password });
+    res.json({ message: 'Profile updated successfully.' });
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to update profile.' });
+  }
+});
+
+
 // Start Server
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

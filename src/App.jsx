@@ -31,6 +31,7 @@ import DIFDownload from "../Shared UI/DIFDownloadButton.jsx";
 import PODownload from "../Shared UI/PODownloadButton.jsx";
 import SelectAndDelete from "../Shared UI/SelectDelete.jsx";
 import WSRRDownload from "../Shared UI/WSRRDownload.jsx";
+import EditProfile from "../Shared UI/EditProfile.jsx";
 
 // Auth Wrapper
 const isAuthenticated = () => !!localStorage.getItem("token");
@@ -50,7 +51,7 @@ const ProtectedLayout = () => {
 };
 
 const router = createBrowserRouter([
-  {path: "/", element: <Request/>},
+  {path: "/", element: <EditProfile/>},
   // { path: "/", element: <LogIn /> },
   // { path: "/VerifyEmail", element: <VerifyEmail /> },
   // { path: "/VerifyCode", element: <VerifyCode /> },

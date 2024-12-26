@@ -36,7 +36,8 @@ function LogIn() {
       // Navigate to dashboard
       window.location.href = "/dashboard";
     } catch (error) {
-      console.error("Login error:", error.response?.data || error.message);
+      console.error("Login error:", error); // Logs the entire error object
+      console.error("Error response:", error.response); // Logs the response part of the error
       setErrorMessage(
         error.response?.data?.message || "Login failed. Please try again."
       );

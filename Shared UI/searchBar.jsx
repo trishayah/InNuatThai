@@ -12,9 +12,9 @@ const SearchBar = () => {
           className="w-full h-full bg-transparent text-black text-sm sm:text-base focus:outline-none pl-2"
         />
         {/* Search Button */}
-        <button className="flex items-center text-[#105D2B]">
+        <div className="searchicon">
           <MdSearch className="px-4 pl-1" size={24} />
-        </button>
+        </div>
       </div>
     </div>
   );
