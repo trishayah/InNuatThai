@@ -123,7 +123,7 @@
     height: 30px;
     display: flex;
     margin-top: 20px;
-    margin-left: 650px; 
+    margin-left: 30px; 
     border-radius: 7px;
   }
 
@@ -154,12 +154,12 @@
   }
   
   .approvaltable{
-    flex-grow: 1; /* Allows the table to take up remaining space */
+    /* flex-grow: 1; Allows the table to take up remaining space */
     /* margin: 0; */
-    margin-top: 100px;
+    margin-top: 70px;
     /* margin-left: 20px; */
     /* margin-right: 60px; */
-    margin-bottom: 100px;
+    margin-bottom: 60px;
     width: 100%;
   }
 
@@ -178,7 +178,7 @@
     letter-spacing: 2.5px;
     font-weight: 500;
     color: #ffffff;
-    background-color: #1E7239;
+    background-color: #133517;
     border: none;
     border-radius: 45px;
     box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
@@ -186,6 +186,23 @@
     cursor: pointer;
     margin-left: 10px;
   }
+
+  /* .searchicon {
+    padding: 1em 3em;
+    font-size: 12px;
+    letter-spacing: 2.5px;
+    font-weight: 500;
+    color: #ffffff;
+    height: 38px; 
+    width: 45px;
+    background-color: #133517;
+    border: none;
+    border-radius: 0px 10px 10px 0px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
+    margin-top: 1px;
+  } */
 
 .button1 {
     padding: 1em 3em;
@@ -244,12 +261,28 @@
     transition: all 0.3s ease 0s;
     cursor: pointer;
   }
+
+  .savebtn {
+    padding: 1em 3em;
+    font-size: 12px;
+    letter-spacing: 2.5px;
+    font-weight: 500;
+    color: #e8d9d9;
+    background-color: #1E7239;
+    border: none;
+    border-radius: 45px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
+    margin-right: 25px;
+    margin-left: 490px;
+  }
   
   button:hover {
     background-color: #23c483;
     box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
     color: #fff;
-    transform: translateY(-7px);
+    /* transform: translateY(-7px); */
   }
   
   button:active {
@@ -276,7 +309,8 @@
     /* display: flex; */
     /* justify-content: space-between; */
     /* gap: 20px; */
-    margin-bottom: 50px;
+    margin-bottom: 20px;
+    margin-top: 30px;
   }
 
 .title-container{
@@ -328,10 +362,5 @@
   
   li {
     margin: 5px 0;
-  }
-  
-  button {
-    margin-top: 10px;
-    padding: 5px 10px;
   }
   
