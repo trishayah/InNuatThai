@@ -110,6 +110,7 @@ function Request() {
             <option value="status">Status</option>
           </select>
           <PODownload />
+          <DIFDownload />
         </div>
         <table className="table-fixed border-spacing-2 w-full border-collapse border border-gray-300 font-poppins font-semibold">
           <thead>

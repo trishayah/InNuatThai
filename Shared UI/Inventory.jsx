@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "./searchBar";
 import AccInfo from "./accInfo";
+import WSRRDownload from "./WSRRDownload";
 
 function Inventory() {
   const navigate = useNavigate();
@@ -111,6 +112,7 @@ function Inventory() {
             <option value="remove">Remove Request</option>
             <option value="view">View Inventory</option>
           </select>
+          <WSRRDownload/>
         </div>
 
         <table className="inventoryTabletable-fixed border-spacing-2 w-full border-collapse border border-gray-300 font-poppins font-semibold">
