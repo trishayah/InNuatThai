@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import SearchBar from "./searchBar";
 import AccInfo from "./accInfo";
 
 function Inventory() {
   const navigate = useNavigate();
   const [inventory, setInventory] = useState([]);
-  const [filteredInventory, setFilteredInventory] = useState([]); // State for filtered data
+  const [filteredInventory, setFilteredInventory] = useState([]); // Added filtered inventory state
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchQuery, setSearchQuery] = useState(""); // State for search input
+  const [searchQuery, setSearchQuery] = useState(""); // State for search query
 
   // Sample data to be used in place of the API response
   const sampleData = [
@@ -40,7 +41,7 @@ function Inventory() {
 
   // Simulate fetching data
   useEffect(() => {
-    const fetchInventory = async () => {
+    const fetchinventory = async () => {
       try {
         setLoading(true);
         // Simulating API call by setting the sample data
@@ -52,28 +53,13 @@ function Inventory() {
         setLoading(false);
       }
     };
-    fetchInventory();
+    fetchinventory();
   }, []);
-
-  // Handle search query change
-  useEffect(() => {
-    if (searchQuery.trim() === "") {
-      setFilteredInventory(inventory);
-    } else {
-      const query = searchQuery.toLowerCase();
-      const filtered = inventory.filter(
-        (item) =>
-          item.itemName.toLowerCase().includes(query) ||
-          item.category.toLowerCase().includes(query)
-      );
-      setFilteredInventory(filtered);
-    }
-  }, [searchQuery, inventory]);
 
   // Sorting function
   const handleSort = (e) => {
     const sortOption = e.target.value;
-    const sortedInventory = [...filteredInventory];
+    const sortedInventory = [...filteredInventory]; // Sort based on the filtered data
 
     if (sortOption === "asc") {
       sortedInventory.sort((a, b) => a.itemName.localeCompare(b.itemName));
@@ -82,12 +68,18 @@ function Inventory() {
     } else if (sortOption === "category") {
       sortedInventory.sort((a, b) => a.category.localeCompare(b.category));
     } else if (sortOption === "dateAdded") {
-      sortedInventory.sort(
-        (a, b) => new Date(a.dateAdded) - new Date(b.dateAdded)
-      );
+      sortedInventory.sort((a, b) => new Date(a.dateAdded) - new Date(b.dateAdded));
     }
-
     setFilteredInventory(sortedInventory);
+  };
+
+  // Handle search query change
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    const filteredData = inventory.filter((item) =>
+      item.itemName.toLowerCase().includes(query.toLowerCase()) || item.category.toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredInventory(filteredData);
   };
 
   return (
@@ -97,15 +89,8 @@ function Inventory() {
       </h1>
       <div className="inventoryTable ml-2 mr-2">
         <AccInfo />
-        <div className="search flex items-center justify-between">
-          {/* Search Input */}
-          <input
-            type="text"
-            placeholder="Search Inventory"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-[400px] h-[40px] bg-white rounded-[10px] pl-3 font-poppins hover:ring-2 hover:ring-[#105D2B] shadow-md border border-[#105D2B] text-black text-sm focus:outline-none"
-          />
+        <div className="search">
+          <SearchBar onSearch={handleSearch} /> {/* Pass the search handler */}
           <select
             style={{ backgroundColor: "#133517", color: "#FFFFFF" }}
             className="sorting"
@@ -116,6 +101,15 @@ function Inventory() {
             <option value="desc">Z-A</option>
             <option value="category">Category</option>
             <option value="dateAdded">Date Added</option>
+          </select>
+          <select
+            style={{ backgroundColor: "#133517", color: "#FFFFFF" }}
+            className="option"
+          >
+            <option value="update">Update Request</option>
+            <option value="add">Add Request</option>
+            <option value="remove">Remove Request</option>
+            <option value="view">View Inventory</option>
           </select>
         </div>
 

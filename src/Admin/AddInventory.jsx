@@ -113,6 +113,15 @@ function AddInventory() {
             <option value="category">Category</option>
             <option value="dateAdded">Date Added</option>
           </select>
+          <select
+            style={{ backgroundColor: "#133517", color: "#FFFFFF" }}
+            className="option"
+          >
+            <option value="update">Update Request</option>
+            <option value="add">Add Request</option>
+            <option value="remove">Remove Request</option>
+            <option value="view">View Inventory</option>
+          </select>
         </div>
 
         <table className="inventoryTabletable-fixed border-spacing-2 w-full border-collapse border border-gray-300 font-poppins font-semibold">

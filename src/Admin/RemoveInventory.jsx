@@ -91,7 +91,7 @@ function RemoveInventory() {
       <div className="inventoryTable ml-2 mr-2">
         <AccInfo />
         <div className="search">
-          <SearchBar onSearch={handleSearch} /> {/* Pass the search handler */}
+          <SearchBar onSearch={handleSearch} />
           <select style={{ backgroundColor: "#133517", color: "#FFFFFF" }} className="sorting" onChange={handleSort}>
             <option value="">Sort by</option>
             <option value="asc">A-Z</option>
