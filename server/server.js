@@ -8,7 +8,9 @@ const jwt = require('jsonwebtoken'); // Added jwt module
 const app = express();
 
 // Middleware
-app.use(cors({ origin: '*' }));
+app.use(cors(
+  // { origin: '*' }
+));
 
 app.use(express.json());
 
@@ -82,7 +84,7 @@ app.post("/login", async (req, res) => {
       return res.status(404).json({ message: "Invalid username or password." });
     }
 
-    const isPasswordValid = password.trim() === user.acc_password.trim();
+    const isPasswordValid = password() === user.acc_password();
     if (!isPasswordValid) {
       console.error("Password mismatch");
       return res.status(401).json({ message: "Invalid username or password." });

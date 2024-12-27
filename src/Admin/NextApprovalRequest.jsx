@@ -24,17 +24,17 @@ return (
         <div className="reqbox">
           <h2 className="reqform">Request Form</h2>
           <h3 className="reqformdetails">Please fill all information on the fields.</h3>
-        <div className='form-container'>
-          <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="date" className="reqdate">Date</label>
-              <input type="date" id="date" className="form-input" />
+          <div className='form-container'>
+            <div className="form-row">
+              <div className="form-group">
+                <label htmlFor="date" className="reqdate">Date</label>
+                <input type="date" id="date" className="form-input" />
+              </div>
+              <div className="form-group">
+                <label htmlFor="title" className="reqtitle">Title</label>
+                <input type="text" id="title" className="form-input" />
+              </div>
             </div>
-            <div className="form-group">
-              <label htmlFor="title" className="reqtitle">Title</label>
-              <input type="text" id="title" className="form-input" />
-            </div>
-          </div>
 
           <div className="form-row">
             <div className="form-group">

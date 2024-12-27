@@ -87,7 +87,7 @@ function Request() {
         <div className="request">
           <SearchBar />
           <select
-            style={{ backgroundColor: "#1E7239", color: "#FFFFFF" }}
+            style={{ backgroundColor: "#133517", color: "#FFFFFF" }}
             className="sorting"
             onChange={handleSort}
           >
@@ -102,7 +102,7 @@ function Request() {
         <table className="table-fixed border-spacing-2 w-full border-collapse border border-gray-300 font-poppins font-semibold">
           <thead>
             <tr
-              style={{ backgroundColor: "#1E7239", color: "#FFFFFF" }}
+              style={{ backgroundColor: "#133517", color: "#FFFFFF" }}
               className="border border-gray-300"
             >
               <th className="px-4 py-2 text-center">Request No.</th>

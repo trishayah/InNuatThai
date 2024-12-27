@@ -83,7 +83,7 @@ function Inventory() {
         <div className="search">
           <SearchBar />
           <select
-            style={{ backgroundColor: "#1E7239", color: "#FFFFFF" }}
+            style={{ backgroundColor: "#133517", color: "#FFFFFF" }}
             className="sorting"
             onChange={handleSort}
           >

@@ -56,6 +56,23 @@ function AddInventory() {
     fetchinventory();
   }, []);
 
+// Sorting function
+const handleSort = (e) => {
+  const sortOption = e.target.value;
+  const sortedInventory = [...inventory];
+
+  if (sortOption === "asc") {
+    sortedInventory.sort((a, b) => a.itemName.localeCompare(b.itemName));
+  } else if (sortOption === "desc") {
+    sortedInventory.sort((a, b) => b.itemName.localeCompare(a.itemName));
+  } else if (sortOption === "category") {
+    sortedInventory.sort((a, b) => a.category.localeCompare(b.category));
+  } else if (sortOption === "dateAdded") {
+    sortedInventory.sort((a, b) => new Date(a.dateAdded) - new Date(b.dateAdded));
+  }
+  setInventory(sortedInventory);
+};
+
   // Handle row click to navigate to the details page
 //   const handleRowClick = (inventory) => {
 //     // Redirect to the inventory details page with the inventory number in the URL
@@ -71,11 +88,12 @@ function AddInventory() {
       <AccInfo />      
         <div className="search">
           <SearchBar />       
-          <select style={{ backgroundColor: "#133517", color: "#FFFFFF"}} className="sorting">
+          <select style={{ backgroundColor: "#133517", color: "#FFFFFF"}} className="sorting" onChange={handleSort}>
               <option value="">Sort by</option>
               <option value="asc">A-Z</option>
               <option value="desc">Z-A</option>
               <option value="category">Category</option>
+              <option value="dateAdded">Date Added</option>
             </select>  
           <select style={{ backgroundColor: "#133517", color: "#FFFFFF" }} className="option">
               <option value="update">Update Request</option>

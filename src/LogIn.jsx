@@ -95,12 +95,12 @@ function LogIn() {
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full h-full bg-transparent text-black text-sm sm:text-base focus:outline-none pl-2 rounded-[15px]"
               />
-              <button // button to hide/show password
+              <div // button to hide/show password
                 type="button"
                 onClick={viewPassword} // calls the function to hide/shows password
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-hoverloginBlue">
                 {password !== '' ? (showPassword ? <FaRegEye /> : <FaRegEyeSlash />) : ''} {/*changes the icon if there's a text in textfield*/}
-              </button>
+              </div>
             </div>
 
             {/* Login Button */}
