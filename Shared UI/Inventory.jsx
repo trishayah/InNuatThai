@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import SearchBar from "./searchBar";
 import AccInfo from "./accInfo";
 
 function Inventory() {
   const navigate = useNavigate();
   const [inventory, setInventory] = useState([]);
+  const [filteredInventory, setFilteredInventory] = useState([]); // State for filtered data
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState(""); // State for search input
 
   // Sample data to be used in place of the API response
   const sampleData = [
@@ -44,6 +45,7 @@ function Inventory() {
         setLoading(true);
         // Simulating API call by setting the sample data
         setInventory(sampleData);
+        setFilteredInventory(sampleData); // Initialize filtered inventory
       } catch (error) {
         setError(error);
       } finally {
@@ -53,10 +55,25 @@ function Inventory() {
     fetchInventory();
   }, []);
 
+  // Handle search query change
+  useEffect(() => {
+    if (searchQuery.trim() === "") {
+      setFilteredInventory(inventory);
+    } else {
+      const query = searchQuery.toLowerCase();
+      const filtered = inventory.filter(
+        (item) =>
+          item.itemName.toLowerCase().includes(query) ||
+          item.category.toLowerCase().includes(query)
+      );
+      setFilteredInventory(filtered);
+    }
+  }, [searchQuery, inventory]);
+
   // Sorting function
   const handleSort = (e) => {
     const sortOption = e.target.value;
-    const sortedInventory = [...inventory];
+    const sortedInventory = [...filteredInventory];
 
     if (sortOption === "asc") {
       sortedInventory.sort((a, b) => a.itemName.localeCompare(b.itemName));
@@ -70,7 +87,7 @@ function Inventory() {
       );
     }
 
-    setInventory(sortedInventory);
+    setFilteredInventory(sortedInventory);
   };
 
   return (
@@ -80,8 +97,15 @@ function Inventory() {
       </h1>
       <div className="inventoryTable ml-2 mr-2">
         <AccInfo />
-        <div className="search">
-          <SearchBar />
+        <div className="search flex items-center justify-between">
+          {/* Search Input */}
+          <input
+            type="text"
+            placeholder="Search Inventory"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-[400px] h-[40px] bg-white rounded-[10px] pl-3 font-poppins hover:ring-2 hover:ring-[#105D2B] shadow-md border border-[#105D2B] text-black text-sm focus:outline-none"
+          />
           <select
             style={{ backgroundColor: "#133517", color: "#FFFFFF" }}
             className="sorting"
@@ -92,15 +116,6 @@ function Inventory() {
             <option value="desc">Z-A</option>
             <option value="category">Category</option>
             <option value="dateAdded">Date Added</option>
-          </select>
-          <select
-            style={{ backgroundColor: "#133517", color: "#FFFFFF" }}
-            className="option"
-          >
-            <option value="update">Update Request</option>
-            <option value="add">Add Request</option>
-            <option value="remove">Remove Request</option>
-            <option value="view">View Inventory</option>
           </select>
         </div>
 
@@ -119,7 +134,7 @@ function Inventory() {
             </tr>
           </thead>
           <tbody>
-            {inventory.map((inventory, index) => (
+            {filteredInventory.map((inventory, index) => (
               <tr
                 key={inventory.inventoryNo}
                 style={{

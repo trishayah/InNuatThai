@@ -9,10 +9,10 @@ import PODownload from "./PODownloadButton.jsx";
 function Request() {
   const navigate = useNavigate();
   const [requests, setRequests] = useState([]);
+  const [filteredRequests, setFilteredRequests] = useState([]); // For displaying filtered results
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Sample data to be used in place of the API response
   const sampleData = [
     {
       requestNo: "001",
@@ -40,13 +40,12 @@ function Request() {
     },
   ];
 
-  // Simulate fetching data
   useEffect(() => {
     const fetchRequests = async () => {
       try {
         setLoading(true);
-        // Simulating API call by setting the sample data
-        setRequests(sampleData);
+        setRequests(sampleData); // Simulating API response
+        setFilteredRequests(sampleData); // Initialize filtered requests
       } catch (error) {
         setError(error);
       } finally {
@@ -56,6 +55,19 @@ function Request() {
     fetchRequests();
   }, []);
 
+  // Handle search input
+  const handleSearch = (query) => {
+    const lowerCaseQuery = query.toLowerCase();
+    const filtered = requests.filter(
+      (request) =>
+        request.title.toLowerCase().includes(lowerCaseQuery) ||
+        request.branch.toLowerCase().includes(lowerCaseQuery) ||
+        request.requester.toLowerCase().includes(lowerCaseQuery) ||
+        request.status.toLowerCase().includes(lowerCaseQuery)
+    );
+    setFilteredRequests(filtered); // Update filtered results
+  };
+
   // Handle row click to navigate to the details page
   const handleRowClick = (request) => {
     navigate(`/request/${request.requestNo}`);
@@ -64,7 +76,7 @@ function Request() {
   // Sorting function
   const handleSort = (e) => {
     const sortOption = e.target.value;
-    const sortedRequests = [...requests];
+    const sortedRequests = [...filteredRequests];
 
     if (sortOption === "asc") {
       sortedRequests.sort((a, b) => a.title.localeCompare(b.title));
@@ -76,7 +88,7 @@ function Request() {
       sortedRequests.sort((a, b) => a.status.localeCompare(b.status));
     }
 
-    setRequests(sortedRequests);
+    setFilteredRequests(sortedRequests); // Update filtered results
   };
 
   return (
@@ -85,7 +97,7 @@ function Request() {
       <div className="requestTable">
         <AccInfo />
         <div className="request">
-          <SearchBar />
+          <SearchBar onSearch={handleSearch} />
           <select
             style={{ backgroundColor: "#133517", color: "#FFFFFF" }}
             className="sorting"
@@ -114,7 +126,7 @@ function Request() {
             </tr>
           </thead>
           <tbody>
-            {requests.map((request, index) => (
+            {filteredRequests.map((request, index) => (
               <tr
                 key={request.requestNo}
                 onClick={() => handleRowClick(request)}
