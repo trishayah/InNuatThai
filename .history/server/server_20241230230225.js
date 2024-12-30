@@ -32,11 +32,11 @@ const authenticateToken = (req, res, next) => {
 const db = knex({
     client: 'pg',
     connection: { 
-      host: 'localhost', 
-      user: 'postgres', 
-      password: 'CTUBarulo2022', 
-      database: 'InNuatThai', 
-      port: 5432
+        host: 'localhost', 
+        user: 'postgres', 
+        password: 'CTUBarulo2022', 
+        database: 'InNuatThai', 
+        port: 5432
     },
 });
 // async function hashExistingPasswords() {
