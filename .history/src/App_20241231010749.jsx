@@ -28,7 +28,6 @@ import BranchRequest from "../Shared UI/branchReq.jsx";
 import BranchCreateRequest from "../Shared UI/branchCreateReq.jsx";
 
 
-
 // Auth Wrapper
 const isAuthenticated = () => !!localStorage.getItem("token");
 
@@ -71,8 +70,7 @@ const router = createBrowserRouter([
       { path: "approveupdate", element: <ApprovalUpdateInventory /> },
       // { path: "approvermv", element: <ApprovalRemovalInventory /> },
       {path: "branchreq", element: <BranchRequest/>},
-      {path: "branchcreatereq", element: <BranchCreateRequest/>},
-    
+      {path: "branchcreatereq", element: <BranchCreateRequest/>}
     ],
   },
 ]);

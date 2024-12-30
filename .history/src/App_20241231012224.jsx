@@ -26,7 +26,7 @@ import ApprovalUpdateInventory from "./Admin/ApprovalUpdateInventory.jsx";
 import ApprovalRemoveInventory from "./Admin/ApprovalRemoveInventory.jsx";
 import BranchRequest from "../Shared UI/branchReq.jsx";
 import BranchCreateRequest from "../Shared UI/branchCreateReq.jsx";
-
+import Biot from "../src/Admin/ApprovalAddInventory.jsx";
 
 
 // Auth Wrapper
@@ -72,7 +72,7 @@ const router = createBrowserRouter([
       // { path: "approvermv", element: <ApprovalRemovalInventory /> },
       {path: "branchreq", element: <BranchRequest/>},
       {path: "branchcreatereq", element: <BranchCreateRequest/>},
-    
+      {path: "approvaladdinventory", element: <Biot/>}
     ],
   },
 ]);

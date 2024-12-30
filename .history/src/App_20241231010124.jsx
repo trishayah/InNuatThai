@@ -24,10 +24,6 @@ import RemoveInventory from "../src/Admin/RemoveInventory.jsx";
 import ApprovalAddInventory from "./Admin/ApprovalAddInventory.jsx";
 import ApprovalUpdateInventory from "./Admin/ApprovalUpdateInventory.jsx";
 import ApprovalRemoveInventory from "./Admin/ApprovalRemoveInventory.jsx";
-import BranchRequest from "../Shared UI/branchReq.jsx";
-import BranchCreateRequest from "../Shared UI/branchCreateReq.jsx";
-
-
 
 // Auth Wrapper
 const isAuthenticated = () => !!localStorage.getItem("token");
@@ -70,9 +66,6 @@ const router = createBrowserRouter([
       { path: "approveadd", element: <ApprovalAddInventory /> },
       { path: "approveupdate", element: <ApprovalUpdateInventory /> },
       // { path: "approvermv", element: <ApprovalRemovalInventory /> },
-      {path: "branchreq", element: <BranchRequest/>},
-      {path: "branchcreatereq", element: <BranchCreateRequest/>},
-    
     ],
   },
 ]);
