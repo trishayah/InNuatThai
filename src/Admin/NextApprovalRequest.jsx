@@ -27,12 +27,12 @@ return (
           <div className='form-container'>
             <div className="form-row">
               <div className="form-group">
-                <label htmlFor="date" className="reqdate">Date</label>
+                <label htmlFor="date" className="reqdate">Request Date</label>
                 <input type="date" id="date" className="form-input" />
               </div>
               <div className="form-group">
-                <label htmlFor="title" className="reqtitle">Title</label>
-                <input type="text" id="title" className="form-input" />
+                <label htmlFor="dateneed" className="dateneeded">Date Needed</label>
+                <input type="date" id="dateNeed" className="form-input" />
               </div>
             </div>
 
@@ -57,6 +57,12 @@ return (
               </select>
             </div>
             <div className="form-group">
+                <label htmlFor="title" className="reqtitle">Title</label>
+                <input type="text" id="title" className="form-input" />
+              </div>
+          </div>
+          <div className="form-row">
+          <div className="form-group">
               <label htmlFor="decisionPersonnel" className="reqdecision">Decision Personnel</label>
               <select id="decisionPersonnel" className="form-input">
                 <option value="">Select</option>

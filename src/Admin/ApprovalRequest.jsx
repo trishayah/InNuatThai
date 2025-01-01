@@ -16,42 +16,36 @@ function ApprovalRequest() {
         item: "001",
         description: "Hot Oil",
         quantity: "100",
-        dateNeeded: "2024-12-01",
         comments: "authentic",
       },
       {
         item: "002",
         description: "Hot Wax",
         quantity: "120",
-        dateNeeded: "2024-12-09",
         comments: "hurry",
       },
       {
         item: "003",
         description: "Wax Strip",
         quantity: "150",
-        dateNeeded: "2024-12-21",
         comments: "sticky",
       },
       {
         item: "004",
         description: "Wax Strip",
         quantity: "150",
-        dateNeeded: "2024-12-21",
         comments: "sticky",
       },
       {
         item: "005",
         description: "Wax Strip",
         quantity: "150",
-        dateNeeded: "2024-12-21",
         comments: "sticky",
       },
       {
         item: "006",
         description: "Wax Strip",
         quantity: "150",
-        dateNeeded: "2024-12-21",
         comments: "sticky",
       },
     ];
@@ -90,7 +84,6 @@ function ApprovalRequest() {
                 <th className="px-4 py-2 text-center">Item</th>
                 <th className="px-4 py-2 text-center">Description</th>
                 <th className="px-4 py-2 text-center">Quantity</th>
-                <th className="px-4 py-2 text-center">Date Needed</th>
                 <th className="px-4 py-2 text-center">Comments</th>
             </tr>
             </thead>
@@ -106,7 +99,6 @@ function ApprovalRequest() {
                 <td className="px-4 py-2 border text-center">{request.item}</td>
                 <td className="px-4 py-2 border text-center">{request.description}</td>
                 <td className="px-4 py-2 border text-center">{request.quantity}</td>
-                <td className="px-4 py-2 border text-center">{request.dateNeeded}</td>
                 <td className="px-4 py-2 border text-center">{request.comments}</td>
                 </tr>
             ))}

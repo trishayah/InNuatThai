@@ -19,6 +19,7 @@ function Request() {
       title: "Laptop Repair",
       branch: "Main",
       requestDate: "2024-12-01",
+      dateNeeded: "2025-2-5",
       requester: "John Doe",
       status: "Pending",
     },
@@ -27,6 +28,7 @@ function Request() {
       title: "Printer Cartridge",
       branch: "Branch A",
       requestDate: "2024-12-02",
+      dateNeeded: "2025-2-15",
       requester: "Jane Smith",
       status: "Approved",
     },
@@ -35,6 +37,7 @@ function Request() {
       title: "Projector Maintenance",
       branch: "Branch B",
       requestDate: "2024-12-10",
+      dateNeeded: "2025-1-10",
       requester: "Michael Johnson",
       status: "Completed",
     },
@@ -84,7 +87,9 @@ function Request() {
       sortedRequests.sort((a, b) => b.title.localeCompare(a.title));
     } else if (sortOption === "reqdate") {
       sortedRequests.sort((a, b) => new Date(a.requestDate) - new Date(b.requestDate));
-    } else if (sortOption === "status") {
+    } else if (sortOption === "dateNeeded") {
+      sortedRequests.sort((a, b) => new Date(a.dateNeeded) - new Date(b.dateNeeded));
+    }else if (sortOption === "status") {
       sortedRequests.sort((a, b) => a.status.localeCompare(b.status));
     }
 
@@ -107,6 +112,7 @@ function Request() {
             <option value="asc">A-Z</option>
             <option value="desc">Z-A</option>
             <option value="reqdate">Request Date</option>
+            <option value="dateNeeded">Date Needed</option>
             <option value="status">Status</option>
           </select>
           <PODownload />
@@ -122,6 +128,7 @@ function Request() {
               <th className="px-4 py-2 text-center">Title</th>
               <th className="px-4 py-2 text-center">Branch</th>
               <th className="px-4 py-2 text-center">Request Date</th>
+              <th className="px-4 py-2 text-center">Date Needed</th>
               <th className="px-4 py-2 text-center">Requester</th>
               <th className="px-4 py-2 text-center">Status</th>
             </tr>
@@ -140,6 +147,7 @@ function Request() {
                 <td className="px-4 py-2 border text-center">{request.title}</td>
                 <td className="px-4 py-2 border text-center">{request.branch}</td>
                 <td className="px-4 py-2 border text-center">{request.requestDate}</td>
+                <td className="px-4 py-2 border text-center">{request.dateNeeded}</td>
                 <td className="px-4 py-2 border text-center">{request.requester}</td>
                 <td className="px-4 py-2 border text-center">{request.status}</td>
               </tr>

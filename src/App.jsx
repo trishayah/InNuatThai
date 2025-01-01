@@ -11,13 +11,12 @@ import VerifyCode from "./VerficationCode.jsx";
 import ChangePassword from "./ChangePassword.jsx";
 import Sidebar from "../Shared UI/sidebar.jsx";
 import Dashboard from "../Shared UI/dashboard.jsx";
-// import AccountingMain from "./Accounting/accountingMain.jsx";
 import Request from "../Shared UI/Request.jsx";
 import RequestDetails from "../Shared UI/RequestDetails.jsx";
 import Inventory from "../Shared UI/Inventory.jsx";
 import DeliveryInstructionForm from "../Shared UI/DIF.jsx";
 import AccInfo from "../Shared UI/accInfo.jsx";
-import PurchaseOrder from "../Shared UI/PurchaseOrder.jsx";
+import PurchaseOrder from "../Shared UI/PO.jsx";
 import StockReceivingReport from "../Shared UI/WSRR.jsx";
 import ApprovalRequest from "../src/Admin/ApprovalRequest.jsx";
 import NextApprovalRequest from "../src/Admin/NextApprovalRequest.jsx";
@@ -51,7 +50,7 @@ const ProtectedLayout = () => {
 };
 
 const router = createBrowserRouter([
-  {path: "/", element: <Request/>},
+  { path: "/", element: <NextApprovalRequest /> },
   // { path: "/", element: <LogIn /> },
   // { path: "/VerifyEmail", element: <VerifyEmail /> },
   // { path: "/VerifyCode", element: <VerifyCode /> },
@@ -59,49 +58,52 @@ const router = createBrowserRouter([
   // {
   //   path: "/accounting/*",
   //   element: <ProtectedLayout />,
-  //   children: [{ index: true, element: <AccountingMain /> }],
+  //   children: [{ index: true, element: <Dashboard /> }],
   // },
-  // { path: "/dashboard", element: <ProtectedLayout />, 
-  //   children: [ 
-  //     { index: true, element: <Dashboard /> }
-  //   ]
-  //   }, 
   // {
-  //   path: "admin/dashboard",
+  //   path: "/dashboard",
+  //   element: <ProtectedLayout />,
+  //   children: [{ index: true, element: <Dashboard /> }],
+  // },
+  // {
+  //   path: "/admin/dashboard",
   //   element: <ProtectedLayout />,
   //   children: [
   //     { index: true, element: <Dashboard /> },
-      // { path: "admin/request", element: <Request /> },
-      // { path: "admin/inventory", element: <Inventory /> },
-      // { path: "admin/reports/dif", element: <DeliveryInstructionForm /> },
-      // { path: "admin/reports/wsrr", element: <StockReceivingReport /> },
-      // { path: "admin/reports/po", element: <PurchaseOrder /> },
+  //     { path: "request", element: <Request /> },
+  //     { path: "request/:requestNo", element: <RequestDetails /> },
+  //     { path: "inventory", element: <Inventory /> },
+  //     { path: "reports/dif", element: <DeliveryInstructionForm /> },
+  //     { path: "reports/wsrr", element: <StockReceivingReport /> },
+  //     { path: "reports/po", element: <PurchaseOrder /> },
   //   ],
   // },
   // {
-  //   path: "/accounting/dashboard", element: <ProtectedLayout />,
+  //   path: "/accounting/dashboard",
+  //   element: <ProtectedLayout />,
   //   children: [
   //     { index: true, element: <Dashboard /> },
-  //     { path: "accounting/request", element: <Request /> },
-      // { path: "accounting/inventory", element: <Inventory /> },
-      // { path: "accounting/reports/dif", element: <DeliveryInstructionForm /> },
-      // { path: "accounting/reports/wsrr", element: <StockReceivingReport /> },
-      // { path: "accounting/reports/po", element: <PurchaseOrder /> },
+  //     { path: "request", element: <Request /> },
+  //     { path: "inventory", element: <Inventory /> },
+  //     { path: "reports/dif", element: <DeliveryInstructionForm /> },
+  //     { path: "reports/wsrr", element: <StockReceivingReport /> },
+  //     { path: "reports/po", element: <PurchaseOrder /> },
   //   ],
   // },
   // {
-  //   path: "/warehouse/dashboard", element: <ProtectedLayout />,
+  //   path: "/warehouse/dashboard",
+  //   element: <ProtectedLayout />,
   //   children: [
   //     { index: true, element: <Dashboard /> },
-  //     { path: "warehouse/inventory", element: <Inventory /> },
+  //     { path: "inventory", element: <Inventory /> },
   //   ],
   // },
   // {
-  //   path: "/branch/dashboard", element: <ProtectedLayout />,
+  //   path: "/branch/dashboard",
+  //   element: <ProtectedLayout />,
   //   children: [
   //     { index: true, element: <Dashboard /> },
-  //     { path: "branch/request", element: <Request /> },
-
+  //     { path: "request", element: <Request /> },
   //   ],
   // },
 ]);

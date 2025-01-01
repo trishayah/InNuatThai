@@ -331,9 +331,9 @@
   .form-group {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 330px;
     color:#ffffff;
-    margin-top: 25px;
+    /* margin-top: 25px; */
     margin-left: 20px;
     margin-right: 20px;
 

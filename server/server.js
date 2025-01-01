@@ -8,12 +8,8 @@ const jwt = require('jsonwebtoken'); // Added jwt module
 const app = express();
 
 // Middleware
-app.use(cors(
-  // { origin: '*' }
-));
-
+app.use(cors());
 app.use(express.json());
-
 
 // Authentication middleware
 const authenticateToken = (req, res, next) => {
@@ -34,14 +30,14 @@ const authenticateToken = (req, res, next) => {
 };
 // Database Configuration
 const db = knex({
-    client: 'mysql2',
-    connection: { 
-      host: process.env.DB_HOST || 'localhost', // Database host
-      user: process.env.DB_USER || 'root',     // Database username
-      password: process.env.DB_PASSWORD || '12345', // Database password
-      database: process.env.DB_NAME || 'db', // Database name
-      port: process.env.DB_PORT || 3306        // Database port
-    },
+  client: 'mysql2',
+  connection: {
+    host: process.env.DB_HOST || 'localhost',
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD || '12345',
+    database: process.env.DB_NAME || 'db',
+    port: process.env.DB_PORT || 3306,
+  },
 });
 // async function hashExistingPasswords() {
 //     try {
@@ -64,95 +60,47 @@ const db = knex({
   
 //   hashExistingPasswords();
 
-// Login Endpoint
-app.post("/login", async (req, res) => {
+app.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
-  console.log("Request body received:", req.body); // Debugging input
+  console.log('Received payload:', req.body);
 
   try {
-    if (!username || !password) {
-      console.error("Missing username or password");
-      return res.status(400).json({ message: "Username and password are required." });
-    }
-
-    const user = await db("account").where({ acc_username: username }).first();
-    console.log("User fetched from database:", user); // Debugging user data
+    const user = await db('account').where({ acc_username: username }).first();
+    console.log('Database query result:', user);
 
     if (!user) {
-      console.error("User not found");
-      return res.status(404).json({ message: "Invalid username or password." });
+      console.log('Invalid username.');
+      return res.status(404).json({ message: 'Invalid username or password' });
     }
 
-    const isPasswordValid = password() === user.acc_password();
+    const isPasswordValid = password === user.acc_password;
+    console.log('Password valid:', isPasswordValid);
+
     if (!isPasswordValid) {
-      console.error("Password mismatch");
-      return res.status(401).json({ message: "Invalid username or password." });
+      console.log('Invalid password.');
+      return res.status(401).json({ message: 'Invalid username or password' });
     }
 
     const token = jwt.sign(
       { userId: user.acc_id, username: user.acc_username, role: user.acc_name },
       process.env.JWT_SECRET,
-      { expiresIn: "24h" }
+      { expiresIn: '24h' }
     );
+    console.log('Generated token:', token);
 
-    res.status(200).json({
-      message: "Login successful",
+    res.json({
+      message: 'Login successful',
       token,
       username: user.acc_username,
       role: user.acc_name,
       name: user.acc_name,
     });
   } catch (error) {
-    console.error("Server error:", error.message);
-    res.status(500).json({ message: "Internal server error." });
+    console.error('Error in /login:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
-
-// app.post('/login', async (req, res) => {
-//   const { username, password } = req.body;
-
-//   try {
-//     // Find the user by username
-//     const user = await db('account')
-//       .where({ acc_username: username })
-//       .first();
-
-//     if (!user) {
-//       return res.status(404).json({ message: 'Invalid username or password' });
-//     }
-
-//     // Since passwords are stored as plain text, directly compare them
-//     const isPasswordValid = password === user.acc_password;
-
-//     if (!isPasswordValid) {
-//       return res.status(401).json({ message: 'Invalid username or password' });
-//     }
-
-//     // Generate JWT token
-//     const token = jwt.sign(
-//       {
-//         userId: user.acc_id,
-//         username: user.acc_username,
-//         role: user.acc_name
-//       },
-//       process.env.JWT_SECRET,
-//       { expiresIn: '24h' }
-//     );
-
-//     // Send response with token and user info
-//     res.json({
-//       message: 'Login successful',
-//       token,
-//       username: user.acc_username,
-//       role: user.acc_name,
-//       name: user.acc_name
-//     });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: 'Internal server error' });
-//   }
-// });
 
 //   app.post('/change-password', async (req, res) => {
 //     const { userId, currentPassword, newPassword } = req.body;
@@ -205,36 +153,8 @@ app.post("/login", async (req, res) => {
 //   }
 // });
 
-// Get user profile
-app.get('/profile', authenticateToken, async (req, res) => {
-  try {
-    const user = await db('account')
-      .where({ acc_id: req.user.userId })
-      .select('acc_name as firstname', 'acc_lastname as lastname', 'acc_username as username', 'acc_password as password')
-      .first();
-    if (!user) return res.status(404).json({ message: 'User not found.' });
-    res.json(user);
-  } catch (err) {
-    res.status(500).json({ message: 'Failed to fetch profile.' });
-  }
-});
-
-// Update user profile
-app.put('/profile', authenticateToken, async (req, res) => {
-  const { firstname, lastname, username, password } = req.body;
-  try {
-    await db('account')
-      .where({ acc_id: req.user.userId })
-      .update({ acc_name: firstname, acc_lastname: lastname, acc_username: username, acc_password: password });
-    res.json({ message: 'Profile updated successfully.' });
-  } catch (err) {
-    res.status(500).json({ message: 'Failed to update profile.' });
-  }
-});
-
-
 // Start Server
-const port = process.env.PORT || 3000;
+const port = 3000;
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+    console.log(`Server running on port ${port}`);
 });

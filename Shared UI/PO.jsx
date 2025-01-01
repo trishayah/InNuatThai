@@ -5,7 +5,7 @@ import UploadForm from "../src/Modal/uploadForm";
 import DocumentCard from '../src/Modal/DocumentCard';
 import ViewImage from "../src/Modal/ViewImage";
 
-const DeliveryInstructionForm = () => {
+const PurchaseOrder = () => {
   const [documents, setDocuments] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -23,7 +23,7 @@ const DeliveryInstructionForm = () => {
   return (
     <div className="flex flex-col flex-1 items-end h-full font-poppins bg-[#D9D9D9]">
       <div className="flex justify-between items-center p-4">
-        <h2 className="text-2xl font-semibold text-[#133517] mt-4 ml-6 whitespace-nowrap">Delivery Instruction Form</h2>
+        <h2 className="text-2xl font-semibold text-[#133517] mt-4 ml-6 whitespace-nowrap">Purchase Order</h2>
         <AccInfo user={user} /> {/* Display AccInfo component */}
       </div>
       <div className="mb-4 relative mx-4 md:mx-8 ml-4">
@@ -34,7 +34,7 @@ const DeliveryInstructionForm = () => {
           className="w-[40px] sm:w-[200px] h-[40px] bg-[#105D2B] rounded-[15px] shadow-m3-elevation-light-4 text-white text-base sm:text-lg font-medium hover:bg-[#003d1a] transition duration-300 ml-6"
           onClick={handleUploadForm}
         >
-          Add DIF
+          Add PO
         </button>
       </div>
       <div className="displayImage">
@@ -52,4 +52,4 @@ const DeliveryInstructionForm = () => {
   );
 };
 
-export default DeliveryInstructionForm;
+export default PurchaseOrder;
