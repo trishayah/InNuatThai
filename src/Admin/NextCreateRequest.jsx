@@ -24,17 +24,17 @@ return (
         <div className="reqbox">
           <h2 className="reqform">Request Form</h2>
           <h3 className="reqformdetails">Please fill all information on the fields.</h3>
-        <div className='form-container'>
-          <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="date" className="reqdate">Date</label>
-              <input type="date" id="date" className="form-input" />
+          <div className='form-container'>
+            <div className="form-row">
+              <div className="form-group">
+                <label htmlFor="date" className="reqdate">Request Date</label>
+                <input type="date" id="date" className="form-input" />
+              </div>
+              <div className="form-group">
+                <label htmlFor="dateneed" className="dateneeded">Date Needed</label>
+                <input type="date" id="dateNeed" className="form-input" />
+              </div>
             </div>
-            <div className="form-group">
-              <label htmlFor="title" className="reqtitle">Title</label>
-              <input type="text" id="title" className="form-input" />
-            </div>
-          </div>
 
           <div className="form-row">
             <div className="form-group">
@@ -57,6 +57,12 @@ return (
               </select>
             </div>
             <div className="form-group">
+                <label htmlFor="title" className="reqtitle">Title</label>
+                <input type="text" id="title" className="form-input" />
+              </div>
+          </div>
+          <div className="form-row">
+          <div className="form-group">
               <label htmlFor="decisionPersonnel" className="reqdecision">Decision Personnel</label>
               <select id="decisionPersonnel" className="form-input">
                 <option value="">Select</option>
