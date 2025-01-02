@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import AccInfo from "./accInfo";
+import AccInfo from "./AccInfo";
 
 const Dashboard = () => {
   const navigate = useNavigate();

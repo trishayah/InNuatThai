@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+// import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "./searchBar";
-import AccInfo from "./accInfo";
+import AccInfo from "./AccInfo.jsx";
 import DIFDownload from "./DIFDownloadButton.jsx";
 import PODownload from "./PODownloadButton.jsx";
 
@@ -16,7 +16,7 @@ function Request() {
   const sampleData = [
     {
       requestNo: "001",
-      title: "Laptop Repair",
+      title: "Massage Bed",
       branch: "Main",
       requestDate: "2024-12-01",
       dateNeeded: "2025-2-5",
@@ -25,7 +25,7 @@ function Request() {
     },
     {
       requestNo: "002",
-      title: "Printer Cartridge",
+      title: "Uniform",
       branch: "Branch A",
       requestDate: "2024-12-02",
       dateNeeded: "2025-2-15",
@@ -34,7 +34,7 @@ function Request() {
     },
     {
       requestNo: "003",
-      title: "Projector Maintenance",
+      title: "Essential Oil",
       branch: "Branch B",
       requestDate: "2024-12-10",
       dateNeeded: "2025-1-10",
@@ -55,6 +55,8 @@ function Request() {
         setLoading(false);
       }
     };
+
+
     fetchRequests();
   }, []);
 
@@ -89,22 +91,23 @@ function Request() {
       sortedRequests.sort((a, b) => new Date(a.requestDate) - new Date(b.requestDate));
     } else if (sortOption === "dateNeeded") {
       sortedRequests.sort((a, b) => new Date(a.dateNeeded) - new Date(b.dateNeeded));
-    }else if (sortOption === "status") {
+    } else if (sortOption === "status") {
       sortedRequests.sort((a, b) => a.status.localeCompare(b.status));
     }
 
     setFilteredRequests(sortedRequests); // Update filtered results
   };
+  const user = JSON.parse(localStorage.getItem("user")); // Get user details
 
   return (
     <div className="flex flex-col w-full min-w-screen h-full min-h-screen bg-[#D9D9D9]">
-      <h1 className="text-2xl font-500 text-[#133517] mt-4 font-poppins mr-4 p-4">Request</h1>
+      <h1 className="text-2xl font-semibold text-[#133517] mt-4 font-poppins mr-4 p-4 ml-6">Request</h1>
       <div className="requestTable">
-        <AccInfo />
-        <div className="request">
+        <AccInfo user={user} />
+        <div className="request flex items-center gap-4">
           <SearchBar onSearch={handleSearch} />
           <select
-            style={{ backgroundColor: "#133517", color: "#FFFFFF" }}
+            style={{ backgroundColor: "#133517", color: "#FFFFFF", fontFamily: "Poppins", fontSize: "12px" }}
             className="sorting"
             onChange={handleSort}
           >
@@ -118,7 +121,7 @@ function Request() {
           <PODownload />
           <DIFDownload />
         </div>
-        <table className="table-fixed border-spacing-2 w-full border-collapse border border-gray-300 font-poppins font-semibold">
+        <table className="table-fixed border-spacing-2 w-full border-collapse border border-gray-300 font-poppins">
           <thead>
             <tr
               style={{ backgroundColor: "#133517", color: "#FFFFFF" }}

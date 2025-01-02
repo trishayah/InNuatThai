@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import SearchBar from './searchBar';
-import AccInfo from './accInfo'; // Import AccInfo component
+import AccInfo from './AccInfo'; // Import AccInfo component
 import UploadForm from "../src/Modal/uploadForm";
 import DocumentCard from '../src/Modal/DocumentCard';
 import ViewImage from "../src/Modal/ViewImage";
+import DIFDownload from './DIFDownloadButton'; // Import DIFDownload component
 
 const DeliveryInstructionForm = () => {
   const [documents, setDocuments] = useState([]);
@@ -29,13 +30,14 @@ const DeliveryInstructionForm = () => {
       <div className="mb-4 relative mx-4 md:mx-8 ml-4">
         <SearchBar />
       </div>
-      <div className="flex mb-6 bg-[#133517]">
-        <button 
-          className="w-[40px] sm:w-[200px] h-[40px] bg-[#105D2B] rounded-[15px] shadow-m3-elevation-light-4 text-white text-base sm:text-lg font-medium hover:bg-[#003d1a] transition duration-300 ml-6"
+      <div className="flex mb-6">
+        <button
+          className="addbtn"
           onClick={handleUploadForm}
         >
           Add DIF
         </button>
+        <DIFDownload /> {/* Add DIFDownload component beside the button */}
       </div>
       <div className="displayImage">
         {documents.slice(0, 16).map((doc, index) => (

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "./searchBar";
-import AccInfo from "./accInfo";
+import AccInfo from "./AccInfo";
 import WSRRDownload from "./WSRRDownload";
 
 function Inventory() {
@@ -16,24 +16,24 @@ function Inventory() {
   const sampleData = [
     {
       inventoryNo: "001",
-      itemName: "Laptop",
-      category: "Electronics",
-      unitPrice: "24000",
+      itemName: "Essential Oil",
+      category: "Aromatherapy",
+      unitPrice: "140",
       stock: "100",
       dateAdded: "12-24-2023",
     },
     {
       inventoryNo: "002",
-      itemName: "Printer Cartridge",
-      category: "Electronics",
+      itemName: "Uniform",
+      category: "Apparel",
       unitPrice: "300",
       stock: "199",
       dateAdded: "2024-12-02",
     },
     {
       inventoryNo: "003",
-      itemName: "Projector",
-      category: "Electronics",
+      itemName: "Massage Bed",
+      category: "Furniture",
       unitPrice: "12000",
       stock: "50",
       dateAdded: "2024-12-02",
@@ -83,17 +83,20 @@ function Inventory() {
     setFilteredInventory(filteredData);
   };
 
+  const user = JSON.parse(localStorage.getItem("user")); // Get user details
+
+
   return (
     <div className="flex flex-col w-full min-w-screen h-full min-h-screen bg-[#D9D9D9]">
-      <h1 className="text-2xl font-500 text-[#133517] font-poppins mt-4 mr-4 p-4">
+      <h1 className="text-2xl font-semibold text-[#133517] font-poppins mt-4 mr-4 ml-6 p-4">
         Inventory
       </h1>
       <div className="inventoryTable ml-2 mr-2">
-        <AccInfo />
-        <div className="search">
+        <AccInfo user={user} />
+        <div className="flex items-center gap-4">
           <SearchBar onSearch={handleSearch} /> {/* Pass the search handler */}
           <select
-            style={{ backgroundColor: "#133517", color: "#FFFFFF" }}
+            style={{ backgroundColor: "#133517", color: "#FFFFFF", fontFamily: "Poppins", fontSize: "12px" }}
             className="sorting"
             onChange={handleSort}
           >
@@ -104,7 +107,7 @@ function Inventory() {
             <option value="dateAdded">Date Added</option>
           </select>
           <select
-            style={{ backgroundColor: "#133517", color: "#FFFFFF" }}
+            style={{ backgroundColor: "#133517", color: "#FFFFFF", fontFamily: "Poppins", fontSize: "12px" }}
             className="option"
           >
             <option value="update">Update Request</option>
@@ -112,10 +115,10 @@ function Inventory() {
             <option value="remove">Remove Request</option>
             <option value="view">View Inventory</option>
           </select>
-          <WSRRDownload/>
+          <WSRRDownload />
         </div>
 
-        <table className="inventoryTabletable-fixed border-spacing-2 w-full border-collapse border border-gray-300 font-poppins font-semibold">
+        <table className="table-fixed border-spacing-2 w-full border-collapse border border-gray-300 font-poppins ">
           <thead>
             <tr
               style={{ backgroundColor: "#133517", color: "#FFFFFF" }}

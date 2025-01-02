@@ -15,7 +15,7 @@ const SearchBar = ({ onSearch }) => {
           className="w-full h-full bg-transparent text-black text-sm sm:text-base focus:outline-none pl-2"
           onChange={handleSearch}
         />
-        <div className="searchicon">
+        <div className="flex items-center text-[#105D2B]">
           <MdSearch className="px-4 pl-1" size={24} />
         </div>
       </div>
