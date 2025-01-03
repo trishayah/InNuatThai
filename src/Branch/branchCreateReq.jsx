@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom"; // Import useNavigate
 import axios from "axios";
-import AccInfo from "./accInfo";
+import AccInfo from "../../Shared UI/AccInfo";
 
 function RequestDetails() {
   const { requestNo } = useParams();
@@ -48,7 +48,7 @@ function RequestDetails() {
 
   return (
     <div className="flex flex-col w-full min-w-screen h-full min-h-screen bg-[#D9D9D9]">
-      <h1 className="approval text-2xl font-500 text-[#133517] mt-4 font-semibold font-poppins text-[#133517] mr-4 p-4">Create Request</h1>
+      <h1 className="approval text-2xl mt-4 font-semibold font-poppins text-[#133517] mr-4 p-4">Create Request</h1>
       <div className="requestTable">
         <AccInfo />
         <div className="reqbox">

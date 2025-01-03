@@ -16,12 +16,17 @@ import Inventory from "../Shared UI/Inventory.jsx";
 import DeliveryInstructionForm from "../Shared UI/DIF.jsx";
 import StockReceivingReport from "../Shared UI/WSRR.jsx";
 import PurchaseOrder from "../Shared UI/PO.jsx";
+// import ApprovalRequest from "../src/Admin/ApprovalRequest.jsx";
+// import NextApprovalRequest from "../src/Admin/NextApprovalRequest.jsx";
 import AddInventory from "../src/Admin/AddInventory.jsx";
 import UpdateInventory from "../src/Admin/UpdateInventory.jsx";
 import RemoveInventory from "../src/Admin/RemoveInventory.jsx";
 import ApprovalAddInventory from "./Admin/ApprovalAddInventory.jsx";
 import ApprovalUpdateInventory from "./Admin/ApprovalUpdateInventory.jsx";
 import ApprovalRemoveInventory from "./Admin/ApprovalRemoveInventory.jsx";
+import BranchRequest from "./Branch/branchReq.jsx";
+import BranchCreateRequest from "./Branch/branchCreateReq.jsx";
+import EditProfile from "../Shared UI/EditProfile.jsx";
 
 // Auth Wrapper
 const isAuthenticated = () => !!localStorage.getItem("token");
@@ -40,6 +45,7 @@ const ProtectedLayout = () => {
   );
 };
 
+
 const router = createBrowserRouter([
   { path: "/", element: <LogIn /> },
   { path: "/VerifyEmail", element: <VerifyEmail /> },
@@ -55,12 +61,20 @@ const router = createBrowserRouter([
       { path: "dif", element: <DeliveryInstructionForm /> },
       { path: "wsrr", element: <StockReceivingReport /> },
       { path: "po", element: <PurchaseOrder /> },
+      // { path: "approvalreq", element: <ApprovalRequest /> },
+      // { path: "nxtapprovalreq", element: <NextApprovalRequest /> },
       { path: "addinv", element: <AddInventory /> },
       { path: "updateinv", element: <UpdateInventory /> },
       { path: "rmvinv", element: <RemoveInventory /> },
       { path: "approveadd", element: <ApprovalAddInventory /> },
       { path: "approveupdate", element: <ApprovalUpdateInventory /> },
       { path: "approvermv", element: <ApprovalRemoveInventory /> },
+      { path: "branchreq", element: <BranchRequest /> },
+      { path: "branchcreatereq", element: <BranchCreateRequest /> },
+      { path: "add-inventory", element: <AddInventory /> },
+      { path: "update-inventory", element: <UpdateInventory /> },
+      { path: "remove-inventory", element: <RemoveInventory /> },
+      { path: "editprofile", element: <EditProfile /> }
     ],
   },
 ]);
@@ -68,3 +82,4 @@ const router = createBrowserRouter([
 const App = () => <RouterProvider router={router} />;
 
 export default App;
+

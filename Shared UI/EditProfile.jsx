@@ -68,7 +68,7 @@ function EditProfile() {
 
   return (
     <div className="flex flex-col w-full min-w-screen h-full min-h-screen bg-[#D9D9D9] font-poppins">
-      <h1 className="approval text-2xl font-500 text-[#133517] mt-4 mr-4 p-4">
+      <h1 className="text-2xl font-semibold text-[#133517] font-poppins mt-4 mr-4 ml-6 p-4">
         User Profile
       </h1>
       <div className="requestTable">
@@ -78,7 +78,7 @@ function EditProfile() {
             <div className="form-row">
               <div className="form-group">
                 <label htmlFor="firstname" className="fname">
-                  Firstname
+                  First Name
                 </label>
                 <input
                   type="text"
@@ -90,7 +90,7 @@ function EditProfile() {
               </div>
               <div className="form-group">
                 <label htmlFor="lastname" className="lname">
-                  Lastname
+                  Last Name
                 </label>
                 <input
                   type="text"

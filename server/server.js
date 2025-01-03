@@ -132,12 +132,12 @@ app.post('/addinventory', authenticateToken, async (req, res) => {
 });
 
 // Fetch inventory data
-app.get('/api/inventory', authenticateToken, async (req, res) => {
+app.get('/display-inventory', authenticateToken, async (req, res) => {
   try {
     const inventory = await db.select('*').from('inventory');
     res.json(inventory);
   } catch (error) {
-    console.error('Error fetching inventory:', error);
+    console.log('Error fetching inventory:', error);
     res.status(500).json({ message: 'Failed to fetch inventory' });
   }
 });

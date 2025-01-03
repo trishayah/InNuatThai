@@ -1,15 +1,34 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "./searchBar";
-import AccInfo from "./accInfo";
+import AccInfo from "./AccInfo";
 import WSRRDownload from "./WSRRDownload";
+import Notification from "./Notification"; // Import the Notification component
+import axios from "axios";
 
 function Inventory() {
   const navigate = useNavigate();
   const [inventory, setInventory] = useState([]);
   const [filteredInventory, setFilteredInventory] = useState([]); // Added filtered inventory state
 
+  useEffect(() => {
+    const fetchInventory = async () => {
+      try {
+        const response = await axios.get('/display-inventory', {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        const data = Array.isArray(response.data) ? response.data : [];
+        setInventory(data);
+        setFilteredInventory(data);
+      } catch (error) {
+        console.error('Error fetching inventory:', error);
+      }
+    };
 
+    fetchInventory();
+  }, []);
 
   // Sorting function
   const handleSort = (e) => {
@@ -43,18 +62,10 @@ function Inventory() {
 
   const user = JSON.parse(localStorage.getItem("user")); // Get user details
 
-  const handleOptionChange = (e) => {
-    const option = e.target.value;
-    if (option === "add") {
-      navigate("/add-inventory");
-    } else if (option === "update") {
-      navigate("/update-inventory");
-    } else if (option === "remove") {
-      navigate("/remove-inventory");
-    } else if (option === "view") {
-      navigate("/inventory");
-    }
+  const handleAddInventory = () => {
+    navigate("/add-inventory"); // Adjust this route as needed
   };
+
 
   return (
     <div className="flex flex-col w-full min-h-screen bg-[#D9D9D9]">
@@ -62,7 +73,10 @@ function Inventory() {
         Inventory
       </h1>
       <div className="inventoryTable ml-2 mr-2">
-        <AccInfo user={user} />
+        <div className="flex items-center gap-4">
+          {/* <Notification /> Notification component */}
+          <AccInfo user={user} />
+        </div>
         <div className="flex items-center gap-4">
           <SearchBar onSearch={handleSearch} /> {/* Pass the search handler */}
           <select
@@ -76,17 +90,13 @@ function Inventory() {
             <option value="category">Category</option>
             <option value="dateAdded">Date Added</option>
           </select>
-          <select
-            style={{ backgroundColor: "#133517", color: "#FFFFFF", fontFamily: "Poppins", fontSize: "12px" }}
-            className="option"
-            onChange={handleOptionChange} // Handle option change
-          >
-            <option value="update">Update Inventory</option>
-            <option value="add">Add Inventory</option>
-            <option value="remove">Remove Inventory</option>
-            <option value="view">View Inventory</option>
-          </select>
           <WSRRDownload />
+          <button
+            onClick={handleAddInventory}
+            className="downloadbutton"
+          >
+            Add Inventory
+          </button>
         </div>
 
         
@@ -105,31 +115,31 @@ function Inventory() {
             </tr>
           </thead>
           <tbody>
-            {filteredInventory.map((inventory, index) => (
+            {Array.isArray(filteredInventory) && filteredInventory.map((item, index) => (
               <tr
-                key={inventory.inventoryNo}
+                key={item.inv_no}
                 style={{
                   backgroundColor: index % 2 === 0 ? "#FFF5F5" : "#D3DDD6",
                   cursor: "pointer",
                 }}
               >
                 <td className="px-4 py-2 border text-center">
-                  {inventory.inventoryNo}
+                  {item.inv_no}
                 </td>
                 <td className="px-4 py-2 border text-center">
-                  {inventory.itemName}
+                  {item.inv_itemname}
                 </td>
                 <td className="px-4 py-2 border text-center">
-                  {inventory.category}
+                  {item.inv_category}
                 </td>
                 <td className="px-4 py-2 border text-center">
-                  {inventory.unitPrice}
+                  {item.inv_unitprice}
                 </td>
                 <td className="px-4 py-2 border text-center">
-                  {inventory.stock}
+                  {item.inv_stock}
                 </td>
                 <td className="px-4 py-2 border text-center">
-                  {inventory.dateAdded}
+                  {item.inv_dateadded}
                 </td>
               </tr>
             ))}

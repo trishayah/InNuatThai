@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import SearchBar from "../../Shared UI/searchBar";
-import AccInfo from "../../Shared UI/accInfo";
+// import SearchBar from "../../Shared UI/searchBar";
+import AccInfo from "../../Shared UI/AccInfo";
+import axios from "axios";
 
 function AddInventory() {
   const navigate = useNavigate();
   const [inventory, setInventory] = useState([]);
   const [filteredInventory, setFilteredInventory] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchQuery, setSearchQuery] = useState(""); // State for search query
+  // const [searchQuery, setSearchQuery] = useState(""); // State for search query
   const [newItem, setNewItem] = useState({
     itemName: "",
     category: "",
@@ -19,63 +20,65 @@ function AddInventory() {
   });
   const [successMessage, setSuccessMessage] = useState(""); // State for success message
 
-  // Fetch inventory data from API
-  useEffect(() => {
-    const fetchInventory = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get(
-          "http://localhost:3000/api/inventory",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+  // // Fetch inventory data from API
+  // useEffect(() => {
+  //   const fetchInventory = async () => {
+  //     try {
+  //       const token = localStorage.getItem("token");
+  //       const response = await axios.get(
+  //         "http://localhost:3000/inventory",
+  //         {
+  //           headers: { Authorization: `Bearer ${token}` },
+  //         }
+  //       );
 
-        setInventory(response.data);
-        setFilteredInventory(response.data); // Initialize filtered inventory
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchInventory();
-  }, []);
+  //       setInventory(response.data);
+  //       setFilteredInventory(response.data); // Initialize filtered inventory
+  //     } catch (error) {
+  //       setError(error);
 
-  // Handle search query change
-  useEffect(() => {
-    if (searchQuery.trim() === "") {
-      setFilteredInventory(inventory); // Reset to full inventory
-    } else {
-      const query = searchQuery.toLowerCase();
-      const filtered = inventory.filter(
-        (item) =>
-          item.itemName.toLowerCase().includes(query) ||
-          item.category.toLowerCase().includes(query)
-      );
-      setFilteredInventory(filtered);
-    }
-  }, [searchQuery, inventory]);
+        // } finally {
+        //   setLoading(false);
+        // }
+    //   }
+    // };
+    //   fetchInventory();
+    // }, []);
 
-  // Sorting function
-  const handleSort = (e) => {
-    const sortOption = e.target.value;
-    const sortedInventory = [...filteredInventory];
+  // // Handle search query change
+  // useEffect(() => {
+  //   if (searchQuery.trim() === "") {
+  //     setFilteredInventory(inventory); // Reset to full inventory
+  //   } else {
+  //     const query = searchQuery.toLowerCase();
+  //     const filtered = inventory.filter(
+  //       (item) =>
+  //         item.itemName.toLowerCase().includes(query) ||
+  //         item.category.toLowerCase().includes(query)
+  //     );
+  //     setFilteredInventory(filtered);
+  //   }
+  // }, [searchQuery, inventory]);
 
-    if (sortOption === "asc") {
-      sortedInventory.sort((a, b) => a.itemName.localeCompare(b.itemName));
-    } else if (sortOption === "desc") {
-      sortedInventory.sort((a, b) => b.itemName.localeCompare(a.itemName));
-    } else if (sortOption === "category") {
-      sortedInventory.sort((a, b) => a.category.localeCompare(b.category));
-    } else if (sortOption === "dateAdded") {
-      sortedInventory.sort(
-        (a, b) => new Date(a.dateAdded) - new Date(b.dateAdded)
-      );
-    }
+  // // Sorting function
+  // const handleSort = (e) => {
+  //   const sortOption = e.target.value;
+  //   const sortedInventory = [...filteredInventory];
 
-    setFilteredInventory(sortedInventory);
-  };
+  //   if (sortOption === "asc") {
+  //     sortedInventory.sort((a, b) => a.itemName.localeCompare(b.itemName));
+  //   } else if (sortOption === "desc") {
+  //     sortedInventory.sort((a, b) => b.itemName.localeCompare(a.itemName));
+  //   } else if (sortOption === "category") {
+  //     sortedInventory.sort((a, b) => a.category.localeCompare(b.category));
+  //   } else if (sortOption === "dateAdded") {
+  //     sortedInventory.sort(
+  //       (a, b) => new Date(a.dateAdded) - new Date(b.dateAdded)
+  //     );
+  //   }
+
+  //   setFilteredInventory(sortedInventory);
+  // };
 
   // Handle form input change
   const handleInputChange = (e) => {
@@ -114,18 +117,23 @@ function AddInventory() {
     }
   };
 
+  // Handle cancel button click
+  const handleCancel = () => {
+    navigate("/inventory");
+  };
+
   const user = JSON.parse(localStorage.getItem("user")); // Get user details
 
-  const handleOptionChange = (e) => {
-    const option = e.target.value;
-    if (option === "update") {
-      navigate("/update-inventory");
-    } else if (option === "remove") {
-      navigate("/remove-inventory");
-    } else if (option === "view") {
-      navigate("/inventory");
-    }
-  };
+  // const handleOptionChange = (e) => {
+  //   const option = e.target.value;
+  //   if (option === "update") {
+  //     navigate("/update-inventory");
+  //   } else if (option === "remove") {
+  //     navigate("/remove-inventory");
+  //   } else if (option === "view") {
+  //     navigate("/inventory");
+  //   }
+  // };
 
   return (
     <div className="flex flex-col w-full min-h-screen bg-[#D9D9D9]"> {/* Updated class name */}
@@ -134,7 +142,7 @@ function AddInventory() {
       </h1>
       <div className="inventoryTable ml-2 mr-2">
         <AccInfo user={user} />
-        <div className="flex items-center gap-4">
+        {/* <div className="flex items-center gap-4">
           <select
             style={{ backgroundColor: "#133517", color: "#FFFFFF", fontFamily: "Poppins", fontSize: "12px" }}
             className="option"
@@ -144,11 +152,11 @@ function AddInventory() {
             <option value="remove">Remove Inventory</option>
             <option value="view">View Inventory</option>
           </select>
-        </div>
-        <div className="flex flex-col bg-green-900 p-4 rounded-lg mt-6 w-[400px] mx-auto items-center">
+        </div> */}
+        <div className="flex flex-col justify-items-center bg-[#164E28] p-4 rounded-3xl mt-6 w-[800px] h-[450px] mx-auto items-center">
           <form
             onSubmit={handleSubmit}
-            className="font-poppins items-center"
+            className="font-poppins grid grid-cols-2 gap-4 mt-11"
           >
             {successMessage && (
               <p className="text-green-500 mb-4">{successMessage}</p>
@@ -223,36 +231,27 @@ function AddInventory() {
               />
             </div>
 
-            <button
-              type="submit"
-              className="w-80 px-2 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700"
-            >
-              Add Item
-            </button>
+            <div className="col-span-2 flex justify-between">
+              <button
+                type="button"
+                onClick={handleCancel}
+                className="w-20 px-20 h-8 bg-[#1E7239] text-white text-sm py-6 rounded-full tracking-widest font-600 flex items-center justify-center shadow-lg"
+                style={{ boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.1)" }}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="w-20 px-20 h-8 bg-[#1E7239] text-white py-6 text-sm rounded-full tracking-widest font-600 flex items-center justify-center shadow-lg"
+                style={{ boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.1)" }}
+              >
+                Add
+              </button>
+            </div>
           </form>
         </div>
-        </div>
+      </div>
     </div>
   );
 }
-//import React from "react";
-//import { useNavigate } from "react-router-dom";
-
-///function Addinvetory() {
- // const navigate = useNavigate();
-
- // return (
- //   <div>
- //     <button
-  //      onClick={() => navigate("/additem")}
-   //     className="bg-green-500 text-white px-4 py-2 rounded mt-4"
-   //   >
-   //     Add New Item
-   //   </button>
-  //    {/* Existing content */}
-   // </div>
- // );
-//}s
-
-
 export default AddInventory;

@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import SearchBar from "./searchBar";
-import AccInfo from "./accInfo";
-import sortIcon from "../src/assets/filter 1.png";
-import createIcon from "../src/assets/inventory 3.png";
-import BranchCreateRequest from "../Shared UI/branchCreateReq.jsx";
+import SearchBar from "../../Shared UI/searchBar.jsx";
+import AccInfo from "../../Shared UI/AccInfo.jsx";
+// import sortIcon from "../src/assets/filter 1.png";
+// import createIcon from "../src/assets/inventory 3.png";
+import BranchCreateRequest from "./branchCreateReq.jsx";
 
 
 function Request() {
@@ -92,35 +92,35 @@ function Request() {
   return (
     <div className="flex flex-col w-full min-w-screen h-screen min-h-screen bg-[#D9D9D9]">
       <div className="flex justify-between items-center p-4">
-      <h2 className="text-2xl font-semibold font-poppins text-[#133517] mt-4 ml-6">Request Status</h2>
+        <h2 className="text-2xl font-semibold font-poppins text-[#133517] mt-4 ml-6">Request Status</h2>
 
         <AccInfo user={user} />
       </div>
-      
+
       <div className="requestTable">
         <div className="flex items-center justify-between mt-8 ml-4 mr-4">
           <SearchBar />
 
-          
+
           <div className="flex items-center space-x-4 relative" ref={dropdownRef}>
             {/* Sort By Button */}
             <button
-             onClick={() => setShowDropdown((prev) => !prev)}
-             className="flex items-center justify-center sm:justify-start w-[40px] sm:w-[150px] h-[30px] bg-[#105D2B] rounded-[15px] shadow-m3-elevation-light-4 text-white text-base sm:text-lg font-poppins font-medium hover:bg-[#003d1a] transition duration-300 ml-6"
-           >
-            
-             <span className="hidden sm:inline">Sort by</span>
+              onClick={() => setShowDropdown((prev) => !prev)}
+              className="flex items-center justify-center sm:justify-start w-[40px] sm:w-[150px] h-[30px] bg-[#105D2B] rounded-[15px] shadow-m3-elevation-light-4 text-white text-base sm:text-lg font-poppins font-medium hover:bg-[#003d1a] transition duration-300 ml-6"
+            >
 
-             <img
-               src={sortIcon}
-               alt="Sort Icon"
-               className="w-4 h-4 sm:w-6 sm:h-6 ml-2"
-             />
+              <span className="hidden sm:inline">Sort by</span>
+
+              {/* <img
+                src={sortIcon}
+                alt="Sort Icon"
+                className="w-4 h-4 sm:w-6 sm:h-6 ml-2"
+              /> */}
             </button>
             {showDropdown && (
               <div className="absolute top-20 left-0 bg-[#105D2B] text-white shadow-lg rounded-b-[15px] w-full sm:w-[150px] z-10">
-   
-    <ul className="py-2 font-poppins">
+
+                <ul className="py-2 font-poppins">
                   <li
                     className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-gray-200"
                     onClick={() => handleSort("asc")}
@@ -141,11 +141,11 @@ function Request() {
               onClick={handleCreateRequest}
               className="flex items-center justify-center sm:justify-start w-[40px] sm:w-[200px] h-[30px] bg-[#105D2B] rounded-[15px] shadow-m3-elevation-light-4 text-white text-base sm:text-lg font-poppins font-medium hover:bg-[#003d1a] transition duration-300 ml-6"
             >
-              <img
+              {/* <img
                 src={createIcon}
                 alt="Create Icon"
                 className="w-4 h-4 sm:w-6 sm:h-6 mr-2"
-              />
+              /> */}
               <span className="hidden sm:inline">Create Request</span>
             </button>
           </div>

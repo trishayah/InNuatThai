@@ -159,7 +159,7 @@ const Sidebar = () => {
         <nav className="flex-1 mt-4">{renderMenu(menuItems[role] || [])}</nav>
 
         {/* Logout Button */}
-        <div className="mt-auto flex justify-center px-6 py-4 ">
+        <div className="logout absolute bottom-0 w-full">
           <button
             onClick={handleLogout}  // Attach the handleLogout to the button
             className="flex items-center gap-4 px-6 py-3 hover:bg-[#003d1a] transition duration-300 text-white text-lg font-poppins w-full"
