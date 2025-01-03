@@ -53,7 +53,7 @@ const menuItems = {
   ],
   branch: [
     { name: "Dashboard", url: "/dashboard", icon: MdDashboard },
-    { name: "Request", url: "/request", icon: MdAssignment },
+    { name: "Request", url: "/branchreq", icon: MdAssignment },
     // { name: "Archive", url: "/archive", icon: MdArchive },
   ],
 };
