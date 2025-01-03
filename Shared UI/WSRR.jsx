@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import SearchBar from './searchBar';
-import AccInfo from './AccInfo'; // Import AccInfo component
+import AccInfo from './accInfo'; // Import AccInfo component
 import UploadForm from "../src/Modal/uploadForm";
 import DocumentCard from '../src/Modal/DocumentCard';
 import ViewImage from "../src/Modal/ViewImage";

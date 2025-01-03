@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "./searchBar";
-import AccInfo from "./AccInfo";
+import AccInfo from "./accInfo";
 import WSRRDownload from "./WSRRDownload";
 
 function Inventory() {
@@ -36,6 +36,10 @@ function Inventory() {
     );
     setFilteredInventory(filteredData);
   };
+  
+  
+
+  
 
   const user = JSON.parse(localStorage.getItem("user")); // Get user details
 
@@ -85,6 +89,7 @@ function Inventory() {
           <WSRRDownload />
         </div>
 
+        
         <table className="table-fixed border-spacing-2 w-full border-collapse border border-gray-300 font-poppins ">
           <thead>
             <tr
@@ -129,7 +134,7 @@ function Inventory() {
               </tr>
             ))}
           </tbody>
-        </table>
+          </table>
       </div>
     </div>
   );
