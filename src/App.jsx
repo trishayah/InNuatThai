@@ -19,7 +19,6 @@ import PurchaseOrder from "../Shared UI/PO.jsx";
 // import ApprovalRequest from "../src/Admin/ApprovalRequest.jsx";
 // import NextApprovalRequest from "../src/Admin/NextApprovalRequest.jsx";
 import AddInventory from "../src/Admin/AddInventory.jsx";
-<<<<<<< HEAD
 import UpdateInventory from "../src/Admin/UpdateInventory.jsx";
 import RemoveInventory from "../src/Admin/RemoveInventory.jsx";
 import ApprovalAddInventory from "./Admin/ApprovalAddInventory.jsx";
@@ -28,10 +27,6 @@ import ApprovalRemoveInventory from "./Admin/ApprovalRemoveInventory.jsx";
 import BranchRequest from "./Branch/branchReq.jsx";
 import BranchCreateRequest from "./Branch/branchCreateReq.jsx";
 import EditProfile from "../Shared UI/EditProfile.jsx";
-=======
-import BranchRequest from "../Shared UI/branchReq.jsx";
-import BranchCreateRequest from "../Shared UI/branchCreateReq.jsx";
->>>>>>> b9af609415ffc12400fe7d3c7cdd768ee9854398
 
 // Auth Wrapper
 const isAuthenticated = () => !!localStorage.getItem("token");
@@ -74,17 +69,12 @@ const router = createBrowserRouter([
       { path: "approveadd", element: <ApprovalAddInventory /> },
       { path: "approveupdate", element: <ApprovalUpdateInventory /> },
       { path: "approvermv", element: <ApprovalRemoveInventory /> },
-<<<<<<< HEAD
       { path: "branchreq", element: <BranchRequest /> },
       { path: "branchcreatereq", element: <BranchCreateRequest /> },
       { path: "add-inventory", element: <AddInventory /> },
       { path: "update-inventory", element: <UpdateInventory /> },
       { path: "remove-inventory", element: <RemoveInventory /> },
       { path: "editprofile", element: <EditProfile /> }
-=======
-      {path: "branchreq", element: <BranchRequest/>},
-      {path: "branchcreatereq", element: <BranchCreateRequest/>},
->>>>>>> b9af609415ffc12400fe7d3c7cdd768ee9854398
     ],
   },
 ]);
