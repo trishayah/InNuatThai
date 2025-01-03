@@ -69,10 +69,14 @@ const router = createBrowserRouter([
       { path: "rmvinv", element: <RemoveInventory /> },
       { path: "approveadd", element: <ApprovalAddInventory /> },
       { path: "approveupdate", element: <ApprovalUpdateInventory /> },
+<<<<<<< HEAD
       // { path: "approvermv", element: <ApprovalRemovalInventory /> },
       {path: "branchreq", element: <BranchRequest/>},
       {path: "branchcreatereq", element: <BranchCreateRequest/>},
     
+=======
+      { path: "approvermv", element: <ApprovalRemoveInventory /> },
+>>>>>>> main
     ],
   },
 ]);

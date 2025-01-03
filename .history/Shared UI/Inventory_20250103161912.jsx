@@ -103,6 +103,15 @@ function Inventory() {
             <option value="category">Category</option>
             <option value="dateAdded">Date Added</option>
           </select>
+          <select
+            style={{ backgroundColor: "#133517", color: "#FFFFFF" }}
+            className="option"
+          >
+            <option value="update">Update Request</option>
+            <option value="add">Add Request</option>
+            <option value="remove">Remove Request</option>
+            <option value="view">View Inventory</option>
+          </select>
           <WSRRDownload/>
         </div>
 

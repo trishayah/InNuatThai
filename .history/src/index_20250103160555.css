@@ -1,0 +1,338 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: 'Poppins';
+    src: url("./assets/Poppins/Poppins-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Poppins';
+    src: url("./assets/Poppins/Poppins-Bold.ttf") format("truetype");
+    font-weight: bold;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Poppins';
+    src: url("./assets/Poppins/Poppins-Italic.ttf") format("truetype");
+    font-weight: normal;
+    font-style: italic;
+}
+@font-face {
+    font-family: 'Poppins';
+    src: url("./assets/Poppins/Poppins-BoldItalic.ttf") format("truetype");
+    font-weight: bold;
+    font-style: italic;
+}
+@font-face {
+    font-family: 'Poppins';
+    src: url("./assets/Poppins/Poppins-Medium.ttf") format("truetype"); 
+    font-weight: 500;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Poppins';
+    src: url("./assets/Poppins/Poppins-MediumItalic.ttf") format("truetype"); 
+    font-weight: 500;
+    font-style: italic;
+}
+@font-face {
+    font-family: 'Poppins';
+    src: url("./assets/Poppins/Poppins-SemiBold.ttf") format("truetype"); 
+    font-weight: 600;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Poppins';
+    src: url("./assets/Poppins/Poppins-SemiBoldItalic.ttf") format("truetype"); 
+    font-weight: 600;
+    font-style: italic;
+}
+@font-face {
+    font-family: 'Poppins';
+    src: url("./assets/Poppins/Poppins-Light.ttf") format("truetype"); 
+    font-weight: 300;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Poppins';
+    src: url("./assets/Poppins/Poppins-LightItalic.ttf") format("truetype"); 
+    font-weight: 300;
+    font-style: italic;
+}
+@font-face {
+    font-family: 'Poppins';
+    src: url("./assets/Poppins/Poppins-ExtraLight.ttf") format("truetype"); 
+    font-weight: 200;
+    font-style: normal;
+}
+.account{
+    margin-top: 20px;
+    margin-left: 800px;
+}
+.logout{
+    margin-top: 150px;
+}
+
+.imageBox{
+    width: 300px;
+    overflow: hidden;
+    max-height: 400px;
+    padding:15px;
+    background-color: #d9d9d9;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 5px 10px 0px;
+    margin-bottom: 20px;
+    margin-left: 10px;
+    margin-right: 10px; 
+}
+.imageBox img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.displayImage{
+    display: grid;
+    grid-template-columns: 350px 350px 350px;
+    justify-content: center;
+}
+
+.search {
+    display: flex; 
+    justify-content: flex-start; 
+    gap: 10px; 
+    margin-right: 20px;
+  }
+
+  .request {
+    display: flex; 
+    justify-content: flex-start; 
+    gap: 10px; 
+    margin-right: 20px;
+  }
+
+  .sorting{
+    border-radius: 7px;
+    margin-top: 20px;
+    height: 30px;
+  }
+
+  .option{
+    height: 30px;
+    display: flex;
+    margin-top: 20px;
+    margin-left: 650px; 
+    border-radius: 7px;
+  }
+
+  .inventoryTable{
+    margin-right: 20px; /* Add space from the right edge */
+    margin-left: 20px; /* Add space from the right edge */
+  }
+
+  .requestTable{
+    margin-right: 20px; /* Add space from the right edge */
+    margin-left: 20px; /* Add space from the right edge */
+  }
+
+  .approval{
+    margin-left: 20px;
+  }
+  .reqbox {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Ensure items stack first */
+    /* align-items: center; Center-align items */
+    margin-left: 20px;
+    border-radius: 20px;
+    background-color: #164E28;
+    height: 500px;
+    width: 800px;
+    padding: 20px; /* Spacing within the box */
+  }
+  
+  .approvaltable{
+    flex-grow: 1; /* Allows the table to take up remaining space */
+    /* margin: 0; */
+    margin-top: 100px;
+    /* margin-left: 20px; */
+    /* margin-right: 60px; */
+    margin-bottom: 100px;
+    width: 100%;
+  }
+
+  .buttonContainer {
+    display: flex;
+    /* gap: 200px; Space between buttons */
+    /* justify-content: center; Center the buttons horizontally */
+    /* margin-top: 0px; Optional margin from the table */
+    /* margin-left: 415px; */
+    /* margin-bottom: 20px; */
+  }
+  
+  .downloadbutton {
+    padding: 1em 3em;
+    font-size: 12px;
+    letter-spacing: 2.5px;
+    font-weight: 500;
+    color: #ffffff;
+    background-color: #1E7239;
+    border: none;
+    border-radius: 45px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+
+.button1 {
+    padding: 1em 3em;
+    font-size: 12px;
+    letter-spacing: 2.5px;
+    font-weight: 500;
+    color: #e8d9d9;
+    background-color: #1E7239;
+    border: none;
+    border-radius: 45px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
+    margin-left: 20px;
+  }
+  .button2 {
+    padding: 1em 3em;
+    font-size: 12px;
+    letter-spacing: 2.5px;
+    font-weight: 500;
+    color: #e8d9d9;
+    background-color: #1E7239;
+    border: none;
+    border-radius: 45px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
+    margin-left: 500px;
+  }
+  .button3 {
+    padding: 1em 3em;
+    font-size: 12px;
+    letter-spacing: 2.5px;
+    font-weight: 500;
+    color: #e8d9d9;
+    background-color: #1E7239;
+    border: none;
+    border-radius: 45px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
+    margin-right: 25px;
+    margin-left: 310px;
+  }
+
+  .button4 {
+    padding: 1em 3em;
+    font-size: 12px;
+    letter-spacing: 2.5px;
+    font-weight: 500;
+    color: #e8d9d9;
+    background-color: #1E7239;
+    border: none;
+    border-radius: 45px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
+    margin-left: 400px;
+  }
+  
+  button:hover {
+    background-color: #23c483;
+    box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+    color: #fff;
+    transform: translateY(-7px);
+  }
+  
+  button:active {
+    transform: translateY(-1px);
+  }
+
+  .reqform{
+        font-family: Poppins, sans-serif;
+        font-size: 1.563rem /* 25.008px */;
+        font-weight: 500;
+        color: #ffff;
+        margin-left: 20px;
+  }
+
+  .reqformdetails{
+    font-family: Poppins, sans-serif;
+    font-size: 15px;
+    /* font-weight: 500; */
+    color: #ffff;
+    margin-left: 20px;
+}
+
+.form-container {
+    /* display: flex; */
+    /* justify-content: space-between; */
+    /* gap: 20px; */
+    margin-bottom: 50px;
+  }
+
+.title-container{
+  margin-left: 20px;
+      display: flex;
+      /* justify-content: space-between;  */
+      /* gap: 1px; */
+      /* margin-bottom: 50px; */
+}
+
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 15px;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    color:#ffffff;
+    margin-top: 25px;
+    margin-left: 20px;
+    margin-right: 20px;
+
+  }
+  
+  .form-input {
+    padding: 5px;
+    margin-top: 5px;
+    border: none;
+    border-radius: 5px;
+    background-color: #ffffff;
+    font-size: 14px;
+    color:#000;
+    width: 100%;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-input:focus {
+    outline: 2px solid #23c483;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  li {
+    margin: 5px 0;
+  }
+  
+  button {
+    margin-top: 10px;
+    padding: 5px 10px;
+  }
+  
