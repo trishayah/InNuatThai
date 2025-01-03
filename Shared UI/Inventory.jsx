@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "./searchBar";
-import AccInfo from "./AccInfo";
+import AccInfo from "./accInfo";
 import WSRRDownload from "./WSRRDownload";
 import Notification from "./Notification"; // Import the Notification component
 import axios from "axios";
@@ -29,6 +29,10 @@ function Inventory() {
 
     fetchInventory();
   }, []);
+
+  const handleAddInventory = () => {
+    navigate("/add-inventory"); // Adjust this route as needed
+  };
 
   // Sorting function
   const handleSort = (e) => {
@@ -90,13 +94,16 @@ function Inventory() {
             <option value="category">Category</option>
             <option value="dateAdded">Date Added</option>
           </select>
-          <WSRRDownload />
-          <button
-            onClick={handleAddInventory}
-            className="downloadbutton"
+          <select
+            style={{ backgroundColor: "#133517", color: "#FFFFFF", fontFamily: "Poppins", fontSize: "12px" }}
+            className="option"
           >
-            Add Inventory
-          </button>
+            <option value="update">Update Request</option>
+            <option value="add">Add Request</option>
+            <option value="remove">Remove Request</option>
+            <option value="view">View Inventory</option>
+          </select>
+          <WSRRDownload />
         </div>
 
         

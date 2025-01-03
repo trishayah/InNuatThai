@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-// import SearchBar from "../../Shared UI/searchBar";
-import AccInfo from "../../Shared UI/AccInfo";
-import axios from "axios";
+import SearchBar from "../../Shared UI/searchBar";
+import AccInfo from "../../Shared UI/accInfo";
 
 function AddInventory() {
   const navigate = useNavigate();
@@ -254,4 +253,5 @@ function AddInventory() {
     </div>
   );
 }
+
 export default AddInventory;
