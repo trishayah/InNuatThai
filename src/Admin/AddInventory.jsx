@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "../../Shared UI/searchBar";
 import AccInfo from "../../Shared UI/accInfo";
+//import Addinvetory from "./warehouse/Addinvetory";
+
+
 
 function AddInventory() {
   const navigate = useNavigate();
@@ -163,5 +166,24 @@ function AddInventory() {
     </div>
   );
 }
+//import React from "react";
+//import { useNavigate } from "react-router-dom";
+
+///function Addinvetory() {
+ // const navigate = useNavigate();
+
+ // return (
+ //   <div>
+ //     <button
+  //      onClick={() => navigate("/additem")}
+   //     className="bg-green-500 text-white px-4 py-2 rounded mt-4"
+   //   >
+   //     Add New Item
+   //   </button>
+  //    {/* Existing content */}
+   // </div>
+ // );
+//}s
+
 
 export default AddInventory;

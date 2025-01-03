@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "./searchBar";
-import AccInfo from "./AccInfo";
+import AccInfo from "./accInfo";
 import WSRRDownload from "./WSRRDownload";
 
 function Inventory() {
@@ -57,6 +57,10 @@ function Inventory() {
     fetchinventory();
   }, []);
 
+  const handleAddInventory = () => {
+    navigate("/add-inventory"); // Adjust this route as needed
+  };
+
   // Sorting function
   const handleSort = (e) => {
     const sortOption = e.target.value;
@@ -82,6 +86,10 @@ function Inventory() {
     );
     setFilteredInventory(filteredData);
   };
+  
+  
+
+  
 
   const user = JSON.parse(localStorage.getItem("user")); // Get user details
 
@@ -105,19 +113,20 @@ function Inventory() {
             <option value="desc">Z-A</option>
             <option value="category">Category</option>
             <option value="dateAdded">Date Added</option>
-          </select>
-          <select
-            style={{ backgroundColor: "#133517", color: "#FFFFFF", fontFamily: "Poppins", fontSize: "12px" }}
-            className="option"
+          </select>   
+          
+          <WSRRDownload/>
+          <button
+            onClick={handleAddInventory}
+            //style={{ backgroundColor: "#133517", color: "#FFFFFF", fontFamily: "Poppins", fontSize: "12px" }}
+            className="download bg-[#133517] text-white px-4 py-2 rounded"
+            
           >
-            <option value="update">Update Request</option>
-            <option value="add">Add Request</option>
-            <option value="remove">Remove Request</option>
-            <option value="view">View Inventory</option>
-          </select>
-          <WSRRDownload />
+            Add Inventory
+          </button>
         </div>
 
+        
         <table className="table-fixed border-spacing-2 w-full border-collapse border border-gray-300 font-poppins ">
           <thead>
             <tr
@@ -162,7 +171,7 @@ function Inventory() {
               </tr>
             ))}
           </tbody>
-        </table>
+          </table>
       </div>
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error.message}</p>}
