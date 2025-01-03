@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 // import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "../../Shared UI/searchBar";
-import AccInfo from "../../Shared UI/accInfo";
+import AccInfo from "../../Shared UI/AccInfo";
 
 function UpdateInventory() {
   const navigate = useNavigate();
@@ -12,50 +12,6 @@ function UpdateInventory() {
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState(""); // State for search query
 
-  // Sample data to be used in place of the API response
-  const sampleData = [
-    {
-      inventoryNo: "001",
-      itemName: "Laptop",
-      category: "Electronics",
-      unitPrice: "24000",
-      stock: "100",
-      dateAdded: "12-24-2023",
-    },
-    {
-      inventoryNo: "002",
-      itemName: "Printer Cartridge",
-      category: "Electronics",
-      unitPrice: "300",
-      stock: "199",
-      dateAdded: "2024-12-02",
-    },
-    {
-      inventoryNo: "003",
-      itemName: "Projector",
-      category: "Electronics",
-      unitPrice: "12000",
-      stock: "50",
-      dateAdded: "2024-12-02",
-    },
-  ];
-
-  // Simulate fetching data
-  useEffect(() => {
-    const fetchinventory = async () => {
-      try {
-        setLoading(true);
-        // Simulating API call by setting the sample data
-        setInventory(sampleData);
-        setFilteredInventory(sampleData); // Initialize filtered inventory
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchinventory();
-  }, []);
 
   // Sorting function
   const handleSort = (e) => {
@@ -83,26 +39,43 @@ function UpdateInventory() {
     setFilteredInventory(filteredData);
   };
 
+  const user = JSON.parse(localStorage.getItem("user")); // Get user details
+
+  const handleOptionChange = (e) => {
+    const option = e.target.value;
+    if (option === "add") {
+      navigate("/add-inventory");
+    } else if (option === "remove") {
+      navigate("/remove-inventory");
+    } else if (option === "view") {
+      navigate("/inventory");
+    }
+  };
+
   return (
-    <div className="flex flex-col w-full min-w-screen h-full min-h-screen bg-[#D9D9D9]">
-      <div className="title-container">
-        <h1 className="text-2xl font-500 text-[#133517] font-poppins mt-4 mr-4 p-4">Inventory&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp; Update Inventory</h1>
-      </div>
+    <div className="flex flex-col w-full min-h-screen bg-[#D9D9D9]">
+      <h1 className="text-2xl font-semibold text-[#133517] font-poppins mt-4 mr-4 ml-6 p-4">
+        Inventory&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp; Update Inventory
+      </h1>
+
       <div className="inventoryTable ml-2 mr-2">
-        <AccInfo />
-        <div className="search">
+        <AccInfo user={user} />
+        <div className="flex items-center gap-4">
           <SearchBar onSearch={handleSearch} /> {/* Pass the search handler */}
-          <select style={{ backgroundColor: "#133517", color: "#FFFFFF" }} className="sorting" onChange={handleSort}>
+          {/* <select style={{ backgroundColor: "#133517", color: "#FFFFFF" }} className="sorting" onChange={handleSort}>
             <option value="">Sort by</option>
             <option value="asc">A-Z</option>
             <option value="desc">Z-A</option>
             <option value="category">Category</option>
             <option value="dateAdded">Date Added</option>
-          </select>
-          <select style={{ backgroundColor: "#133517", color: "#FFFFFF" }} className="option">
-            <option value="update">Update Request</option>
-            <option value="add">Add Request</option>
-            <option value="remove">Remove Request</option>
+          </select> */}
+          <select
+            style={{ backgroundColor: "#133517", color: "#FFFFFF", fontFamily: "Poppins", fontSize: "12px" }}
+            className="option"
+            onChange={handleOptionChange} // Handle option change
+          >
+            <option value="add">Add Inventory</option>
+            <option value="remove">Remove Inventory</option>
             <option value="view">View Inventory</option>
           </select>
         </div>

@@ -199,7 +199,7 @@ const Dashboard = () => {
 
   
   return (
-    <div className = "flex flex-col flex-1 items-end h-full font-poppins bg-[#D9D9D9]">
+    <div className = "flex flex-col w-full min-h-screen bg-[#D9D9D9] font-poppins">
         <div className="flex justify-between items-center p-4">
           <h2 className="text-2xl font-semibold text-[#133517] mt-4 ml-6">Dashboard</h2>
           <AccInfo user={user} />

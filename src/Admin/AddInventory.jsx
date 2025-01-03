@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "../../Shared UI/searchBar";
-import AccInfo from "../../Shared UI/accInfo";
+import AccInfo from "../../Shared UI/AccInfo";
+import axios from "axios"; // Import axios
 
 function AddInventory() {
   const navigate = useNavigate();
@@ -10,43 +11,29 @@ function AddInventory() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState(""); // State for search query
+  const [newItem, setNewItem] = useState({
+    itemName: "",
+    category: "",
+    unitPrice: "",
+    stock: "",
+    dateAdded: "",
+  });
+  const [successMessage, setSuccessMessage] = useState(""); // State for success message
 
-  // Sample data to be used in place of the API response
-  const sampleData = [
-    {
-      inventoryNo: "001",
-      itemName: "Laptop",
-      category: "Electronics",
-      unitPrice: "24000",
-      stock: "100",
-      dateAdded: "12-24-2023",
-    },
-    {
-      inventoryNo: "002",
-      itemName: "Printer Cartridge",
-      category: "Electronics",
-      unitPrice: "300",
-      stock: "199",
-      dateAdded: "2024-12-02",
-    },
-    {
-      inventoryNo: "003",
-      itemName: "Projector",
-      category: "Electronics",
-      unitPrice: "12000",
-      stock: "50",
-      dateAdded: "2024-12-02",
-    },
-  ];
-
-  // Simulate fetching data
+  // Fetch inventory data from API
   useEffect(() => {
     const fetchInventory = async () => {
       try {
-        setLoading(true);
-        // Simulating API call by setting the sample data
-        setInventory(sampleData);
-        setFilteredInventory(sampleData); // Initialize filtered inventory
+        const token = localStorage.getItem("token");
+        const response = await axios.get(
+          "http://localhost:3000/api/inventory",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        setInventory(response.data);
+        setFilteredInventory(response.data); // Initialize filtered inventory
       } catch (error) {
         setError(error);
       } finally {
@@ -91,75 +78,161 @@ function AddInventory() {
     setFilteredInventory(sortedInventory);
   };
 
+  // Handle form input change
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewItem((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem("token"); // Ensure the correct token key is used
+      if (!token) {
+        throw new Error("No token found");
+      }
+      const response = await axios.post(
+        "http://localhost:3000/addinventory",
+        newItem,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      setInventory((prev) => [...prev, response.data]);
+      setFilteredInventory((prev) => [...prev, response.data]);
+      setNewItem({
+        itemName: "",
+        category: "",
+        unitPrice: "",
+        stock: "",
+        dateAdded: "",
+      });
+      setSuccessMessage("Inventory successfully recorded!"); // Set success message
+    } catch (error) {
+      setError(error);
+    }
+  };
+
+  const user = JSON.parse(localStorage.getItem("user")); // Get user details
+
+  const handleOptionChange = (e) => {
+    const option = e.target.value;
+    if (option === "update") {
+      navigate("/update-inventory");
+    } else if (option === "remove") {
+      navigate("/remove-inventory");
+    } else if (option === "view") {
+      navigate("/inventory");
+    }
+  };
+
   return (
-    <div className="flex flex-col w-full min-w-screen h-full min-h-screen bg-[#D9D9D9]">
-      <div className="title-container">
-        <h1 className="text-2xl font-500 text-[#133517] font-poppins mt-4 mr-4 p-4">
-          Inventory&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp; Add Inventory
-        </h1>
-      </div>
+    <div className="flex flex-col w-full min-h-screen bg-[#D9D9D9]"> {/* Updated class name */}
+      <h1 className="text-2xl font-semibold text-[#133517] font-poppins mt-4 mr-4 ml-6 p-4">
+        Inventory &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp; Add Inventory
+      </h1>
       <div className="inventoryTable ml-2 mr-2">
-        <AccInfo />
-        <div className="search">
-          <SearchBar onSearch={setSearchQuery} /> {/* Pass search handler */}
+        <AccInfo user={user} />
+        <div className="flex items-center gap-4">
           <select
-            style={{ backgroundColor: "#133517", color: "#FFFFFF" }}
-            className="sorting"
-            onChange={handleSort}
-          >
-            <option value="">Sort by</option>
-            <option value="asc">A-Z</option>
-            <option value="desc">Z-A</option>
-            <option value="category">Category</option>
-            <option value="dateAdded">Date Added</option>
-          </select>
-          <select
-            style={{ backgroundColor: "#133517", color: "#FFFFFF" }}
+            style={{ backgroundColor: "#133517", color: "#FFFFFF", fontFamily: "Poppins", fontSize: "12px" }}
             className="option"
+            onChange={handleOptionChange} // Handle option change
           >
-            <option value="update">Update Request</option>
-            <option value="add">Add Request</option>
-            <option value="remove">Remove Request</option>
+            <option value="update">Update Inventory</option>
+            <option value="remove">Remove Inventory</option>
             <option value="view">View Inventory</option>
           </select>
         </div>
+        <div className="flex flex-col bg-green-900 p-4 rounded-lg mt-6 w-[400px] mx-auto items-center">
+          <form
+            onSubmit={handleSubmit}
+            className="font-poppins items-center"
+          >
+            {successMessage && (
+              <p className="text-green-500 mb-4">{successMessage}</p>
+            )}
+            {error && <p className="text-red-500 mb-4">{error.message}</p>}
 
-        <table className="inventoryTabletable-fixed border-spacing-2 w-full border-collapse border border-gray-300 font-poppins font-semibold">
-          <thead>
-            <tr
-              style={{ backgroundColor: "#133517", color: "#FFFFFF" }}
-              className="border border-gray-300"
-            >
-              <th className="px-4 py-2 text-center">Inventory No.</th>
-              <th className="px-4 py-2 text-center">Item Name</th>
-              <th className="px-4 py-2 text-center">Category</th>
-              <th className="px-4 py-2 text-center">Unit Price</th>
-              <th className="px-4 py-2 text-center">Stock</th>
-              <th className="px-4 py-2 text-center">Date Added</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredInventory.map((inventory, index) => (
-              <tr
-                key={inventory.inventoryNo}
-                style={{
-                  backgroundColor: index % 2 === 0 ? "#FFF5F5" : "#D3DDD6",
-                  cursor: "pointer",
-                }}
+            <div className="mb-4">
+              <label className="block text-white font-medium mb-2">Item Name</label>
+              <input
+                type="text"
+                name="itemName"
+                value={newItem.itemName}
+                onChange={handleInputChange}
+                className="w-80 px-2 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-green-300"
+                placeholder="Enter item name"
+                required
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-white font-medium mb-2">Category</label>
+              <select
+                name="category"
+                value={newItem.category}
+                onChange={handleInputChange}
+                className="w-80 px-2 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-green-300"
+                required
               >
-                <td className="px-4 py-2 border text-center">{inventory.inventoryNo}</td>
-                <td className="px-4 py-2 border text-center">{inventory.itemName}</td>
-                <td className="px-4 py-2 border text-center">{inventory.category}</td>
-                <td className="px-4 py-2 border text-center">{inventory.unitPrice}</td>
-                <td className="px-4 py-2 border text-center">{inventory.stock}</td>
-                <td className="px-4 py-2 border text-center">{inventory.dateAdded}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      {loading && <p>Loading...</p>}
-      {error && <p>Error: {error.message}</p>}
+                <option value="">Select category</option>
+                <option value="Foot Care">Foot Care</option>
+                <option value="Skin Care">Skin Care</option>
+                <option value="Hair Care">Hair Care</option>
+              </select>
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-white font-medium mb-2">Unit Price</label>
+              <input
+                type="number"
+                name="unitPrice"
+                value={newItem.unitPrice}
+                onChange={handleInputChange}
+                className="w-80 px-2 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-green-300"
+                placeholder="Enter unit price"
+                required
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-white font-medium mb-2">Quantity</label>
+              <input
+                type="number"
+                name="stock"
+                value={newItem.stock}
+                onChange={handleInputChange}
+                className="w-80 px-2 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-green-300"
+                placeholder="Enter quantity"
+                required
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-white font-medium mb-2">Date Added</label>
+              <input
+                type="date"
+                name="dateAdded"
+                value={newItem.dateAdded}
+                onChange={handleInputChange}
+                className="w-80 px-2 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-green-300"
+                placeholder="Enter date added"
+                required
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="w-80 px-2 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700"
+            >
+              Add Item
+            </button>
+          </form>
+        </div>
+        </div>
     </div>
   );
 }

@@ -130,7 +130,7 @@ const Sidebar = () => {
             href={item.url}
             className="group flex items-center px-6 py-3 hover:bg-[#003d1a] transition duration-300 text-white font-poppins text-base"
           >
-            <item.icon className="w-6 h-6 group-hover:scale-110 transition-transform" />
+            <item.icon className="mr-4 w-6 h-6 group-hover:scale-110 transition-transform" />
             <span className="ml-4 group-hover:scale-110 transition-transform">{item.name}</span>
           </a>
         )}

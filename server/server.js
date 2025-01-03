@@ -2,7 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const knex = require('knex');
-// const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken'); // Added jwt module
 
 const app = express();
@@ -30,26 +29,26 @@ const authenticateToken = (req, res, next) => {
 };
 // Database Configuration
 const db = knex({
-    client: 'pg',
-    connection: { 
-        host: 'localhost', 
-        user: 'postgres', 
-        password: '1234', 
-        database: 'InNuatThai', 
-        port: 5432
-    },
+  client: 'pg',
+  connection: {
+    host: 'localhost',
+    user: 'postgres',
+    password: '1234',
+    database: 'InNuatThai',
+    port: 5432
+  },
 });
 // async function hashExistingPasswords() {
 //     try {
 //       const users = await db('account').select('acc_id', 'acc_password');
-  
+
 //       for (const user of users) {
 //         const hashedPassword = await bcrypt.hash(user.acc_password, 10);
 //         await db('account')
 //           .where({ acc_id: user.acc_id })
 //           .update({ acc_password: hashedPassword });
 //       }
-  
+
 //       console.log('Passwords hashed successfully!');
 //     } catch (error) {
 //       console.error('Error hashing passwords:', error);
@@ -57,7 +56,7 @@ const db = knex({
 //       // db.destroy();
 //     }
 //   }
-  
+
 //   hashExistingPasswords();
 
 app.post('/login', async (req, res) => {
@@ -105,37 +104,75 @@ app.post('/login', async (req, res) => {
   }
 });
 
+// Add a new inventory item
+app.post('/addinventory', authenticateToken, async (req, res) => {
+  const { itemName, category, unitPrice, stock, dateAdded } = req.body;
+  console.log(req.body);
+  try {
+    const [newItemId] = await db('inventory').insert({
+      inv_itemname: itemName,
+      inv_category: category,
+      inv_unitprice: unitPrice,
+      inv_stock: stock,
+      inv_dateadded: dateAdded,
+    }).returning('inv_no');
+
+    res.status(201).json({ 
+      inventoryNo: newItemId,
+      itemName,
+      category,
+      unitPrice,
+      stock,
+      dateAdded
+    });
+  } catch (error) {
+    console.error('Error adding inventory:', error);
+    res.status(500).json({ message: 'Failed to add inventory' });
+  }
+});
+
+// Fetch inventory data
+app.get('/api/inventory', authenticateToken, async (req, res) => {
+  try {
+    const inventory = await db.select('*').from('inventory');
+    res.json(inventory);
+  } catch (error) {
+    console.error('Error fetching inventory:', error);
+    res.status(500).json({ message: 'Failed to fetch inventory' });
+  }
+});
+
 //   app.post('/change-password', async (req, res) => {
 //     const { userId, currentPassword, newPassword } = req.body;
-  
+
 //     try {
 //       // Fetch the user by ID
 //       const user = await db('account').where({ acc_id: userId }).first();
-  
+
 //       if (!user) {
 //         return res.status(404).json({ message: 'User not found' });
 //       }
-  
+
 //       // Verify the current password
 //       const isPasswordValid = await bcrypt.compare(currentPassword, user.acc_password);
-  
+
 //       if (!isPasswordValid) {
 //         return res.status(401).json({ message: 'Current password is incorrect' });
 //       }
-  
+
 //       // Hash the new password
 //       const hashedNewPassword = await bcrypt.hash(newPassword, 10);
-  
+
 //       // Update the password in the database
 //       await db('account').where({ acc_id: userId }).update({ acc_password: hashedNewPassword });
-  
+
 //       res.json({ message: 'Password changed successfully!' });
 //     } catch (error) {
 //       console.error(error);
 //       res.status(500).json({ message: 'Internal server error' });
 //     }
 //   });
-  
+
 
 // // Protected dashboard metrics endpoint
 // app.get('/api/dashboard/metrics', authenticateToken, async (req, res) => {
@@ -159,5 +196,5 @@ app.post('/login', async (req, res) => {
 // Start Server
 const port = 3000;
 app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
+  console.log(`Server running on port ${port}`);
 });

@@ -22,7 +22,7 @@ const PurchaseOrder = () => {
   const user = JSON.parse(localStorage.getItem("user")); // Get user details
 
   return (
-    <div className="flex flex-col flex-1 items-end h-full font-poppins bg-[#D9D9D9]">
+    <div className="flex flex-col flex-1 items-end w-full min-h-screen font-poppins bg-[#D9D9D9]">
       <div className="flex justify-between items-center p-4">
         <h2 className="text-2xl font-semibold text-[#133517] mt-4 ml-6 whitespace-nowrap">Purchase Order</h2>
         <AccInfo user={user} /> {/* Display AccInfo component */}

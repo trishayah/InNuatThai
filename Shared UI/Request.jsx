@@ -100,7 +100,7 @@ function Request() {
   const user = JSON.parse(localStorage.getItem("user")); // Get user details
 
   return (
-    <div className="flex flex-col w-full min-w-screen h-full min-h-screen bg-[#D9D9D9]">
+    <div className="flex flex-col w-full min-h-screen bg-[#D9D9D9]">
       <h1 className="text-2xl font-semibold text-[#133517] mt-4 font-poppins mr-4 p-4 ml-6">Request</h1>
       <div className="requestTable">
         <AccInfo user={user} />

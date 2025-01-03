@@ -8,54 +8,8 @@ function Inventory() {
   const navigate = useNavigate();
   const [inventory, setInventory] = useState([]);
   const [filteredInventory, setFilteredInventory] = useState([]); // Added filtered inventory state
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [searchQuery, setSearchQuery] = useState(""); // State for search query
 
-  // Sample data to be used in place of the API response
-  const sampleData = [
-    {
-      inventoryNo: "001",
-      itemName: "Essential Oil",
-      category: "Aromatherapy",
-      unitPrice: "140",
-      stock: "100",
-      dateAdded: "12-24-2023",
-    },
-    {
-      inventoryNo: "002",
-      itemName: "Uniform",
-      category: "Apparel",
-      unitPrice: "300",
-      stock: "199",
-      dateAdded: "2024-12-02",
-    },
-    {
-      inventoryNo: "003",
-      itemName: "Massage Bed",
-      category: "Furniture",
-      unitPrice: "12000",
-      stock: "50",
-      dateAdded: "2024-12-02",
-    },
-  ];
 
-  // Simulate fetching data
-  useEffect(() => {
-    const fetchinventory = async () => {
-      try {
-        setLoading(true);
-        // Simulating API call by setting the sample data
-        setInventory(sampleData);
-        setFilteredInventory(sampleData); // Initialize filtered inventory
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchinventory();
-  }, []);
 
   // Sorting function
   const handleSort = (e) => {
@@ -85,9 +39,21 @@ function Inventory() {
 
   const user = JSON.parse(localStorage.getItem("user")); // Get user details
 
+  const handleOptionChange = (e) => {
+    const option = e.target.value;
+    if (option === "add") {
+      navigate("/add-inventory");
+    } else if (option === "update") {
+      navigate("/update-inventory");
+    } else if (option === "remove") {
+      navigate("/remove-inventory");
+    } else if (option === "view") {
+      navigate("/inventory");
+    }
+  };
 
   return (
-    <div className="flex flex-col w-full min-w-screen h-full min-h-screen bg-[#D9D9D9]">
+    <div className="flex flex-col w-full min-h-screen bg-[#D9D9D9]">
       <h1 className="text-2xl font-semibold text-[#133517] font-poppins mt-4 mr-4 ml-6 p-4">
         Inventory
       </h1>
@@ -109,10 +75,11 @@ function Inventory() {
           <select
             style={{ backgroundColor: "#133517", color: "#FFFFFF", fontFamily: "Poppins", fontSize: "12px" }}
             className="option"
+            onChange={handleOptionChange} // Handle option change
           >
-            <option value="update">Update Request</option>
-            <option value="add">Add Request</option>
-            <option value="remove">Remove Request</option>
+            <option value="update">Update Inventory</option>
+            <option value="add">Add Inventory</option>
+            <option value="remove">Remove Inventory</option>
             <option value="view">View Inventory</option>
           </select>
           <WSRRDownload />
@@ -164,8 +131,6 @@ function Inventory() {
           </tbody>
         </table>
       </div>
-      {loading && <p>Loading...</p>}
-      {error && <p>Error: {error.message}</p>}
     </div>
   );
 }
