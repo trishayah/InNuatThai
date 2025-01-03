@@ -19,11 +19,6 @@ import PurchaseOrder from "../Shared UI/PO.jsx";
 // import ApprovalRequest from "../src/Admin/ApprovalRequest.jsx";
 // import NextApprovalRequest from "../src/Admin/NextApprovalRequest.jsx";
 import AddInventory from "../src/Admin/AddInventory.jsx";
-import UpdateInventory from "../src/Admin/UpdateInventory.jsx";
-import RemoveInventory from "../src/Admin/RemoveInventory.jsx";
-import ApprovalAddInventory from "./Admin/ApprovalAddInventory.jsx";
-import ApprovalUpdateInventory from "./Admin/ApprovalUpdateInventory.jsx";
-import ApprovalRemoveInventory from "./Admin/ApprovalRemoveInventory.jsx";
 import BranchRequest from "../Shared UI/branchReq.jsx";
 import BranchCreateRequest from "../Shared UI/branchCreateReq.jsx";
 
