@@ -38,26 +38,7 @@ const db = knex({
     port: 5432
   },
 });
-// async function hashExistingPasswords() {
-//     try {
-//       const users = await db('account').select('acc_id', 'acc_password');
 
-//       for (const user of users) {
-//         const hashedPassword = await bcrypt.hash(user.acc_password, 10);
-//         await db('account')
-//           .where({ acc_id: user.acc_id })
-//           .update({ acc_password: hashedPassword });
-//       }
-
-//       console.log('Passwords hashed successfully!');
-//     } catch (error) {
-//       console.error('Error hashing passwords:', error);
-//     } finally {
-//       // db.destroy();
-//     }
-//   }
-
-//   hashExistingPasswords();
 
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
@@ -106,22 +87,31 @@ app.post('/login', async (req, res) => {
 
 // Add a new inventory item
 app.post('/addinventory', authenticateToken, async (req, res) => {
-  const { itemName, category, unitPrice, stock, dateAdded } = req.body;
+  const { prodName, prodDesc, prodCategory, prodPrice, stock, dateAdded } = req.body;
   console.log(req.body);
   try {
+    // Insert into PRODUCT table
+    const [newProdId] = await db('product').insert({
+      prod_name: prodName,
+      prod_desc: prodDesc,
+      prod_category: prodCategory,
+      prod_price: prodPrice,
+    }).returning('prod_id');
+
+    // Insert into INVENTORY table
     const [newItemId] = await db('inventory').insert({
-      inv_itemname: itemName,
-      inv_category: category,
-      inv_unitprice: unitPrice,
+      prod_id: newProdId.prod_id, // Ensure the correct data type is passed
       inv_stock: stock,
       inv_dateadded: dateAdded,
     }).returning('inv_no');
 
-    res.status(201).json({ 
+    res.status(201).json({
       inventoryNo: newItemId,
-      itemName,
-      category,
-      unitPrice,
+      prodId: newProdId.prod_id, // Ensure the correct data type is passed
+      prodName,
+      prodDesc,
+      prodCategory,
+      prodPrice,
       stock,
       dateAdded
     });
@@ -134,7 +124,18 @@ app.post('/addinventory', authenticateToken, async (req, res) => {
 // Fetch inventory data
 app.get('/display-inventory', authenticateToken, async (req, res) => {
   try {
-    const inventory = await db.select('*').from('inventory');
+    const inventory = await db('inventory')
+      .join('product', 'inventory.prod_id', 'product.prod_id')
+      .select(
+        'inventory.inv_no',
+        'product.prod_name',
+        'product.prod_desc',
+        'product.prod_category',
+        'product.prod_price',
+        'inventory.inv_stock',
+        'inventory.inv_dateadded'
+      );
+    console.log('Fetched inventory:', inventory); // Log the data
     res.json(inventory);
   } catch (error) {
     console.log('Error fetching inventory:', error);
@@ -142,56 +143,6 @@ app.get('/display-inventory', authenticateToken, async (req, res) => {
   }
 });
 
-//   app.post('/change-password', async (req, res) => {
-//     const { userId, currentPassword, newPassword } = req.body;
-
-//     try {
-//       // Fetch the user by ID
-//       const user = await db('account').where({ acc_id: userId }).first();
-
-//       if (!user) {
-//         return res.status(404).json({ message: 'User not found' });
-//       }
-
-//       // Verify the current password
-//       const isPasswordValid = await bcrypt.compare(currentPassword, user.acc_password);
-
-//       if (!isPasswordValid) {
-//         return res.status(401).json({ message: 'Current password is incorrect' });
-//       }
-
-//       // Hash the new password
-//       const hashedNewPassword = await bcrypt.hash(newPassword, 10);
-
-//       // Update the password in the database
-//       await db('account').where({ acc_id: userId }).update({ acc_password: hashedNewPassword });
-
-//       res.json({ message: 'Password changed successfully!' });
-//     } catch (error) {
-//       console.error(error);
-//       res.status(500).json({ message: 'Internal server error' });
-//     }
-//   });
-
-
-// // Protected dashboard metrics endpoint
-// app.get('/api/dashboard/metrics', authenticateToken, async (req, res) => {
-//   try {
-//     const metrics = await db
-//       .select(
-//         db.raw('COUNT(*) FILTER (WHERE status = \'pending\') as pendingRequests'),
-//         db.raw('COUNT(*) FILTER (WHERE quantity <= reorder_point) as lowStockItems'),
-//         db.raw('COUNT(*) as totalRequests'),
-//         db.raw('COUNT(*) FILTER (WHERE status = \'received\') as receivedRequests')
-//       )
-//       .from('requests');
-
-//     res.json(metrics[0]);
-//   } catch (error) {
-//     console.error('Error fetching metrics:', error);
-//     res.status(500).json({ message: 'Error fetching dashboard metrics' });
-//   }
-// });
 
 // Start Server
 const port = 3000;

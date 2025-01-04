@@ -10,15 +10,17 @@ function Inventory() {
   const navigate = useNavigate();
   const [inventory, setInventory] = useState([]);
   const [filteredInventory, setFilteredInventory] = useState([]); // Added filtered inventory state
+  const [editedRows, setEditedRows] = useState({});
+  const [searchQuery, setSearchQuery] = useState('');
+
 
   useEffect(() => {
     const fetchInventory = async () => {
       try {
-        const response = await axios.get('/display-inventory', {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
+        const response = await axios.get('http://localhost:3000/display-inventory', {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         });
+        console.log('Fetched data:', response.data); // Log fetched data
         const data = Array.isArray(response.data) ? response.data : [];
         setInventory(data);
         setFilteredInventory(data);
@@ -26,9 +28,10 @@ function Inventory() {
         console.error('Error fetching inventory:', error);
       }
     };
-
+  
     fetchInventory();
   }, []);
+  
 
   // Sorting function
   const handleSort = (e) => {
@@ -55,10 +58,48 @@ function Inventory() {
     );
     setFilteredInventory(filteredData);
   };
-  
-  
 
-  
+  const handleEdit = (e, inventoryNo, field) => {
+    const value = e.target.value;
+    setFilteredInventory((prev) =>
+      prev.map((item) =>
+        item.inventoryNo === inventoryNo ? { ...item, [field]: value } : item
+      )
+    );
+
+    setEditedRows((prev) => ({
+      ...prev,
+      [inventoryNo]: {
+        ...(prev[inventoryNo] || {}),
+        [field]: value,
+      },
+    }));
+  };
+
+  const handleSaveChanges = async () => {
+    try {
+      const modifiedItems = Object.entries(editedRows).map(([inventoryNo, changes]) => ({
+        inventoryNo,
+        changes,
+      }));
+
+      for (const { inventoryNo, changes } of modifiedItems) {
+        await axios.put(`http://localhost:3000/api/inventory/${inventoryNo}`, changes);
+      }
+
+      setNotifications((prev) => [
+        ...prev,
+        ...modifiedItems.map(
+          ({ inventoryNo, changes }) =>
+            `Item ${inventoryNo} modified: ${JSON.stringify(changes)}`
+        ),
+      ]);
+
+      setEditedRows({});
+    } catch (error) {
+      console.error("Error saving changes:", error);
+    }
+  };
 
   const user = JSON.parse(localStorage.getItem("user")); // Get user details
 
@@ -73,9 +114,9 @@ function Inventory() {
         Inventory
       </h1>
       <div className="inventoryTable ml-2 mr-2">
-        <div className="flex items-center gap-4">
-          {/* <Notification /> Notification component */}
+        <div className="flex items-center gap-2">
           <AccInfo user={user} />
+          <Notification modifiedItems={Object.entries(editedRows).map(([inventoryNo, changes]) => ({ inventoryNo, changes }))} /> {/* Notification component */}
         </div>
         <div className="flex items-center gap-4">
           <SearchBar onSearch={handleSearch} /> {/* Pass the search handler */}
@@ -99,52 +140,52 @@ function Inventory() {
           </button>
         </div>
 
-        
-        <table className="table-fixed border-spacing-2 w-full border-collapse border border-gray-300 font-poppins ">
+
+        <table className="table-fixed border-spacing-2 w-full border-collapse border border-gray-300 font-poppins">
           <thead>
             <tr
               style={{ backgroundColor: "#133517", color: "#FFFFFF" }}
               className="border border-gray-300"
             >
               <th className="px-4 py-2 text-center">Inventory No.</th>
-              <th className="px-4 py-2 text-center">Item Name</th>
+              <th className="px-4 py-2 text-center">Product Name</th>
+              <th className="px-4 py-2 text-center">Description</th>
               <th className="px-4 py-2 text-center">Category</th>
               <th className="px-4 py-2 text-center">Unit Price</th>
               <th className="px-4 py-2 text-center">Stock</th>
               <th className="px-4 py-2 text-center">Date Added</th>
             </tr>
           </thead>
-          <tbody>
-            {Array.isArray(filteredInventory) && filteredInventory.map((item, index) => (
-              <tr
-                key={item.inv_no}
-                style={{
-                  backgroundColor: index % 2 === 0 ? "#FFF5F5" : "#D3DDD6",
-                  cursor: "pointer",
-                }}
-              >
-                <td className="px-4 py-2 border text-center">
-                  {item.inv_no}
-                </td>
-                <td className="px-4 py-2 border text-center">
-                  {item.inv_itemname}
-                </td>
-                <td className="px-4 py-2 border text-center">
-                  {item.inv_category}
-                </td>
-                <td className="px-4 py-2 border text-center">
-                  {item.inv_unitprice}
-                </td>
-                <td className="px-4 py-2 border text-center">
-                  {item.inv_stock}
-                </td>
-                <td className="px-4 py-2 border text-center">
-                  {item.inv_dateadded}
+          <tbody className="text-base">
+            {filteredInventory.length > 0 ? (
+              filteredInventory.map((item, index) => (
+                <tr
+                  key={item.inv_no}
+                  style={{
+                    backgroundColor: index % 2 === 0 ? "#FFF5F5" : "#D3DDD6",
+                    cursor: "pointer",
+                  }}
+                >
+                  <td className="px-4 py-2 border text-center">{item.inv_no}</td>
+                  <td className="px-4 py-2 border text-center">{item.prod_name}</td>
+                  <td className="px-4 py-2 border text-center">{item.prod_desc}</td>
+                  <td className="px-4 py-2 border text-center">{item.prod_category}</td>
+                  <td className="px-4 py-2 border text-center">{item.prod_price}</td>
+                  <td className="px-4 py-2 border text-center">{item.inv_stock}</td>
+                  <td className="px-4 py-2 border text-center">
+                    {new Date(item.inv_dateadded).toLocaleDateString()}
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="7" className="px-4 py-2 border text-center">
+                  No inventory data available.
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
-          </table>
+        </table>
       </div>
     </div>
   );

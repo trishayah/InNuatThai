@@ -50,8 +50,8 @@ function RequestDetails() {
     <div className="flex flex-col w-full min-w-screen h-full min-h-screen bg-[#D9D9D9]">
       <h1 className="approval text-2xl mt-4 font-semibold font-poppins text-[#133517] mr-4 p-4">Create Request</h1>
       <div className="requestTable">
-        <AccInfo />
-        <div className="reqbox">
+      <AccInfo user={user} />
+      <div className="reqbox">
           <h2 className="reqform text-2xl font-semibold font-poppins text">Request Form</h2>
           <h3 className="reqformdetails font-poppins mb-6 ml-10">Please fill all information on the fields.</h3>
           <div className="form-container">

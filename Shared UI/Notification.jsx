@@ -2,35 +2,28 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FaBell } from "react-icons/fa";
 
-const Notification = () => {
+const Notification = ({ modifiedItems }) => {
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
 
   useEffect(() => {
-    const fetchNotifications = async () => {
-      try {
-        const response = await axios.get('/notifications', {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
-        });
-        setNotifications(response.data);
-      } catch (error) {
-        console.error('Error fetching notifications:', error);
-      }
-    };
-
-    fetchNotifications();
-  }, []);
+    setNotifications((prev) => [
+      ...prev,
+      ...modifiedItems.map(
+        ({ inventoryNo, changes }) =>
+          `Item ${inventoryNo} modified: ${JSON.stringify(changes)}`
+      ),
+    ]);
+  }, [modifiedItems]);
 
   const handleNotificationClick = () => {
     setShowNotifications(!showNotifications);
   };
 
   return (
-    <div>
+    <div style={{ position: "absolute", top: "41px", marginLeft: "880px",}}>
       <button onClick={handleNotificationClick}>
-        <FaBell className="text-[#133517]" /> {/* Notification icon */}
+        <FaBell className="text-[#133517] " /> {/* Notification icon */}
       </button>
       {showNotifications && (
         <div className="notifications bg-white p-4 rounded shadow-md">

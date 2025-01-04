@@ -12,9 +12,10 @@ function AddInventory() {
   const [error, setError] = useState(null);
   // const [searchQuery, setSearchQuery] = useState(""); // State for search query
   const [newItem, setNewItem] = useState({
-    itemName: "",
-    category: "",
-    unitPrice: "",
+    prodName: "",
+    prodDesc: "",
+    prodCategory: "",
+    prodPrice: "",
     stock: "",
     dateAdded: "",
   });
@@ -105,13 +106,15 @@ function AddInventory() {
       setInventory((prev) => [...prev, response.data]);
       setFilteredInventory((prev) => [...prev, response.data]);
       setNewItem({
-        itemName: "",
-        category: "",
-        unitPrice: "",
+        prodName: "",
+        prodDesc: "",
+        prodCategory: "",
+        prodPrice: "",
         stock: "",
         dateAdded: "",
       });
       setSuccessMessage("Inventory successfully recorded!"); // Set success message
+      navigate("/inventory"); // Navigate back to the Inventory component
     } catch (error) {
       setError(error);
     }
@@ -164,14 +167,27 @@ function AddInventory() {
             {error && <p className="text-red-500 mb-4">{error.message}</p>}
 
             <div className="mb-4">
-              <label className="block text-white font-medium mb-2">Item Name</label>
+              <label className="block text-white font-medium mb-2">Product Name</label>
               <input
                 type="text"
-                name="itemName"
-                value={newItem.itemName}
+                name="prodName"
+                value={newItem.prodName}
                 onChange={handleInputChange}
                 className="w-80 px-2 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-green-300"
-                placeholder="Enter item name"
+                placeholder="Enter product name"
+                required
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-white font-medium mb-2">Product Description</label>
+              <input
+                type="text"
+                name="prodDesc"
+                value={newItem.prodDesc}
+                onChange={handleInputChange}
+                className="w-80 px-2 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-green-300"
+                placeholder="Enter product description"
                 required
               />
             </div>
@@ -179,8 +195,8 @@ function AddInventory() {
             <div className="mb-4">
               <label className="block text-white font-medium mb-2">Category</label>
               <select
-                name="category"
-                value={newItem.category}
+                name="prodCategory"
+                value={newItem.prodCategory}
                 onChange={handleInputChange}
                 className="w-80 px-2 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-green-300"
                 required
@@ -196,8 +212,8 @@ function AddInventory() {
               <label className="block text-white font-medium mb-2">Unit Price</label>
               <input
                 type="number"
-                name="unitPrice"
-                value={newItem.unitPrice}
+                name="prodPrice"
+                value={newItem.prodPrice}
                 onChange={handleInputChange}
                 className="w-80 px-2 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-green-300"
                 placeholder="Enter unit price"

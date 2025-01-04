@@ -79,13 +79,10 @@
   font-style: normal;
 }
 
-.account {
-  margin-top: 20px;
-  margin-left: 30px;
-}
 
 .logout {
   margin-top: 200px;
+  margin-left: 30px;
 }
 
 .imageBox {

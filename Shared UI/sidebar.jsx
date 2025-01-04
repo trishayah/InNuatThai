@@ -5,7 +5,6 @@ import {
   MdAssignment,
   MdInventory,
   MdDescription,
-  MdArchive,
   MdLogout,
   MdKeyboardArrowDown,
   MdKeyboardArrowUp,
@@ -94,16 +93,16 @@ const Sidebar = () => {
   
   const renderMenu = (items) =>
     items.map((item, index) => (
-      <div key={index} className="mb-4">
+      <div key={index} className="mb-2">
         {/* dropdown menu */}
         {item.isDropdown ? (
           <div>
             <button
               onClick={() => toggleDropdown(item.name)}
-              className="w-full flex items-center justify-between px-6 py-3 hover:bg-[#003d1a] transition duration-300 text-white font-poppins text-base"
+              className="w-full flex items-center justify-between px-6 py-2 hover:bg-[#003d1a] transition duration-300 text-white font-poppins text-base"
             >
               <div className="flex items-center gap-4">
-                <item.icon className="w-6 h-6 mr-4"/>
+                <item.icon className="w-6 h-6 mr-4 ml-6"/>
                 <span>{item.name}</span>
               </div>
               {activeMenu === item.name ? (
@@ -116,7 +115,7 @@ const Sidebar = () => {
               <ul className="bg-[#224430] py-2">
                 {item.subItems.map((subItem, subIndex) => (
                   <li key={subIndex} className="pl-16 py-2 hover:bg-[#003d1a]">
-                    <a href={subItem.route} className="text-white text-base font-poppins">
+                    <a href={subItem.route} className="text-white text-base font-poppins ml-4 flex items-center gap-4">
                       {subItem.name}
                     </a>
                   </li>
@@ -128,9 +127,9 @@ const Sidebar = () => {
           // Regular menu 
           <a
             href={item.url}
-            className="group flex items-center px-6 py-3 hover:bg-[#003d1a] transition duration-300 text-white font-poppins text-base"
+            className="group flex items-center px-6 py-2 hover:bg-[#003d1a] transition duration-300 text-white font-poppins text-base"
           >
-            <item.icon className="mr-4 w-6 h-6 group-hover:scale-110 transition-transform" />
+            <item.icon className="mr-4 ml-6 w-6 h-6 group-hover:scale-110 transition-transform" />
             <span className="ml-4 group-hover:scale-110 transition-transform">{item.name}</span>
           </a>
         )}
@@ -147,7 +146,7 @@ const Sidebar = () => {
         }}
       >
         {/* Logo Section */}
-        <div className="flex justify-center items-center py-6 bg-[#003d1a] mb-6">
+        <div className="flex justify-center items-center py-4 bg-[#003d1a]">
           <img
             src={logo}
             alt="Logo"
@@ -159,12 +158,12 @@ const Sidebar = () => {
         <nav className="flex-1 mt-4">{renderMenu(menuItems[role] || [])}</nav>
 
         {/* Logout Button */}
-        <div className="logout absolute bottom-0 w-full">
+        <div className="logout">
           <button
             onClick={handleLogout}  // Attach the handleLogout to the button
-            className="flex items-center gap-4 px-6 py-3 hover:bg-[#003d1a] transition duration-300 text-white text-lg font-poppins w-full"
+            className="w-full flex items-center gap-4 px-6 py-2 hover:bg-[#003d1a] transition duration-300 text-white text-base font-poppins"
           >
-            <MdLogout className="w-6 h-6 group-hover:scale-110 transition-transform mr-4" />
+            <MdLogout className="group-hover:scale-110 transition-transform mr-4" />
             <span className="group-hover:scale-110 transition-transform">Sign Out</span>
           </button>
         </div>
