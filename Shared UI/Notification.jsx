@@ -21,7 +21,7 @@ const Notification = ({ modifiedItems }) => {
   };
 
   return (
-    <div style={{ position: "absolute", top: "41px", marginLeft: "880px",}}>
+    <div style={{ position: "absolute", top: "41px", marginLeft: "845px",}}>
       <button onClick={handleNotificationClick}>
         <FaBell className="text-[#133517] " /> {/* Notification icon */}
       </button>

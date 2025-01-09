@@ -1,29 +1,47 @@
 import React, { useState } from 'react';
-function UploadForm({ setShowModal, setDocuments }) {
+import axios from 'axios';
+
+function UploadForm({ setShowModal, onUploadSuccess }) {
   const [newFileName, setNewFileName] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
+  const [dateAdded, setDateAdded] = useState('');
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     setSelectedFile(file);
   };
 
-  const handleUpload = () => {
+  const handleUpload = async (event) => {
+    event.preventDefault(); // Prevent the default form submission behavior
+
     if (selectedFile) {
-      const newDoc = {
-        id: Date.now() + Math.random(),
-        name: newFileName || selectedFile.name,
-        date: new Date().toLocaleDateString('en-US', {
-          month: '2-digit',
-          day: '2-digit',
-          year: '2-digit'
-        }),
-        imageUrl: URL.createObjectURL(selectedFile)
-      };
-      setDocuments(prev => [...prev, newDoc]);
-      setShowModal(false);
-      setNewFileName('');
-      setSelectedFile(null);
+      const formData = new FormData();
+      formData.append('image', selectedFile);
+      formData.append('name', newFileName);
+      formData.append('dateAdded', dateAdded);
+
+      try {
+        const response = await axios.post('http://localhost:3000/upload-image', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${localStorage.getItem('token')}`, // Assuming token is stored in localStorage
+          },
+        });
+
+        const newDoc = {
+          dif_id: response.data.document.dif_id,
+          dif_name: response.data.document.dif_name,
+          dif_dateadded: response.data.document.dif_dateadded,
+        };
+
+        onUploadSuccess(newDoc);
+        setShowModal(false);
+        setNewFileName('');
+        setSelectedFile(null);
+        setDateAdded('');
+      } catch (error) {
+        console.error('Error uploading image:', error);
+      }
     }
   };
 
@@ -44,6 +62,12 @@ function UploadForm({ setShowModal, setDocuments }) {
           onChange={(e) => setNewFileName(e.target.value)}
           className="mb-4 p-2 border border-gray-300 rounded w-full"
         />
+        <input
+          type="date"
+          value={dateAdded}
+          onChange={(e) => setDateAdded(e.target.value)}
+          className="mb-4 p-2 border border-gray-300 rounded w-full"
+        />
         <button
           onClick={handleUpload}
           className="w-[40px] sm:w-[150px] h-[40px] bg-[#105D2B] rounded-[15px] ml-6 mr-4 text-white text-base sm:text-lg font-medium hover:bg-[#003d1a] transition duration-300"
@@ -55,6 +79,7 @@ function UploadForm({ setShowModal, setDocuments }) {
             setShowModal(false);
             setNewFileName('');
             setSelectedFile(null);
+            setDateAdded('');
           }}
           className="w-[40px] sm:w-[150px] h-[40px] bg-[#105D2B] rounded-[15px] ml-4 text-white text-base sm:text-lg font-medium hover:bg-[#003d1a] transition duration-300"
         >
@@ -64,4 +89,5 @@ function UploadForm({ setShowModal, setDocuments }) {
     </div>
   );
 }
+
 export default UploadForm;

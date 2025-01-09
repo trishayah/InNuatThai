@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SearchBar from './searchBar';
 import AccInfo from './AccInfo'; // Import AccInfo component
 import UploadForm from "../src/Modal/uploadForm";
@@ -11,16 +11,37 @@ const StockReceivingReport = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
 
+  useEffect(() => {
+    const fetchDocuments = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/wsrr-image', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        const data = await response.json();
+        setDocuments(data);
+      } catch (error) {
+        console.error('Error fetching documents:', error);
+      }
+    };
+
+    fetchDocuments();
+  }, []);
+
   const handleUploadForm = () => {
     setShowModal(true);
   };
 
-  const handleImageClick = (imageUrl) => {
-    setSelectedImage(imageUrl);
+  const handleImageClick = (imageId) => {
+    setSelectedImage(`http://localhost:3000/image/${imageId}`);
+  };
+
+  const handleUploadSuccess = (newDocument) => {
+    setDocuments((prevDocuments) => [newDocument, ...prevDocuments]);
   };
 
   const user = JSON.parse(localStorage.getItem("user")); // Get user details
-
   return (
     <div className="flex flex-col flex-1 items-end min-w-full min-h-screen font-poppins bg-[#D9D9D9]">
       <div className="flex justify-between items-center p-4">
@@ -41,12 +62,12 @@ const StockReceivingReport = () => {
       </div>
       <div className="displayImage">
         {documents.slice(0, 16).map((doc, index) => (
-          <div key={doc.id} className="flex flex-col cursor-pointer">
-            <DocumentCard doc={doc} onImageClick={handleImageClick} />
+          <div key={doc.wsrr_id} className="flex flex-col cursor-pointer">
+            <DocumentCard doc={doc} onImageClick={() => handleImageClick(doc.wsrr_id)} />
           </div>
         ))}
       </div>
-      {showModal && <UploadForm setShowModal={setShowModal} setDocuments={setDocuments} />}
+      {showModal && <UploadForm setShowModal={setShowModal} onUploadSuccess={handleUploadSuccess} />}
       {selectedImage && (
         <ViewImage imageUrl={selectedImage} onClose={() => setSelectedImage(null)} />
       )}

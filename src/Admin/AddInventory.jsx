@@ -21,66 +21,7 @@ function AddInventory() {
   });
   const [successMessage, setSuccessMessage] = useState(""); // State for success message
 
-  // // Fetch inventory data from API
-  // useEffect(() => {
-  //   const fetchInventory = async () => {
-  //     try {
-  //       const token = localStorage.getItem("token");
-  //       const response = await axios.get(
-  //         "http://localhost:3000/inventory",
-  //         {
-  //           headers: { Authorization: `Bearer ${token}` },
-  //         }
-  //       );
-
-  //       setInventory(response.data);
-  //       setFilteredInventory(response.data); // Initialize filtered inventory
-  //     } catch (error) {
-  //       setError(error);
-
-        // } finally {
-        //   setLoading(false);
-        // }
-    //   }
-    // };
-    //   fetchInventory();
-    // }, []);
-
-  // // Handle search query change
-  // useEffect(() => {
-  //   if (searchQuery.trim() === "") {
-  //     setFilteredInventory(inventory); // Reset to full inventory
-  //   } else {
-  //     const query = searchQuery.toLowerCase();
-  //     const filtered = inventory.filter(
-  //       (item) =>
-  //         item.itemName.toLowerCase().includes(query) ||
-  //         item.category.toLowerCase().includes(query)
-  //     );
-  //     setFilteredInventory(filtered);
-  //   }
-  // }, [searchQuery, inventory]);
-
-  // // Sorting function
-  // const handleSort = (e) => {
-  //   const sortOption = e.target.value;
-  //   const sortedInventory = [...filteredInventory];
-
-  //   if (sortOption === "asc") {
-  //     sortedInventory.sort((a, b) => a.itemName.localeCompare(b.itemName));
-  //   } else if (sortOption === "desc") {
-  //     sortedInventory.sort((a, b) => b.itemName.localeCompare(a.itemName));
-  //   } else if (sortOption === "category") {
-  //     sortedInventory.sort((a, b) => a.category.localeCompare(b.category));
-  //   } else if (sortOption === "dateAdded") {
-  //     sortedInventory.sort(
-  //       (a, b) => new Date(a.dateAdded) - new Date(b.dateAdded)
-  //     );
-  //   }
-
-  //   setFilteredInventory(sortedInventory);
-  // };
-
+ 
   // Handle form input change
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -127,17 +68,6 @@ function AddInventory() {
 
   const user = JSON.parse(localStorage.getItem("user")); // Get user details
 
-  // const handleOptionChange = (e) => {
-  //   const option = e.target.value;
-  //   if (option === "update") {
-  //     navigate("/update-inventory");
-  //   } else if (option === "remove") {
-  //     navigate("/remove-inventory");
-  //   } else if (option === "view") {
-  //     navigate("/inventory");
-  //   }
-  // };
-
   return (
     <div className="flex flex-col w-full min-h-screen bg-[#D9D9D9]"> {/* Updated class name */}
       <h1 className="text-2xl font-semibold text-[#133517] font-poppins mt-4 mr-4 ml-6 p-4">
@@ -145,17 +75,6 @@ function AddInventory() {
       </h1>
       <div className="inventoryTable ml-2 mr-2">
         <AccInfo user={user} />
-        {/* <div className="flex items-center gap-4">
-          <select
-            style={{ backgroundColor: "#133517", color: "#FFFFFF", fontFamily: "Poppins", fontSize: "12px" }}
-            className="option"
-            onChange={handleOptionChange} // Handle option change
-          >
-            <option value="update">Update Inventory</option>
-            <option value="remove">Remove Inventory</option>
-            <option value="view">View Inventory</option>
-          </select>
-        </div> */}
         <div className="flex flex-col justify-items-center bg-[#164E28] p-4 rounded-3xl mt-6 w-[800px] h-[450px] mx-auto items-center">
           <form
             onSubmit={handleSubmit}
