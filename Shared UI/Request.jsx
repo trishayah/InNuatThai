@@ -1,110 +1,109 @@
 import React, { useState, useEffect } from "react";
-// import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import AccInfo from "./AccInfo";
+import Notification from "../src/Modal/Notification";
 import SearchBar from "./searchBar";
-import AccInfo from "./AccInfo.jsx";
-import DIFDownload from "./DIFDownloadButton.jsx";
-import PODownload from "./PODownloadButton.jsx";
+import PODownload from "./PODownloadButton";
+import DIFDownload from "./DIFDownloadButton";
 
-function Request() {
-  const navigate = useNavigate();
+const Request = () => {
   const [requests, setRequests] = useState([]);
-  const [filteredRequests, setFilteredRequests] = useState([]); // For displaying filtered results
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  const sampleData = [
-    {
-      requestNo: "001",
-      title: "Massage Bed",
-      branch: "Main",
-      requestDate: "2024-12-01",
-      dateNeeded: "2025-2-5",
-      requester: "John Doe",
-      status: "Pending",
-    },
-    {
-      requestNo: "002",
-      title: "Uniform",
-      branch: "Branch A",
-      requestDate: "2024-12-02",
-      dateNeeded: "2025-2-15",
-      requester: "Jane Smith",
-      status: "Approved",
-    },
-    {
-      requestNo: "003",
-      title: "Essential Oil",
-      branch: "Branch B",
-      requestDate: "2024-12-10",
-      dateNeeded: "2025-1-10",
-      requester: "Michael Johnson",
-      status: "Completed",
-    },
-  ];
+  const [filteredRequests, setFilteredRequests] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [editedRows, setEditedRows] = useState({});
 
   useEffect(() => {
     const fetchRequests = async () => {
       try {
-        setLoading(true);
-        setRequests(sampleData); // Simulating API response
-        setFilteredRequests(sampleData); // Initialize filtered requests
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        const Request = [
+          { id: 1, requestDate: "2024-03-08", dateNeeded: "2024-03-15", status: "Pending", item: "Item A" },
+          { id: 2, requestDate: "2024-03-10", dateNeeded: "2024-03-18", status: "Approved", item: "Item B" },
+          { id: 3, requestDate: "2024-03-12", dateNeeded: "2024-03-20", status: "Rejected", item: "Item C" },
+        ];
+        setRequests(Request);
+        setFilteredRequests(Request);
       } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
+        console.error("Error fetching requests:", error);
       }
     };
-
-
     fetchRequests();
   }, []);
 
-  // Handle search input
   const handleSearch = (query) => {
-    const lowerCaseQuery = query.toLowerCase();
-    const filtered = requests.filter(
-      (request) =>
-        request.title.toLowerCase().includes(lowerCaseQuery) ||
-        request.branch.toLowerCase().includes(lowerCaseQuery) ||
-        request.requester.toLowerCase().includes(lowerCaseQuery) ||
-        request.status.toLowerCase().includes(lowerCaseQuery)
+    setSearchQuery(query);
+    const filteredRequest = requests.filter((request) =>
+      request.item.toLowerCase().includes(query.toLowerCase()) ||
+      request.status.toLowerCase().includes(query.toLowerCase())
     );
-    setFilteredRequests(filtered); // Update filtered results
+    setFilteredRequests(filteredRequest);
   };
 
-  // Handle row click to navigate to the details page
-  const handleRowClick = (request) => {
-    navigate(`/request/${request.requestNo}`);
-  };
-
-  // Sorting function
   const handleSort = (e) => {
     const sortOption = e.target.value;
-    const sortedRequests = [...filteredRequests];
+    const sortedRequest = [...filteredRequests];
 
     if (sortOption === "asc") {
-      sortedRequests.sort((a, b) => a.title.localeCompare(b.title));
+      sortedRequest.sort((a, b) => a.item.localeCompare(b.item));
     } else if (sortOption === "desc") {
-      sortedRequests.sort((a, b) => b.title.localeCompare(a.title));
+      sortedRequest.sort((a, b) => b.item.localeCompare(a.item));
     } else if (sortOption === "reqdate") {
-      sortedRequests.sort((a, b) => new Date(a.requestDate) - new Date(b.requestDate));
+      sortedRequest.sort((a, b) => new Date(a.requestDate) - new Date(b.requestDate));
     } else if (sortOption === "dateNeeded") {
-      sortedRequests.sort((a, b) => new Date(a.dateNeeded) - new Date(b.dateNeeded));
+      sortedRequest.sort((a, b) => new Date(a.dateNeeded) - new Date(b.dateNeeded));
     } else if (sortOption === "status") {
-      sortedRequests.sort((a, b) => a.status.localeCompare(b.status));
+      sortedRequest.sort((a, b) => a.status.localeCompare(b.status));
     }
 
-    setFilteredRequests(sortedRequests); // Update filtered results
+    setFilteredRequests(sortedRequest);
   };
-  const user = JSON.parse(localStorage.getItem("user")); // Get user details
+
+  const handleEdit = (e, id, field) => {
+    const value = e.target.value;
+    setFilteredRequests((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, [field]: value } : item))
+    );
+
+    setEditedRows((prev) => ({
+      ...prev,
+      [id]: {
+        ...(prev[id] || {}),
+        [field]: value,
+      },
+    }));
+  };
+
+  const handleSaveChanges = async () => {
+    try {
+      const modifiedItems = Object.entries(editedRows).map(([id, changes]) => ({
+        id,
+        changes,
+      }));
+
+      for (const { id, changes } of modifiedItems) {
+        console.log(`Saving changes for request ${id}:`, changes);
+      }
+
+      setEditedRows({});
+    } catch (error) {
+      console.error("Error saving changes:", error);
+    }
+  };
+
+  const user = JSON.parse(localStorage.getItem("user"));
 
   return (
-    <div className="flex flex-col w-full min-h-screen bg-[#D9D9D9]">
-      <h1 className="text-2xl font-semibold text-[#133517] mt-4 font-poppins mr-4 p-4 ml-6">Request</h1>
-      <div className="requestTable">
-        <AccInfo user={user} />
-        <div className="request flex items-center gap-4">
+    <div className="flex flex-col w-full min-h-screen bg-[#D9D9D9] font-poppins">
+        <div className="flex justify-between items-center p-4">
+        <h1 className="text-2xl font-semibold text-[#133517] mt-4 ml-6">Request</h1>
+        <div className="flex items-center space-x-4">
+          {/* <Notification
+            modifiedItems={Object.entries(editedRows).map(([id, changes]) => ({ id, changes }))}
+          /> */}
+          <AccInfo user={user} />
+        </div>
+        </div>
+      <div className="px-4 mt-4">
+        <div className="flex items-center gap-4 mb-2">
           <SearchBar onSearch={handleSearch} />
           <select
             style={{ backgroundColor: "#133517", color: "#FFFFFF", fontFamily: "Poppins", fontSize: "12px" }}
@@ -121,47 +120,46 @@ function Request() {
           <PODownload />
           <DIFDownload />
         </div>
-        <table className="table-fixed border-spacing-2 w-full border-collapse border border-gray-300 font-poppins">
+        <table className="table-fixed border-spacing-2 w-full border-collapse border border-gray-300 font-poppins text-center">
           <thead>
             <tr
               style={{ backgroundColor: "#133517", color: "#FFFFFF" }}
-              className="border border-gray-300"
+              className="border border-gray-300 text-sm"
             >
-              <th className="px-4 py-2 text-center">Request No.</th>
-              <th className="px-4 py-2 text-center">Title</th>
-              <th className="px-4 py-2 text-center">Branch</th>
-              <th className="px-4 py-2 text-center">Request Date</th>
-              <th className="px-4 py-2 text-center">Date Needed</th>
-              <th className="px-4 py-2 text-center">Requester</th>
-              <th className="px-4 py-2 text-center">Status</th>
+              <th className="border border-gray-300 px-4 py-2">Item</th>
+              <th className="border border-gray-300 px-4 py-2">Request Date</th>
+              <th className="border border-gray-300 px-4 py-2">Date Needed</th>
+              <th className="border border-gray-300 px-4 py-2">Status</th>
             </tr>
           </thead>
-          <tbody>
-            {filteredRequests.map((request, index) => (
-              <tr
-                key={request.requestNo}
-                onClick={() => handleRowClick(request)}
-                style={{
-                  backgroundColor: index % 2 === 0 ? "#FFF5F5" : "#D3DDD6",
-                  cursor: "pointer",
-                }}
-              >
-                <td className="px-4 py-2 border text-center">{request.requestNo}</td>
-                <td className="px-4 py-2 border text-center">{request.title}</td>
-                <td className="px-4 py-2 border text-center">{request.branch}</td>
-                <td className="px-4 py-2 border text-center">{request.requestDate}</td>
-                <td className="px-4 py-2 border text-center">{request.dateNeeded}</td>
-                <td className="px-4 py-2 border text-center">{request.requester}</td>
-                <td className="px-4 py-2 border text-center">{request.status}</td>
+          <tbody className="text-sm">
+            {filteredRequests.length > 0 ? (
+              filteredRequests.map((request, index) => (
+                <tr
+                  key={request.id}
+                  style={{
+                    backgroundColor: index % 2 === 0 ? "#FFF5F5" : "#D3DDD6",
+                    cursor: "pointer",
+                  }}
+                >
+                  <td className="border border-gray-300 px-4 py-2">{request.item}</td>
+                  <td className="border border-gray-300 px-4 py-2">{request.requestDate}</td>
+                  <td className="border border-gray-300 px-4 py-2">{request.dateNeeded}</td>
+                  <td className="border border-gray-300 px-4 py-2">{request.status}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="4" className="px-4 py-2 border text-center">
+                  No request Request available.
+                </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
-      {loading && <p>Loading...</p>}
-      {error && <p>Error: {error.message}</p>}
     </div>
   );
-}
+};
 
 export default Request;

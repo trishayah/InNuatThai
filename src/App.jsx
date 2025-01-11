@@ -58,7 +58,7 @@ const router = createBrowserRouter([
       { path: "po", element: <PurchaseOrder /> },
       { path: "branchreq", element: <BranchRequest /> },
       { path: "branchcreatereq", element: <BranchCreateRequest /> },
-      { path: "add-inventory", element: <AddInventory /> },
+      // { path: "add-inventory", element: <AddInventory /> },
       { path: "editprofile", element: <EditProfile /> }
     ],
   },

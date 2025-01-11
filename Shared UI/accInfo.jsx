@@ -1,5 +1,5 @@
-import React from "react";
-import { MdAccountCircle } from "react-icons/md";
+import React from 'react';
+import { FiUser } from 'react-icons/fi';
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const AccInfo = ({ user }) => {
@@ -8,19 +8,17 @@ const AccInfo = ({ user }) => {
   const handleEditProfile = () => {
     navigate("/editprofile"); // Adjust the route to match your routing setup
   }
-
   return (
-      <div className="absolute top-4 right-4 flex items-center space-x-2 cursor-pointer" onClick={handleEditProfile}>
-        <div className="flex flex-col items-end mr-[4rem] h-full font-poppins">
-          <div className="flex items-center space-x-4 p-2 mt-4">
-            <MdAccountCircle className="w-6 h-6 text-[#105D2B]" />
-            <p className="text-base font-medium text-[#105D2B]">
-              {user?.name || "User"}
-            </p>
-        </div>
+    <div className="flex items-center space-x-2">
+      <div className="bg-green-100 rounded-full p-2">
+        <FiUser className="w-5 h-5 text-green-600 mr-1" />
+      </div>
+      <div>
+        <p className="text-sm font-medium font-poppins text-green-900">{user?.name || "User"}</p>
       </div>
     </div>
   );
 };
 
 export default AccInfo;
+

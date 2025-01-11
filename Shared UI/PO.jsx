@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import SearchBar from './searchBar';
 import AccInfo from './AccInfo'; // Import AccInfo component
-import UploadForm from "../src/Modal/uploadForm";
-import DocumentCard from '../src/Modal/DocumentCard';
+import UploadPO from "../src/Modal/uploadPO"; // Import UploadPO component
+import DisplayPO from '../src/Modal/DisplayPO';
 import ViewImage from "../src/Modal/ViewImage";
 import PODownload from './PODownloadButton'; // Import PODownload component
+import { FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 
 const PurchaseOrder = () => {
   const [documents, setDocuments] = useState([]);
@@ -14,7 +16,7 @@ const PurchaseOrder = () => {
    useEffect(() => {
       const fetchDocuments = async () => {
         try {
-          const response = await fetch('http://localhost:3000/po-image', {
+          const response = await fetch('http://localhost:3000/po-forms', {
             headers: {
               'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
@@ -34,7 +36,7 @@ const PurchaseOrder = () => {
     };
   
     const handleImageClick = (imageId) => {
-      setSelectedImage(`http://localhost:3000/image/${imageId}`);
+      setSelectedImage(`http://localhost:3000/po/${imageId}`);
     };
   
     const handleUploadSuccess = (newDocument) => {
@@ -59,15 +61,17 @@ const PurchaseOrder = () => {
           Add PO
         </button>
         <PODownload /> {/* Add PODownload component beside the button */}
+         <button className='ml-4 bg-green-950 rounded-[15px] p-2 px-6 text-white'><FaEdit/></button>
+          <button className='ml-4 bg-green-950 rounded-[15px] p-2 px-6 text-white'><MdDelete/></button>
       </div>
       <div className="displayImage">
         {documents.slice(0, 16).map((doc, index) => (
           <div key={doc.po_id} className="flex flex-col cursor-pointer">
-            <DocumentCard doc={doc} onImageClick={() => handleImageClick(doc.po_id)} />
+            <DisplayPO doc={doc} onImageClick={() => handleImageClick(doc.po_id)} />
           </div>
         ))}
       </div>
-      {showModal && <UploadForm setShowModal={setShowModal} onUploadSuccess={handleUploadSuccess} />}
+      {showModal && <UploadPO setShowModal={setShowModal} onUploadSuccess={handleUploadSuccess} />}
       {selectedImage && (
         <ViewImage imageUrl={selectedImage} onClose={() => setSelectedImage(null)} />
       )}

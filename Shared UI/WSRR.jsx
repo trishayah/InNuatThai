@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import SearchBar from './searchBar';
 import AccInfo from './AccInfo'; // Import AccInfo component
-import UploadForm from "../src/Modal/uploadForm";
-import DocumentCard from '../src/Modal/DocumentCard';
+import UploadWSRR from "../src/Modal/uploadWSRR";
+import DisplayWSRR from '../src/Modal/DisplayWSRR';
 import ViewImage from "../src/Modal/ViewImage";
 import WSRRDownload from './WSRRDownload'; // Import WSRRDownload component
+import { FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 
 const StockReceivingReport = () => {
   const [documents, setDocuments] = useState([]);
@@ -14,7 +16,7 @@ const StockReceivingReport = () => {
   useEffect(() => {
     const fetchDocuments = async () => {
       try {
-        const response = await fetch('http://localhost:3000/wsrr-image', {
+        const response = await fetch('http://localhost:3000/wsrr-forms', {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
@@ -34,7 +36,7 @@ const StockReceivingReport = () => {
   };
 
   const handleImageClick = (imageId) => {
-    setSelectedImage(`http://localhost:3000/image/${imageId}`);
+    setSelectedImage(`http://localhost:3000/wsrr/${imageId}`);
   };
 
   const handleUploadSuccess = (newDocument) => {
@@ -59,15 +61,17 @@ const StockReceivingReport = () => {
           Add WSRR
         </button>
         <WSRRDownload /> {/* Add WSRRDownload component beside the button */}
+         <button className='ml-4 bg-green-950 rounded-[15px] p-2 px-6 text-white'><FaEdit/></button>
+          <button className='ml-4 bg-green-950 rounded-[15px] p-2 px-6 text-white'><MdDelete/></button>
       </div>
       <div className="displayImage">
         {documents.slice(0, 16).map((doc, index) => (
           <div key={doc.wsrr_id} className="flex flex-col cursor-pointer">
-            <DocumentCard doc={doc} onImageClick={() => handleImageClick(doc.wsrr_id)} />
+            <DisplayWSRR doc={doc} onImageClick={() => handleImageClick(doc.wsrr_id)} />
           </div>
         ))}
       </div>
-      {showModal && <UploadForm setShowModal={setShowModal} onUploadSuccess={handleUploadSuccess} />}
+      {showModal && <UploadWSRR setShowModal={setShowModal} onUploadSuccess={handleUploadSuccess} />}
       {selectedImage && (
         <ViewImage imageUrl={selectedImage} onClose={() => setSelectedImage(null)} />
       )}

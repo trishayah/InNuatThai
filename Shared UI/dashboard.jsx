@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import AccInfo from "./AccInfo";
+import Notification from "../src/Modal/Notification"; // Import the Notification component
+
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -16,6 +18,8 @@ const Dashboard = () => {
 
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
+  const [editedRows, setEditedRows] = useState({});
+  
 
   useEffect(() => {
     // Check if user is logged in
@@ -201,8 +205,13 @@ const Dashboard = () => {
   return (
     <div className = "flex flex-col w-full min-h-screen bg-[#D9D9D9] font-poppins">
         <div className="flex justify-between items-center p-4">
-          <h2 className="text-2xl font-semibold text-[#133517] mt-4 ml-6">Dashboard</h2>
-          <AccInfo user={user} />
+          <h1 className="text-2xl font-semibold text-[#133517] mt-4 ml-6">Dashboard</h1>
+          <div className="flex items-center space-x-4">
+            <Notification
+              modifiedItems={Object.entries(editedRows).map(([inventoryNo, changes]) => ({ inventoryNo, changes }))}
+            />
+            <AccInfo user={user} />
+          </div>
         </div>
           <div className="p-8">
           {loading ? (

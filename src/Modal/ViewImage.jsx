@@ -3,7 +3,7 @@ import { FaXmark } from "react-icons/fa6";
 
 const ViewImage = ({ imageUrl, onClose }) => {
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 font-poppins z-50">
       <div className="relative">
         <img src={imageUrl} alt="Selected" className="max-w-[90vw] max-h-[90vh]" />
         <button

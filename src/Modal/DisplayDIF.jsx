@@ -2,10 +2,10 @@ import React from "react";
 
 const DocumentCard = ({ doc, onImageClick }) => {
     return (
-        <div className="imageBox ml-6 mr-6">
+        <div className="imageBox ml-8 mr-6">
             <div className="relative max-w-xs max-h-xs overflow-hidden rounded-sm shadow-xl group">
                 <img
-                    src={`http://localhost:3000/image/${doc.dif_id}`}
+                    src={`http://localhost:3000/dif/${doc.dif_id}`}
                     alt={doc.dif_name}
                     className="transition-transform group-hover:scale-105 duration-200 cursor-pointer"
                     onClick={() => onImageClick(doc.dif_id)}
