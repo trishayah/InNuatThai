@@ -124,5 +124,5 @@ function UploadForm({ setShowModal, onUploadSuccess }) {
   )
 }
 
-export default UploadForm
+export default UploadForm;
 
