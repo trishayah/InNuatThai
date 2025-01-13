@@ -1,48 +1,129 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import axios from "axios";
 
-function RequestDetails() {
-  const { requestNo } = useParams();
-  const [request, setRequest] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+function RequestDetails({ request, onClose }) {
+  const [requestDetails, setRequestDetails] = useState(null);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
+    if (!request) return;
+
+    // Fetch request and products
     const fetchRequestDetails = async () => {
       try {
-        setLoading(true);
-        const response = await axios.get(`/api/requests/${requestNo}`);
-        setRequest(response.data);
+        const response = await axios.get(`http://localhost:3000/request-details/${request.rf_id}`,{
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`, // Example of using a token from localStorage
+          },
+        });
+
+        setRequestDetails(response.data);
+        setProducts(response.data);
       } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
+        console.error("Error fetching request details:", error);
       }
     };
-    fetchRequestDetails();
-  }, [requestNo]);
 
-  if (loading) return <p className="text-center text-gray-500">Loading...</p>;
-  if (error) return <p className="text-center text-red-500">Error: {error.message}</p>;
+    fetchRequestDetails();
+  }, [request]);
+
+  if (!request)
+    return null;
 
   return (
-    <div className="max-w-2xl mx-auto bg-white shadow-lg rounded-lg p-6 mt-10">
-      <h3 className="text-2xl font-semibold mb-4 text-[#105D2B]">Request Details</h3>
-      <div className="grid grid-cols-1 gap-4">
-        <p><strong className="text-[#26582D]">Request No:</strong> {request.requestNo}</p>
-        <p><strong className="text-[#26582D]">Title:</strong> {request.title}</p>
-        <p><strong className="text-[#26582D]">Branch:</strong> {request.branch}</p>
-        <p><strong className="text-[#26582D]">Request Date:</strong> {request.requestDate}</p>
-        <p><strong className="text-[#26582D]">Requester:</strong> {request.requester}</p>
-        <p><strong className="text-[#26582D]">Status:</strong> {request.status}</p>
-        <p><strong className="text-[#26582D]">Item Name:</strong> {request.itemName}</p>
-        <p><strong className="text-[#26582D]">Description:</strong> {request.description}</p>
-        <p><strong className="text-[#26582D]">Quantity:</strong> {request.quantity}</p>
-        <p><strong className="text-[#26582D]">Date Needed:</strong> {request.dateNeeded}</p>
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 font-poppins z-50">
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-lg sm:max-w-md md:max-w-lg lg:max-w-2xl mx-auto">
+        <div className="p-6 max-h-[calc(100vh-4rem)] overflow-y-auto">
+          <h1 className="text-2xl font-bold mb-4 text-green-950">Request Details</h1>
+          <div className="mb-4">
+            <label className="block text-green-900 text-base font-semibold mb-2">Request No</label>
+            <input
+              type="text"
+              value={request.rf_id}
+              readOnly
+              className="w-full px-3 py-2 text-black border rounded-lg bg-gray-100 focus:outline-none"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-green-900 text-base font-semibold mb-2">Request Title</label>
+            <input
+              type="text"
+              value={request.rf_title}
+              readOnly
+              className="w-full px-3 py-2 text-black border rounded-lg bg-gray-100 focus:outline-none"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-green-900 text-base font-semibold mb-2">Request Date</label>
+            <input
+              type="text"
+              value={new Date(request.rf_date).toLocaleDateString()}
+              readOnly
+              className="w-full px-3 py-2 text-black border rounded-lg bg-gray-100 focus:outline-none"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-green-900 text-base font-semibold mb-2">Date Needed</label>
+            <input
+              type="text"
+              value={new Date(request.rf_date_needed).toLocaleDateString()}
+              readOnly
+              className="w-full px-3 py-2 text-black border rounded-lg bg-gray-100 focus:outline-none"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-green-900 text-base font-semibold mb-2">Branch</label>
+            <input
+              type="text"
+              value={request.rf_branch}
+              readOnly
+              className="w-full px-3 py-2 text-black border rounded-lg bg-gray-100 focus:outline-none"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-green-900 text-base font-semibold mb-2">Requester Name</label>
+            <input
+              type="text"
+              value={request.rf_title}
+              readOnly
+              className="w-full px-3 py-2 text-black border rounded-lg bg-gray-100 focus:outline-none"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-green-900 text-base font-semibold mb-2">Products</label>
+            <ul className="list-disc pl-5 text-black">
+              {Array.isArray(products) && products.length > 0 ? (
+                products.map((request) => (
+                  <li key={request.rp_id} className="mb-2">
+                    <p>
+                      <strong>Product Name:</strong> {request.prod_name}
+                    </p>
+                    <p>
+                      <strong>Quantity:</strong> {request.rp_quantity}
+                    </p>
+                    <p>
+                      <strong>Description:</strong> {request.rp_description || "N/A"}
+                    </p>
+                  </li>
+                ))
+              ) : (
+                <li>No products available</li>
+              )}
+            </ul>
+          </div>
+          <div className="flex justify-end">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 bg-green-950 text-white rounded"
+          >
+            Close
+          </button>
+          </div>
+        </div>
       </div>
     </div>
   );
-}
+};
+
 
 export default RequestDetails;

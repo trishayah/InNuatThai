@@ -16,13 +16,8 @@ import Inventory from "../Shared UI/Inventory.jsx";
 import DeliveryInstructionForm from "../Shared UI/DIF.jsx";
 import StockReceivingReport from "../Shared UI/WSRR.jsx";
 import PurchaseOrder from "../Shared UI/PO.jsx";
-// import ApprovalRequest from "../src/Admin/ApprovalRequest.jsx";
-// import NextApprovalRequest from "../src/Admin/NextApprovalRequest.jsx";
-import AddInventory from "../src/Admin/AddInventory.jsx";
-import BranchRequest from "./Branch/branchReq.jsx";
-import BranchCreateRequest from "./Branch/branchCreateReq.jsx";
 import EditProfile from "../Shared UI/EditProfile.jsx";
-
+import BranchInventory from "../src/Branch/BranchInventory.jsx";
 // Auth Wrapper
 const isAuthenticated = () => !!localStorage.getItem("token");
 
@@ -56,10 +51,8 @@ const router = createBrowserRouter([
       { path: "dif", element: <DeliveryInstructionForm /> },
       { path: "wsrr", element: <StockReceivingReport /> },
       { path: "po", element: <PurchaseOrder /> },
-      { path: "branchreq", element: <BranchRequest /> },
-      { path: "branchcreatereq", element: <BranchCreateRequest /> },
-      // { path: "add-inventory", element: <AddInventory /> },
-      { path: "editprofile", element: <EditProfile /> }
+      { path: "editprofile", element: <EditProfile /> },
+      {path: "BranchInventory", element: <BranchInventory />},
     ],
   },
 ]);

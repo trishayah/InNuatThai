@@ -22,6 +22,7 @@
           prod_price: modalData.prod_price,
           inv_stock: modalData.inv_stock,
           inv_dateadded: modalData.inv_dateadded,
+          acc_id: modalData.acc_id,
         };
     
         await axios.put("http://localhost:3000/update-inventory", updatedData, {

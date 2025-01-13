@@ -30,7 +30,6 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
-
 // Configure multer for file uploads
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -47,7 +46,7 @@ const db = knex({
   },
 });
 
-
+// log in condition
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
@@ -97,32 +96,43 @@ app.post('/login', async (req, res) => {
 // Add a new inventory item
 app.post('/addinventory', authenticateToken, async (req, res) => {
   const { prodName, prodDesc, prodCategory, prodPrice, stock, dateAdded } = req.body;
-  console.log(req.body);
+  const acc_id = req.user?.userId; // Extract acc_id from the token
+
+  if (!acc_id) {
+    return res.status(400).json({ message: 'Account ID is required' });
+  }
+
   try {
     // Insert into PRODUCT table
-    const [newProdId] = await db('product').insert({
-      prod_name: prodName,
-      prod_desc: prodDesc,
-      prod_category: prodCategory,
-      prod_price: prodPrice,
-    }).returning('prod_id');
+    const [newProdId] = await db('product')
+      .insert({
+        prod_name: prodName,
+        prod_desc: prodDesc,
+        prod_category: prodCategory,
+        prod_price: prodPrice,
+        acc_id, // Track who added the product
+      })
+      .returning('prod_id');
 
     // Insert into INVENTORY table
-    const [newItemId] = await db('inventory').insert({
-      prod_id: newProdId.prod_id, // Ensure the correct data type is passed
-      inv_stock: stock,
-      inv_dateadded: dateAdded,
-    }).returning('inv_no');
+    const [newItemId] = await db('inventory')
+      .insert({
+        prod_id: newProdId.prod_id, // Link the product ID
+        inv_stock: stock,
+        inv_dateadded: dateAdded,
+        acc_id, // Track who added the inventory
+      })
+      .returning('inv_no');
 
     res.status(201).json({
       inventoryNo: newItemId,
-      prodId: newProdId.prod_id, // Ensure the correct data type is passed
+      prodId: newProdId.prod_id,
       prodName,
       prodDesc,
       prodCategory,
       prodPrice,
       stock,
-      dateAdded
+      dateAdded,
     });
   } catch (error) {
     console.error('Error adding inventory:', error);
@@ -143,7 +153,8 @@ app.get('/display-inventory', authenticateToken, async (req, res) => {
         'product.prod_category',
         'product.prod_price',
         'inventory.inv_stock',
-        'inventory.inv_dateadded'
+        'inventory.inv_dateadded',
+
       );
     // console.log('Fetched inventory:', inventory); // Log the data
     res.json(inventory);
@@ -154,35 +165,56 @@ app.get('/display-inventory', authenticateToken, async (req, res) => {
 });
 
 // Update inventory item
-app.put("/update-inventory", async (req, res) => {
-  const { inv_no, prod_id, prod_name, prod_desc, prod_category, prod_price, inv_stock, inv_dateadded } = req.body;
-  console.log("Received data:", req.body);
+app.put('/update-inventory', authenticateToken, async (req, res) => {
+  const {
+    inv_no,
+    prod_id,
+    prod_name,
+    prod_desc,
+    prod_category,
+    prod_price,
+    inv_stock,
+    inv_dateadded,
+  } = req.body;
+
+  const acc_id = req.user?.userId; // Extract acc_id from the token
+
+  if (!acc_id) {
+    return res.status(400).json({ message: 'Account ID is required' });
+  }
 
   if (!prod_id) {
-    return res.status(400).json({ error: "Product ID is required" });
+    return res.status(400).json({ error: 'Product ID is required' });
   }
 
   try {
     await db.transaction(async (trx) => {
       // Update product table
-      await trx("product")
-        .where("prod_id", prod_id)
-        .update({ prod_name, prod_desc, prod_category, prod_price });
+      await trx('product')
+        .where('prod_id', prod_id)
+        .update({
+          prod_name,
+          prod_desc,
+          prod_category,
+          prod_price,
+          acc_id, // Track who updated the product
+        });
 
       // Update inventory table
-      await trx("inventory")
-        .where("inv_no", inv_no)
-        .update({ inv_stock, inv_dateadded });
+      await trx('inventory')
+        .where('inv_no', inv_no)
+        .update({
+          inv_stock,
+          inv_dateadded,
+          acc_id, // Track who updated the inventory
+        });
     });
-    res.status(200).json({ message: "Inventory and Product updated successfully" });
+    res.status(200).json({ message: 'Inventory and Product updated successfully' });
   } catch (error) {
-    console.error("Error updating inventory and product:", error);
-    res.status(500).json({ error: "Failed to update inventory and product" });
+    console.error('Error updating inventory and product:', error);
+    res.status(500).json({ error: 'Failed to update inventory and product' });
   }
 });
-
-
-
 
 // Delete inventory item
 app.delete('/delete-inventory/:inv_no', authenticateToken, async (req, res) => {
@@ -202,9 +234,117 @@ app.delete('/delete-inventory/:inv_no', authenticateToken, async (req, res) => {
   }
 });
 
+// branch add inventory
+app.post('/addbranchinventory', authenticateToken, async (req, res) => {
+  const { invName,
+    invDesc,
+    invCategory,
+    invPrice,
+    invStock,
+    invDateAdded, } = req.body;
+  console.log(req.body);
+  const acc_id = req.user?.userId; // Correct reference to userId in the token
 
+  if (!acc_id) {
+    return res.status(400).json({ message: 'Account ID is required' });
+  }
 
-// Endpoint to upload image
+  try {
+    // Insert into table
+    const [newProdId] = await db('branch_inventory').insert({
+
+      br_inv_name: invName,
+      br_inv_desc: invDesc,
+      br_inv_category: invCategory,
+      br_inv_price: invPrice,
+      br_inv_stock: invStock,
+      br_inv_date: invDateAdded,
+      acc_id,
+    }).returning('br_inv_id');
+
+    res.status(201).json({
+      invId: newProdId.br_inv_id, // Ensure the correct data type is passed
+      invDesc,
+      invCategory,
+      invPrice,
+      invStock,
+      invDateAdded,
+    });
+  } catch (error) {
+    console.error('Error adding branch inventory:', error);
+    res.status(500).json({ message: 'Failed to add branch inventory' });
+  }
+});
+
+// branch display inventory
+app.get('/display-branch-inventory', authenticateToken, async (req, res) => {
+  try {
+    const inventory = await db('branch_inventory').select('*');
+    console.log('Fetched inventory:', inventory); // Log the data
+    res.json(inventory);
+  } catch (error) {
+    console.log('Error fetching branch inventory:', error);
+    res.status(500).json({ message: 'Failed to fetch branch inventory' });
+  }
+});
+
+// branch update inventory
+app.put("/update-branch-inventory", authenticateToken, async (req, res) => {
+  const {
+    br_inv_id,
+    br_inv_name,
+    br_inv_desc,
+    br_inv_category,
+    br_inv_price,
+    br_inv_stock,
+    br_inv_date,
+  } = req.body;
+
+  console.log("Received data:", req.body);
+
+  const acc_id = req.user?.userId; // Extract acc_id from the token
+
+  if (!br_inv_id) {
+    return res.status(400).json({ error: "Inventory ID is required" });
+  }
+
+  try {
+    // Update the inventory record, including the acc_id
+    await db("branch_inventory")
+      .where("br_inv_id", br_inv_id)
+      .update({
+        br_inv_name,
+        br_inv_desc,
+        br_inv_category,
+        br_inv_price,
+        br_inv_stock,
+        br_inv_date,
+        acc_id, // Reflect the user who edited the record
+      });
+
+    res.status(200).json({ message: "Inventory updated successfully" });
+  } catch (error) {
+    console.error("Error updating branch inventory:", error);
+    res.status(500).json({ error: "Failed to update inventory" });
+  }
+});
+
+// branch delete inventory
+app.delete('/delete-inventory/:br_inv_id', authenticateToken, async (req, res) => {
+  const { br_inv_id } = req.params;  // Get inv_no from URL params
+
+  try {
+    // Deleting from inventory should be handled by cascading delete, but we can explicitly handle it if needed
+    await db('branch_inventory').where({ br_inv_id }).del();
+
+    res.status(200).json({ message: 'Branch Inventory item deleted successfully' });
+  } catch (error) {
+    console.error("Error deleting branch inventory:", error);
+    res.status(500).json({ message: 'Failed to delete branch inventory item' });
+  }
+});
+
+// Endpoint to upload DIF
 app.post('/upload-dif', authenticateToken, upload.single('image'), async (req, res) => {
   const { originalname, buffer } = req.file;
   const { name, dateAdded } = req.body;
@@ -262,7 +402,7 @@ app.get('/dif/:id', async (req, res) => {
   }
 });
 
-// Endpoint to fetch all images
+// Endpoint to fetch DIF
 app.get('/dif-forms', authenticateToken, async (req, res) => {
   try {
     const images = await db('delivery_instruction_form').select('dif_id', 'dif_name', 'dif_dateadded');
@@ -273,7 +413,7 @@ app.get('/dif-forms', authenticateToken, async (req, res) => {
   }
 });
 
-// Endpoint to upload image to WSRR
+// Endpoint to upload WSRR
 app.post('/upload-wsrr', authenticateToken, upload.single('image'), async (req, res) => {
   const { originalname, buffer } = req.file;
   const { name, dateAdded } = req.body;
@@ -306,7 +446,7 @@ app.post('/upload-wsrr', authenticateToken, upload.single('image'), async (req, 
   }
 });
 
-// Endpoint to fetch all images
+// Endpoint to fetch WSRR
 app.get('/wsrr-forms', authenticateToken, async (req, res) => {
   try {
     const images = await db('warehouse_stock_receiving_report').select('wsrr_id', 'wsrr_name', 'wsrr_dateadded');
@@ -344,7 +484,7 @@ app.get('/wsrr/:id', async (req, res) => {
   }
 });
 
-// Endpoint to upload image to PO
+// Endpoint to upload PO
 app.post('/upload-po', authenticateToken, upload.single('image'), async (req, res) => {
   const { originalname, buffer } = req.file;
   const { name, dateAdded } = req.body;
@@ -377,7 +517,7 @@ app.post('/upload-po', authenticateToken, upload.single('image'), async (req, re
   }
 });
 
-// Endpoint to fetch all images
+// Endpoint to fetch PO
 app.get('/po-forms', authenticateToken, async (req, res) => {
   try {
     const images = await db('purchase_order').select('po_id', 'po_name', 'po_dateadded');
@@ -414,6 +554,114 @@ app.get('/po/:id', async (req, res) => {
     res.status(500).json({ message: 'Failed to retrieve image' });
   }
 });
+
+// add request
+app.post('/add-request', authenticateToken, async (req, res) => {
+  const { title, branch, requestDate, requesterName, dateNeed, products } = req.body;
+  const acc_id = req.user?.userId;
+
+  if (!acc_id) {
+    return res.status(400).json({ message: 'Account ID is required' });
+  }
+
+  try {
+    await db.transaction(async (trx) => {
+      // Insert request form using Knex.js
+      const [{ rf_id }] = await trx('request_form')
+        .insert({
+          rf_title: title,
+          rf_branch: branch,
+          rf_date: requestDate,
+          rf_requestor_name: requesterName,
+          rf_date_needed: dateNeed,
+          acc_id: acc_id,
+        })
+        .returning('rf_id');
+
+      // Check if products exist and have sufficient stock
+      for (const product of products) {
+        const stockRows = await trx('inventory')
+          .select('prod_id', 'inv_stock')
+          .where('prod_id', product.prod_id);
+
+        if (stockRows.length === 0) {
+          throw new Error(`Product with ID ${product.prod_id} not found`);
+        }
+
+        if (stockRows[0].inv_stock < product.quantity) {
+          throw new Error(`Insufficient stock for product ID ${product.prod_id}`);
+        }
+      }
+
+      // Insert products and update inventory stock using Knex.js
+      for (const product of products) {
+        await trx('request_product').insert({
+          rf_id: rf_id,
+          prod_id: product.prod_id,
+          rp_quantity: product.quantity,
+          rp_description: product.desc,
+        });
+
+        await trx('inventory')
+          .where('prod_id', product.prod_id)
+          .decrement('inv_stock', product.quantity);
+      }
+    });
+
+    res.status(201).json({
+      message: "Request created successfully",
+      success: true
+    });
+
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({
+      message: "Failed to create request",
+      error: error.message
+    });
+  }
+});
+
+app.get('/display-request', authenticateToken, async (req, res) => {
+  try {
+    const request = await db('request_form')
+      .select('*');
+    res.json(request);
+  } catch (error) {
+    console.log('Error fetching requests:', error);
+    res.status(500).json({ message: 'Failed to fetch requests' });
+  }
+
+});
+
+// request details 
+app.get('/request-details/:rf_id', authenticateToken, async (req, res) => {
+  const { rf_id } = req.params;
+  console.log("Received request for:", req.params.rf_id); // Log the incoming request
+
+  
+  try {
+    console.log("Fetching request for rf_id:", rf_id); // Debugging log
+    const request = await db('request_form').where({ rf_id }).first();
+    console.log("Request Details:", request); // Debugging log
+    
+    const products = await db('request_product')
+      .join('product', 'request_product.prod_id', 'product.prod_id')
+      .select(
+        'request_product.rp_id',
+        'product.prod_name',
+        'request_product.rp_description',
+        'request_product.rp_quantity'
+      );
+    console.log("Products:", products); // Debugging log
+
+    res.json({ request, products });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error fetching request details' });
+  }
+});
+
 
 // Start Server
 const port = 3000;

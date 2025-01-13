@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 // import AccInfo from "../../Shared UI/AccInfo";
 import axios from "axios";
 
-function AddInventory({ setAddInventory}) {
+function AddInventory({ setAddInventory }) {
   const navigate = useNavigate();
   const [inventory, setInventory] = useState([]);
   const [filteredInventory, setFilteredInventory] = useState([]);
@@ -80,7 +80,7 @@ function AddInventory({ setAddInventory}) {
             {error && <p className="text-red-500 mb-4">{error.message}</p>}
 
             <div className="mb-4">
-              <label className="block text-green-900 text-base font-semibold mb-2">Product Name</label>
+              <label className="block text-green-900 text-base font-semibold mb-2">Name</label>
               <input
                 type="text"
                 name="prodName"
@@ -93,7 +93,7 @@ function AddInventory({ setAddInventory}) {
             </div>
 
             <div className="mb-4">
-              <label className="block text-green-900 text-base font-semibold mb-2">Product Description</label>
+              <label className="block text-green-900 text-base font-semibold mb-2">Description</label>
               <input
                 type="text"
                 name="prodDesc"

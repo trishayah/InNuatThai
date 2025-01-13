@@ -12,7 +12,7 @@ const DeliveryInstructionForm = () => {
   const [documents, setDocuments] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [editedRows, setEditedRows] = useState({});
+  const [searchQuery, setSearchQuery] = useState(""); // State for search query
   
 
   useEffect(() => {
@@ -87,10 +87,16 @@ const DeliveryInstructionForm = () => {
     }
   };
 
+  // Filter documents based on the search query
+  // const filteredDocuments = documents.filter(doc =>
+  //   doc.title.toLowerCase().includes(searchQuery.toLowerCase())
+  // );
+
+  
   const user = JSON.parse(localStorage.getItem("user")); // Get user details
 
   return (
-    <div className="flex flex-col w-full min-h-screen bg-[#D9D9D9] font-poppins">
+    <div className="flex flex-col w-full min-h-screen bg-[#D9D9D9] font-poppins overflow-hidden">
         <div className="flex justify-between items-center p-4">
         <h1 className="text-2xl font-semibold text-[#133517] mt-4 ml-6">Delivery Instruction Form</h1>
         <div className="flex items-center space-x-4">
@@ -100,10 +106,9 @@ const DeliveryInstructionForm = () => {
           <AccInfo user={user} />
         </div>
         </div>
-      <div className="mb-4 relative mx-4 md:mx-8 ml-4">
-        <SearchBar />
-      </div>
-      <div className="flex mb-6">
+        <div className="px-4 mt-4">
+        <div className="flex items-center gap-2 mb-2">        
+          <SearchBar />
         <button
           className="addbtn"
           onClick={handleUploadForm}
@@ -111,8 +116,8 @@ const DeliveryInstructionForm = () => {
           Add DIF
         </button>
         <DIFDownload /> {/* Add DIFDownload component beside the button */}
-        <button className='ml-4 bg-green-950 rounded-[15px] p-2 px-6 text-white' onClick={() => handleEdit(selectedDocId, updatedData)}><FaEdit/></button>
-        <button className='ml-4 bg-green-950 rounded-[15px] p-2 px-6 text-white' onClick={() => handleDelete(selectedDocId)}><MdDelete/></button>
+        <button className='ml-8 mr-4 bg-green-950 rounded-[15px] p-2 px-6 text-white' onClick={() => handleEdit(selectedDocId, updatedData)}><FaEdit/></button>
+        <button className='ml-4 mr-4 bg-green-950 rounded-[15px] p-2 px-6 text-white' onClick={() => handleDelete(selectedDocId)}><MdDelete/></button>
 
       </div>
       <div className="displayImage">
@@ -126,6 +131,7 @@ const DeliveryInstructionForm = () => {
       {selectedImage && (
         <ViewImage imageUrl={selectedImage} onClose={() => setSelectedImage(null)} />
       )}
+    </div>
     </div>
   );
 };

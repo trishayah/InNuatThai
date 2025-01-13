@@ -52,7 +52,8 @@ const menuItems = {
   ],
   branch: [
     { name: "Dashboard", url: "/dashboard", icon: MdDashboard },
-    { name: "Request", url: "/branchreq", icon: MdAssignment },
+    { name: "Inventory", url: "/branchinventory", icon: MdInventory },
+    { name: "Request", url: "/request", icon: MdAssignment },
     // { name: "Archive", url: "/archive", icon: MdArchive },
   ],
 };
@@ -99,10 +100,10 @@ const Sidebar = () => {
           <div>
             <button
               onClick={() => toggleDropdown(item.name)}
-              className="w-full flex items-center justify-between px-6 py-2 hover:bg-[#003d1a] transition duration-300 text-white font-poppins text-base"
+              className="w-full flex items-center justify-between px-4 py-2 hover:bg-[#003d1a] transition duration-300 text-white font-poppins text-base"
             >
-              <div className="flex items-center gap-4">
-                <item.icon className="w-6 h-6 mr-4 ml-6"/>
+              <div className="flex items-center gap-4 ml-8">
+                <item.icon className="ml-4 mr-4 w-6 h-6"/>
                 <span>{item.name}</span>
               </div>
               {activeMenu === item.name ? (
@@ -115,7 +116,7 @@ const Sidebar = () => {
               <ul className="bg-[#224430] py-2">
                 {item.subItems.map((subItem, subIndex) => (
                   <li key={subIndex} className="pl-16 py-2 hover:bg-[#003d1a]">
-                    <a href={subItem.route} className="text-white text-base font-poppins ml-4 flex items-center gap-4">
+                    <a href={subItem.route} className="text-white text-base font-poppins ml-4 flex items-center gap-4 justify-center">
                       {subItem.name}
                     </a>
                   </li>
@@ -127,10 +128,10 @@ const Sidebar = () => {
           // Regular menu 
           <a
             href={item.url}
-            className="group flex items-center px-6 py-2 hover:bg-[#003d1a] transition duration-300 text-white font-poppins text-base"
+            className="group flex items-center px-4 py-2 ml-4 hover:bg-[#003d1a] transition duration-300 text-white font-poppins text-base"
           >
-            <item.icon className="mr-4 ml-6 w-6 h-6 group-hover:scale-110 transition-transform" />
-            <span className="ml-4 group-hover:scale-110 transition-transform">{item.name}</span>
+            <item.icon className="mr-4 ml-8 w-6 h-6 group-hover:scale-110 transition-transform" />
+            <span className="ml-6 group-hover:scale-110 transition-transform">{item.name}</span>
           </a>
         )}
       </div>
@@ -161,10 +162,10 @@ const Sidebar = () => {
         <div className="logout">
           <button
             onClick={handleLogout}  // Attach the handleLogout to the button
-            className="w-full flex items-center gap-4 px-6 py-2 hover:bg-[#003d1a] transition duration-300 text-white text-base font-poppins"
+            className="w-full flex items-center gap-4 px-4 py-2 hover:bg-[#003d1a] transition duration-300 text-white text-base font-poppins"
           >
-            <MdLogout className="group-hover:scale-110 transition-transform mr-4" />
-            <span className="group-hover:scale-110 transition-transform">Sign Out</span>
+            <MdLogout className="mr-4 ml-4 w-6 h-6 group-hover:scale-110 transition-transform" />
+            <span className="ml-4 group-hover:scale-110 transition-transform">Sign Out</span>
           </button>
         </div>
       </div>

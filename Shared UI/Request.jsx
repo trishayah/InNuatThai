@@ -4,24 +4,27 @@ import Notification from "../src/Modal/Notification";
 import SearchBar from "./searchBar";
 import PODownload from "./PODownloadButton";
 import DIFDownload from "./DIFDownloadButton";
+import BranchCreateReq from "../src/Branch/BranchCreateReq";
+import axios from "axios";
+import RequestDetails from "../Shared UI/RequestDetails";
 
 const Request = () => {
   const [requests, setRequests] = useState([]);
   const [filteredRequests, setFilteredRequests] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [editedRows, setEditedRows] = useState({});
+  const [createReq, setCreateReq] = useState(false);
+  const [selectedRequest, setSelectedRequest] = useState(null);
+
 
   useEffect(() => {
     const fetchRequests = async () => {
       try {
-        await new Promise((resolve) => setTimeout(resolve, 500));
-        const Request = [
-          { id: 1, requestDate: "2024-03-08", dateNeeded: "2024-03-15", status: "Pending", item: "Item A" },
-          { id: 2, requestDate: "2024-03-10", dateNeeded: "2024-03-18", status: "Approved", item: "Item B" },
-          { id: 3, requestDate: "2024-03-12", dateNeeded: "2024-03-20", status: "Rejected", item: "Item C" },
-        ];
-        setRequests(Request);
-        setFilteredRequests(Request);
+        const response = await axios.get("http://localhost:3000/display-request", {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        });
+        setRequests(response.data);
+        setFilteredRequests(response.data);
       } catch (error) {
         console.error("Error fetching requests:", error);
       }
@@ -57,43 +60,25 @@ const Request = () => {
     setFilteredRequests(sortedRequest);
   };
 
-  const handleEdit = (e, id, field) => {
-    const value = e.target.value;
-    setFilteredRequests((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, [field]: value } : item))
-    );
 
-    setEditedRows((prev) => ({
-      ...prev,
-      [id]: {
-        ...(prev[id] || {}),
-        [field]: value,
-      },
-    }));
+  const handleRowClick = (request) => {
+    setSelectedRequest(request);
   };
 
-  const handleSaveChanges = async () => {
-    try {
-      const modifiedItems = Object.entries(editedRows).map(([id, changes]) => ({
-        id,
-        changes,
-      }));
-
-      for (const { id, changes } of modifiedItems) {
-        console.log(`Saving changes for request ${id}:`, changes);
-      }
-
-      setEditedRows({});
-    } catch (error) {
-      console.error("Error saving changes:", error);
-    }
+  const handleCloseModal = () => {
+    setSelectedRequest(null);
   };
 
+  const handleCreateReq = () => {
+    setCreateReq(true);
+  }
   const user = JSON.parse(localStorage.getItem("user"));
+  const userRole = user?.role || "guest"; // Default role is 'guest' if no user is logged in
+
 
   return (
     <div className="flex flex-col w-full min-h-screen bg-[#D9D9D9] font-poppins">
-        <div className="flex justify-between items-center p-4">
+      <div className="flex justify-between items-center p-4">
         <h1 className="text-2xl font-semibold text-[#133517] mt-4 ml-6">Request</h1>
         <div className="flex items-center space-x-4">
           {/* <Notification
@@ -101,7 +86,7 @@ const Request = () => {
           /> */}
           <AccInfo user={user} />
         </div>
-        </div>
+      </div>
       <div className="px-4 mt-4">
         <div className="flex items-center gap-4 mb-2">
           <SearchBar onSearch={handleSearch} />
@@ -117,8 +102,22 @@ const Request = () => {
             <option value="dateNeeded">Date Needed</option>
             <option value="status">Status</option>
           </select>
-          <PODownload />
-          <DIFDownload />
+          {/* Conditionally render buttons based on user role */}
+          {["admin", "accounting"].includes(userRole) && (
+            <>
+              <PODownload />
+              <DIFDownload />
+            </>
+          )}
+          {/* Create Request button for branch */}
+          {userRole === "branch" && (
+            <button
+              onClick={handleCreateReq}
+              className="downloadbutton"
+            >
+              Create Request
+            </button>
+          )}
         </div>
         <table className="table-fixed border-spacing-2 w-full border-collapse border border-gray-300 font-poppins text-center">
           <thead>
@@ -126,9 +125,12 @@ const Request = () => {
               style={{ backgroundColor: "#133517", color: "#FFFFFF" }}
               className="border border-gray-300 text-sm"
             >
-              <th className="border border-gray-300 px-4 py-2">Item</th>
+              <th className="border border-gray-300 px-4 py-2">Request No.</th>
+              <th className="border border-gray-300 px-4 py-2">Request Title</th>
+              <th className="border border-gray-300 px-4 py-2">Branch</th>
               <th className="border border-gray-300 px-4 py-2">Request Date</th>
               <th className="border border-gray-300 px-4 py-2">Date Needed</th>
+              <th className="border border-gray-300 px-4 py-2">Requestor Name</th>
               <th className="border border-gray-300 px-4 py-2">Status</th>
             </tr>
           </thead>
@@ -136,27 +138,33 @@ const Request = () => {
             {filteredRequests.length > 0 ? (
               filteredRequests.map((request, index) => (
                 <tr
-                  key={request.id}
+                  key={request.rf_id}
                   style={{
                     backgroundColor: index % 2 === 0 ? "#FFF5F5" : "#D3DDD6",
                     cursor: "pointer",
                   }}
+                  onClick={() => handleRowClick(request)}
                 >
-                  <td className="border border-gray-300 px-4 py-2">{request.item}</td>
-                  <td className="border border-gray-300 px-4 py-2">{request.requestDate}</td>
-                  <td className="border border-gray-300 px-4 py-2">{request.dateNeeded}</td>
-                  <td className="border border-gray-300 px-4 py-2">{request.status}</td>
+                  <td className="border border-gray-300 px-4 py-2">{request.rf_id}</td>
+                  <td className="border border-gray-300 px-4 py-2">{request.rf_title}</td>
+                  <td className="border border-gray-300 px-4 py-2">{request.rf_branch}</td>
+                  <td className="border border-gray-300 px-4 py-2">{new Date(request.rf_date).toLocaleDateString()}</td>
+                  <td className="border border-gray-300 px-4 py-2">{new Date(request.rf_date_needed).toLocaleDateString()}</td>
+                  <td className="border border-gray-300 px-4 py-2">{request.rf_requestor_name}</td>
+                  <td className="border border-gray-300 px-4 py-2">{request.rf_status}</td>
                 </tr>
               ))
             ) : (
               <tr>
                 <td colSpan="4" className="px-4 py-2 border text-center">
-                  No request Request available.
+                  No requests available.
                 </td>
               </tr>
             )}
           </tbody>
         </table>
+        {createReq && <BranchCreateReq setCreateReq={setCreateReq} setRequests={setRequests} setFilteredRequests={setFilteredRequests} />}
+        {selectedRequest && <RequestDetails request={selectedRequest} onClose={handleCloseModal} />}
       </div>
     </div>
   );

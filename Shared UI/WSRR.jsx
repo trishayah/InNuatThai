@@ -50,19 +50,18 @@ const StockReceivingReport = () => {
         <h2 className="text-2xl font-semibold text-[#133517] mt-4 ml-6 whitespace-nowrap">Warehouse Stock Receiving Report</h2>
         <AccInfo user={user} /> {/* Display AccInfo component */}
       </div>
-      <div className="mb-4 relative mx-4 md:mx-8 ml-4">
+      <div className="px-4 mt-4">
+        <div className="flex items-center gap-2 mb-2"> 
         <SearchBar />
-      </div>
-      <div className="flex mb-6">
-        <button 
+        <button
           className="addbtn"
           onClick={handleUploadForm}
         >
           Add WSRR
         </button>
         <WSRRDownload /> {/* Add WSRRDownload component beside the button */}
-         <button className='ml-4 bg-green-950 rounded-[15px] p-2 px-6 text-white'><FaEdit/></button>
-          <button className='ml-4 bg-green-950 rounded-[15px] p-2 px-6 text-white'><MdDelete/></button>
+        <button className='ml-8 mr-4 bg-green-950 rounded-[15px] p-2 px-6 text-white'><FaEdit /></button>
+        <button className='ml-4 mr-4 bg-green-950 rounded-[15px] p-2 px-6 text-white'><MdDelete /></button>
       </div>
       <div className="displayImage">
         {documents.slice(0, 16).map((doc, index) => (
@@ -75,6 +74,7 @@ const StockReceivingReport = () => {
       {selectedImage && (
         <ViewImage imageUrl={selectedImage} onClose={() => setSelectedImage(null)} />
       )}
+    </div>
     </div>
   );
 };
