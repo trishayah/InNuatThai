@@ -156,7 +156,7 @@ const Request = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="4" className="px-4 py-2 border text-center">
+                <td colSpan="7" className="px-4 py-2 border text-center">
                   No requests available.
                 </td>
               </tr>

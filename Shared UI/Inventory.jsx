@@ -155,7 +155,7 @@ function Inventory() {
                 <th className="px-4 py-2 text-center">Actions</th>
               </tr>
             </thead>
-            <tbody className="text-base">
+            <tbody className="text-sm">
             {filteredInventory.length > 0 ? (
               filteredInventory.map((item, index) => (
                 <tr

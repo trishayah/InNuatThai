@@ -637,30 +637,95 @@ app.get('/display-request', authenticateToken, async (req, res) => {
 // request details 
 app.get('/request-details/:rf_id', authenticateToken, async (req, res) => {
   const { rf_id } = req.params;
-  console.log("Received request for:", req.params.rf_id); // Log the incoming request
+  console.log("Received request for:", req.params.rf_id);
 
-  
   try {
-    console.log("Fetching request for rf_id:", rf_id); // Debugging log
+    console.log("Fetching request for rf_id:", rf_id);
+
+    // Fetch the request details
     const request = await db('request_form').where({ rf_id }).first();
-    console.log("Request Details:", request); // Debugging log
-    
+    if (!request) {
+      return res.status(404).json({ error: 'Request not found' });
+    }
+
+    console.log("Request Details:", request);
+
+    // Fetch only the products for the given rf_id
     const products = await db('request_product')
       .join('product', 'request_product.prod_id', 'product.prod_id')
+      .where('request_product.rf_id', rf_id) // Filter by rf_id
       .select(
         'request_product.rp_id',
         'product.prod_name',
         'request_product.rp_description',
         'request_product.rp_quantity'
       );
-    console.log("Products:", products); // Debugging log
 
+    console.log("Filtered Products for rf_id:", rf_id, products);
+
+    // Send the response
     res.json({ request, products });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error fetching request details' });
   }
 });
+
+// Middleware for role-based validation
+const validateStatusUpdate = (userRole, status) => {
+  const accountingStatuses = ["For Approval", "Pending", "Decline"];
+  const adminStatuses = ["Approve", "Decline"];
+  if (userRole === "accounting" && !accountingStatuses.includes(status)) return false;
+  if (userRole === "admin" && !adminStatuses.includes(status)) return false;
+  return true;
+};
+
+app.put("/update-request/:rf_id", async (req, res) => {
+  const { rf_id } = req.params;
+  const { comments, receivedBy, approvedBy, status, userRole } = req.body;
+
+  console.log("Request Body:", req.body); // Log the incoming data
+
+  try {
+    // Validate role and status
+    if (status && !validateStatusUpdate(userRole, status)) {
+      return res.status(400).json({
+        success: false,
+        message: `Invalid status value '${status}' for role '${userRole}'.`,
+      });
+    }
+
+    // Update the request in the database
+    const result = await db("request_form")
+      .where({ rf_id })
+      .update({
+        rf_comment: comments || null,
+        rf_received_by: userRole === "accounting" ? receivedBy || null : undefined,
+        rf_approved_by: userRole === "admin" ? approvedBy || null : undefined,
+        rf_status: status || null,
+      });
+
+    if (result) {
+      res.status(200).json({
+        success: true,
+        message: "Request details updated successfully!",
+      });
+    } else {
+      res.status(404).json({
+        success: false,
+        message: "Request not found",
+      });
+    }
+  } catch (error) {
+    console.error("Error updating request:", error);
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while updating the request",
+    });
+  }
+});
+
+
 
 
 // Start Server
